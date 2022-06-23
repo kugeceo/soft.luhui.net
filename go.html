@@ -1,0 +1,42 @@
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function get_url()
+{
+	var src = window.location.href;
+	var I = src.substr(src.indexOf("?q=") + 3).length;
+	var T = src.indexOf("?q=");
+	//alert(src);
+	if (0 >= T) return "";
+	if (I == src.length) return -1;
+	var url = src.substr(src.indexOf("?q=") + 3);
+	//alert(url);
+	return url;
+}
+
+function go(url) {
+	//alert(url);
+	document.write('<html>');
+	document.write('<head>');
+	document.write('<title>搜索引擎鲁虺链接 - ' + url + '  欢迎申请网页搜索引擎鲁虺广告赞助商--链接您的无限商机</title>');
+	document.write('<meta http-equiv="Content-Type" content="text/html; charset=gb2312">');
+	document.write('</head>');
+	document.write('<frameset rows="25,*" frameborder="NO" border="0" frameborder="0" framespacing="0"> ');
+	document.write('  <frame scrolling="NO" noresize src="http://www.luhui.net/cn/pop/bar?Words=' + url + '" >');
+	document.write('  <frame name="www_luhui_net" src="' + url + '">');
+	document.write('</frameset>');
+	document.write('</html>');
+}
+
+go(get_url());
+
+//-->
+</SCRIPT>
+
+<!-- 
+代码连接使用方法 
+go.html?q=http://asp.luhui.net
+ -->
+
+
+
