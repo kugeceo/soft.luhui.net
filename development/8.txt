@@ -1,0 +1,27 @@
+鲁虺文本内容搜索展示系统 Version1.9.0 更新
+
+
+为了让系统在展示文章时保持 txt 文档的排版格式，我们需要对原代码进行一些修改。在 JavaScript 中读取 txt 文件内容后，将其转换为 HTML 格式时保留换行、空格等排版信息。以下是修改后的完整代码：
+
+txt-article-website
+带完整分页导航、多分类、文章统计及详细页导航功能且固定各分类文章数量的文章展示网页
+V19
+生成 index.html
+修改说明
+HTML 部分：
+将文章内容展示的元素从 <p> 标签改为 <pre> 标签。<pre> 标签会保留文本中的空格、换行等格式信息。
+html
+预览
+<pre id="article-content" class="text-gray-700"></pre>
+
+CSS 部分：
+为 <pre> 标签添加样式，使其在不同屏幕上能更好地显示。white-space: pre-wrap 表示保留空白符序列，但是正常地进行换行；word-wrap: break-word 表示允许长单词或 URL 地址换行到下一行；font-family: inherit 表示继承父元素的字体。
+css
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: inherit;
+}
+
+
+通过以上修改，系统在展示文章内容时会保持 txt 文档的排版格式。

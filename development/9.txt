@@ -1,0 +1,396 @@
+鲁虺文本内容搜索展示系统 Version2.0.0更新
+
+
+
+修复调用 gbk 文档显示乱码，修复后要求同时兼容utf-8和gbk 文档
+为了修复 GBK 文档显示乱码的问题，并且让系统同时兼容 UTF - 8 和 GBK 文档，我们需要在读取文件时判断文件编码，然后根据不同编码进行相应的解码操作。在 JavaScript 中，浏览器原生没有直接处理 GBK 编码的能力，不过可以借助iconv-lite库来实现 GBK 解码。由于在浏览器环境里无法直接使用iconv-lite，我们可以利用fetch请求拿到二进制数据，再手动进行 GBK 解码。
+
+以下是修改后的代码：
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<title>文章列表</title>
+<style>
+body {
+font-family: 'Inter', sans-serif;
+}
+pre {
+white-space: pre-wrap;
+word-wrap: break-word;
+font-family: inherit;
+}
+</style>
+</head>
+
+<body class="bg-gray-100">
+<div class="container mx-auto p-8">
+<h1 class="text-3xl font-bold mb-4">文章列表</h1>
+<div class="flex space-x-2 mb-4">
+<input type="text" id="search-input" placeholder="搜索文章标题"
+class="border border-gray-300 p-2 rounded-md w-full">
+<button id="search-button" class="bg-blue-500 text-white p-2 rounded-md">搜索</button>
+</div>
+<div id="category-nav" class="mb-4">
+<!-- 分类导航链接将在这里动态生成 -->
+</div>
+<div id="category-stats" class="mb-4"></div>
+<div id="article-list-container">
+<ul id="article-list" class="grid grid-cols-2 gap-4 space-y-2">
+<!-- 文章列表将在这里动态生成 -->
+</ul>
+<div id="pagination" class="flex space-x-2 mt-4"></div>
+</div>
+</div>
+<div id="article-detail" class="container mx-auto p-8 hidden">
+<h2 id="article-title" class="text-2xl font-bold mb-2"></h2>
+<pre id="article-content" class="text-gray-700"></pre>
+<div class="flex space-x-4 mt-4">
+<button id="prev-article-button" class="bg-blue-500 text-white p-2 rounded-md">上一主题</button>
+<button id="back-button" class="bg-blue-500 text-white p-2 rounded-md">返回列表</button>
+<button id="next-article-button" class="bg-blue-500 text-white p-2 rounded-md">下一主题</button>
+</div>
+</div>
+
+plaintext
+&#x3C;script&#x3E;
+    const articleList = document.getElementById(&#x27;article-list&#x27;);
+    const articleDetail = document.getElementById(&#x27;article-detail&#x27;);
+    const articleTitle = document.getElementById(&#x27;article-title&#x27;);
+    const articleContent = document.getElementById(&#x27;article-content&#x27;);
+    const backButton = document.getElementById(&#x27;back-button&#x27;);
+    const searchInput = document.getElementById(&#x27;search-input&#x27;);
+    const searchButton = document.getElementById(&#x27;search-button&#x27;);
+    const pagination = document.getElementById(&#x27;pagination&#x27;);
+    const articleListContainer = document.getElementById(&#x27;article-list-container&#x27;);
+    const categoryStats = document.getElementById(&#x27;category-stats&#x27;);
+    const prevArticleButton = document.getElementById(&#x27;prev-article-button&#x27;);
+    const nextArticleButton = document.getElementById(&#x27;next-article-button&#x27;);
+    const categoryNav = document.getElementById(&#x27;category-nav&#x27;);
+
+    let categories = [&#x27;category1&#x27;, &#x27;category2&#x27;, &#x27;category3&#x27;, &#x27;category4&#x27;, &#x27;category5&#x27;, &#x27;category6&#x27;, &#x27;category7&#x27;];
+    const categoryNames = {
+        &#x27;category1&#x27;: &#x27;&#x8BD7;&#x8BCD;&#x6B4C;&#x8D4B;&#x27;,
+        &#x27;category2&#x27;: &#x27;&#x5386;&#x53F2;&#x5178;&#x6545;&#x27;,
+        &#x27;category3&#x27;: &#x27;&#x79D1;&#x6280;&#x524D;&#x6CBF;&#x27;,
+        &#x27;category4&#x27;: &#x27;&#x751F;&#x6D3B;&#x5E38;&#x8BC6;&#x27;,
+        &#x27;category5&#x27;: &#x27;&#x827A;&#x672F;&#x9274;&#x8D4F;&#x27;,
+        &#x27;category6&#x27;: &#x27;&#x5065;&#x5EB7;&#x517B;&#x751F;&#x27;,
+        &#x27;category7&#x27;: &#x27;&#x4F53;&#x80B2;&#x8D5B;&#x4E8B;&#x27;
+    };
+    const articles = [];
+    const itemsPerPage = 50;
+    let currentPage = 1;
+    let searchTerm = &#x27;&#x27;;
+    const categoryArticleCounts = {};
+    const categoryMaxCounts = {
+        &#x27;category1&#x27;: 1584,
+        &#x27;category2&#x27;: 1584,
+        &#x27;category3&#x27;: 64,
+        &#x27;category4&#x27;: 122
+    };
+
+    // &#x7B80;&#x5355;&#x7684;&#x7F16;&#x7801;&#x68C0;&#x6D4B;&#x51FD;&#x6570;
+    function detectEncoding(arrayBuffer) {
+        const uint8Array = new Uint8Array(arrayBuffer);
+        // &#x7B80;&#x5355;&#x5224;&#x65AD;&#x662F;&#x5426;&#x4E3A; UTF - 8 &#x7F16;&#x7801;
+        for (let i = 0; i &#x3C; uint8Array.length; i++) {
+            if ((uint8Array[i] &#x26; 0x80) === 0) {
+                continue;
+            } else if ((uint8Array[i] &#x26; 0xE0) === 0xC0) {
+                if (i + 1 &#x3E;= uint8Array.length) return &#x27;gbk&#x27;;
+                if ((uint8Array[i + 1] &#x26; 0xC0) !== 0x80) return &#x27;gbk&#x27;;
+                i++;
+            } else if ((uint8Array[i] &#x26; 0xF0) === 0xE0) {
+                if (i + 2 &#x3E;= uint8Array.length) return &#x27;gbk&#x27;;
+                if ((uint8Array[i + 1] &#x26; 0xC0) !== 0x80 || (uint8Array[i + 2] &#x26; 0xC0) !== 0x80) return &#x27;gbk&#x27;;
+                i += 2;
+            } else {
+                return &#x27;gbk&#x27;;
+            }
+        }
+        return &#x27;utf-8&#x27;;
+    }
+
+    // GBK &#x89E3;&#x7801;&#x51FD;&#x6570;
+    function decodeGBK(arrayBuffer) {
+        const decoder = new TextDecoder(&#x27;gbk&#x27;);
+        return decoder.decode(arrayBuffer);
+    }
+
+    async function fetchArticles() {
+        for (const category of categories) {
+            let articleCount = 0;
+            categoryArticleCounts[category] = 0;
+            const maxCount = categoryMaxCounts[category] || Infinity;
+            for (let i = 1; i &#x3C;= 1000; i++) {
+                if (articleCount &#x3E;= maxCount) {
+                    break;
+                }
+                try {
+                    const response = await fetch(&#x60;${category}/${i}.txt&#x60;);
+                    if (response.ok) {
+                        const arrayBuffer = await response.arrayBuffer();
+                        const encoding = detectEncoding(arrayBuffer);
+                        let text;
+                        if (encoding === &#x27;utf-8&#x27;) {
+                            const decoder = new TextDecoder(&#x27;utf-8&#x27;);
+                            text = decoder.decode(arrayBuffer);
+                        } else {
+                            text = decodeGBK(arrayBuffer);
+                        }
+                        const lines = text.split(&#x27;\n&#x27;);
+                        const title = lines[0];
+                        const content = lines.slice(1).join(&#x27;\n&#x27;);
+                        articles.push({ title, content, path: &#x60;${category}/${i}.txt&#x60;, category });
+                        categoryArticleCounts[category]++;
+                        articleCount++;
+                    }
+                } catch (error) {
+                    // &#x5FFD;&#x7565;&#x6587;&#x4EF6;&#x4E0D;&#x5B58;&#x5728;&#x7684;&#x9519;&#x8BEF;
+                }
+            }
+        }
+        // &#x5BF9;&#x6587;&#x7AE0;&#x6309;&#x5206;&#x7C7B;&#x548C; ID &#x6392;&#x5E8F;
+        articles.sort((a, b) =&#x3E; {
+            if (a.category === b.category) {
+                const idA = parseInt(a.path.match(/\d+/)[0]);
+                const idB = parseInt(b.path.match(/\d+/)[0]);
+                return idA - idB;
+            }
+            return a.category.localeCompare(b.category);
+        });
+        const urlParams = new URLSearchParams(window.location.search);
+        searchTerm = urlParams.get(&#x27;q&#x27;) || &#x27;&#x27;;
+        currentPage = parseInt(urlParams.get(&#x27;p&#x27;)) || 1;
+        const articleId = urlParams.get(&#x27;id&#x27;);
+        const category = urlParams.get(&#x27;category&#x27;);
+        if (articleId &#x26;&#x26; category) {
+            const article = articles.find(a =&#x3E; a.path.includes(articleId) &#x26;&#x26; a.category === category);
+            if (article) {
+                showArticleDetail(article);
+            }
+        } else if (category) {
+            const filteredArticles = articles.filter(article =&#x3E; article.category === category);
+            displayArticles(filteredArticles, currentPage);
+        } else {
+            // &#x9996;&#x9875;&#x663E;&#x793A;&#x6240;&#x6709;&#x6587;&#x7AE0;
+            displayArticles(articles, currentPage);
+            displayCategoryStats();
+        }
+        displayCategoryNav();
+    }
+
+    function displayArticles(articleArray, page) {
+        articleList.innerHTML = &#x27;&#x27;;
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const displayedArticles = articleArray.slice(startIndex, endIndex);
+        if (displayedArticles.length === 0) {
+            const noResultsItem = document.createElement(&#x27;li&#x27;);
+            noResultsItem.textContent = &#x27;&#x672A;&#x627E;&#x5230;&#x76F8;&#x5173;&#x6587;&#x7AE0;&#x27;;
+            articleList.appendChild(noResultsItem);
+        } else {
+            displayedArticles.forEach(article =&#x3E; {
+                const listItem = document.createElement(&#x27;li&#x27;);
+                const link = document.createElement(&#x27;a&#x27;);
+                const match = article.path.match(/(\d+)\.txt$/);
+                let id;
+                if (match) {
+                    id = match[1];
+                } else {
+                    id = &#x27;0&#x27;;
+                }
+                link.href = &#x60;?category=${article.category}&#x26;id=${id}&#x60;;
+                link.textContent = article.title;
+                link.target = &#x27;_blank&#x27;;
+                link.addEventListener(&#x27;click&#x27;, () =&#x3E; showArticleDetail(article));
+                listItem.appendChild(link);
+                articleList.appendChild(listItem);
+            });
+        }
+        displayPagination(articleArray.length, page);
+    }
+
+    function showArticleDetail(article) {
+        articleListContainer.classList.add(&#x27;hidden&#x27;);
+        articleDetail.classList.remove(&#x27;hidden&#x27;);
+        articleTitle.textContent = article.title;
+        articleContent.textContent = article.content;
+
+        const currentIndex = articles.indexOf(article);
+        prevArticleButton.disabled = currentIndex === 0;
+        nextArticleButton.disabled = currentIndex === articles.length - 1;
+
+        prevArticleButton.addEventListener(&#x27;click&#x27;, () =&#x3E; {
+            const prevArticle = articles[currentIndex - 1];
+            const match = prevArticle.path.match(/(\d+)\.txt$/);
+            let id;
+            if (match) {
+                id = match[1];
+            } else {
+                id = &#x27;0&#x27;;
+            }
+            const category = prevArticle.category;
+            window.history.pushState({}, &#x27;&#x27;, &#x60;?category=${category}&#x26;id=${id}&#x60;);
+            showArticleDetail(prevArticle);
+        });
+
+        nextArticleButton.addEventListener(&#x27;click&#x27;, () =&#x3E; {
+            const nextArticle = articles[currentIndex + 1];
+            const match = nextArticle.path.match(/(\d+)\.txt$/);
+            let id;
+            if (match) {
+                id = match[1];
+            } else {
+                id = &#x27;0&#x27;;
+            }
+            const category = nextArticle.category;
+            window.history.pushState({}, &#x27;&#x27;, &#x60;?category=${category}&#x26;id=${id}&#x60;);
+            showArticleDetail(nextArticle);
+        });
+    }
+
+    backButton.addEventListener(&#x27;click&#x27;, () =&#x3E; {
+        articleListContainer.classList.remove(&#x27;hidden&#x27;);
+        articleDetail.classList.add(&#x27;hidden&#x27;);
+        const urlParams = new URLSearchParams();
+        if (searchTerm) {
+            urlParams.set(&#x27;q&#x27;, searchTerm);
+        }
+        const currentCategory = new URLSearchParams(window.location.search).get(&#x27;category&#x27;);
+        if (currentCategory) {
+            urlParams.set(&#x27;category&#x27;, currentCategory);
+        }
+        urlParams.set(&#x27;p&#x27;, currentPage);
+        window.history.replaceState({}, &#x27;&#x27;, &#x60;?${urlParams.toString()}&#x60;);
+        performSearch();
+    });
+
+    function performSearch() {
+        searchTerm = searchInput.value.toLowerCase();
+        let filteredArticles = articles;
+        const currentCategory = new URLSearchParams(window.location.search).get(&#x27;category&#x27;);
+        if (currentCategory) {
+            filteredArticles = articles.filter(article =&#x3E; article.category === currentCategory);
+        }
+        filteredArticles = filteredArticles.filter(article =&#x3E;
+            article.title.toLowerCase().includes(searchTerm)
+        );
+        const urlParams = new URLSearchParams();
+        if (searchTerm) {
+            urlParams.set(&#x27;q&#x27;, searchTerm);
+        }
+        if (currentCategory) {
+            urlParams.set(&#x27;category&#x27;, currentCategory);
+        }
+        urlParams.set(&#x27;p&#x27;, currentPage);
+        window.history.replaceState({}, &#x27;&#x27;, &#x60;?${urlParams.toString()}&#x60;);
+        displayArticles(filteredArticles, currentPage);
+    }
+
+    searchButton.addEventListener(&#x27;click&#x27;, performSearch);
+
+    searchInput.addEventListener(&#x27;keydown&#x27;, (event) =&#x3E; {
+        if (event.key === &#x27;Enter&#x27;) {
+            currentPage = 1;
+            performSearch();
+        }
+    });
+
+    function displayPagination(totalItems, page) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        pagination.innerHTML = &#x27;&#x27;;
+
+        const createPageButton = (text, pageNumber) =&#x3E; {
+            const button = document.createElement(&#x27;button&#x27;);
+            button.textContent = text;
+            button.classList.add(&#x27;bg-blue-500&#x27;, &#x27;text-white&#x27;, &#x27;p-2&#x27;, &#x27;rounded-md&#x27;);
+            if (pageNumber === page) {
+                button.classList.add(&#x27;bg-blue-700&#x27;);
+            }
+            button.addEventListener(&#x27;click&#x27;, () =&#x3E; {
+                currentPage = pageNumber;
+                performSearch();
+            });
+            return button;
+        };
+
+        // &#x9996;&#x9875;&#x6309;&#x94AE;
+        const firstPageButton = createPageButton(&#x27;&#x9996;&#x9875;&#x27;, 1);
+        pagination.appendChild(firstPageButton);
+
+        // &#x4E0A;&#x4E00;&#x9875;&#x6309;&#x94AE;
+        const prevPageButton = createPageButton(&#x27;&#x4E0A;&#x4E00;&#x9875;&#x27;, page - 1);
+        prevPageButton.disabled = page === 1;
+        pagination.appendChild(prevPageButton);
+
+        let startPage = Math.max(1, page - 5);
+        let endPage = Math.min(startPage + 9, totalPages);
+
+        for (let i = startPage; i &#x3C;= endPage; i++) {
+            const pageButton = createPageButton(i, i);
+            pagination.appendChild(pageButton);
+        }
+
+        // &#x4E0B;&#x4E00;&#x9875;&#x6309;&#x94AE;
+        const nextPageButton = createPageButton(&#x27;&#x4E0B;&#x4E00;&#x9875;&#x27;, page + 1);
+        nextPageButton.disabled = page === totalPages;
+        pagination.appendChild(nextPageButton);
+
+        // &#x5C3E;&#x9875;&#x6309;&#x94AE;
+        const lastPageButton = createPageButton(&#x27;&#x5C3E;&#x9875;&#x27;, totalPages);
+        pagination.appendChild(lastPageButton);
+    }
+
+    function displayCategoryStats() {
+        let totalCount = 0;
+        let statsHtml = &#x27;&#x3C;p&#x3E;&#x6587;&#x7AE0;&#x5206;&#x7C7B;&#x7EDF;&#x8BA1;&#xFF1A;&#x3C;/p&#x3E;&#x3C;ul&#x3E;&#x27;;
+        for (const category in categoryArticleCounts) {
+            const count = categoryArticleCounts[category];
+            totalCount += count;
+            statsHtml += &#x60;&#x3C;li&#x3E;${categoryNames[category]}: ${count} &#x7BC7;&#x6587;&#x7AE0;&#x3C;/li&#x3E;&#x60;;
+        }
+        statsHtml += &#x60;&#x3C;li&#x3E;&#x6240;&#x6709;&#x5206;&#x7C7B;&#x603B;&#x8BA1;: ${totalCount} &#x7BC7;&#x6587;&#x7AE0;&#x3C;/li&#x3E;&#x3C;/ul&#x3E;&#x60;;
+        categoryStats.innerHTML = statsHtml;
+    }
+
+    function displayCategoryNav() {
+        categoryNav.innerHTML = &#x27;&#x27;;
+        categories.forEach(category =&#x3E; {
+            const link = document.createElement(&#x27;a&#x27;);
+            link.href = &#x60;?category=${category}&#x60;;
+            link.textContent = categoryNames[category];
+            link.classList.add(&#x27;mr-4&#x27;, &#x27;text-blue-500&#x27;, &#x27;hover:underline&#x27;);
+            categoryNav.appendChild(link);
+        });
+    }
+
+    fetchArticles();
+&#x3C;/script&#x3E;
+
+</body>
+
+</html>
+修改说明
+编码检测函数：detectEncoding函数用于简单判断文件是 UTF - 8 编码还是 GBK 编码。它会遍历文件的字节数组，依据 UTF - 8 编码的规则进行判断，若不符合则认为是 GBK 编码。
+GBK 解码函数：decodeGBK函数使用TextDecoder来对 GBK 编码的字节数组进行解码。
+文件读取部分：在fetchArticles函数里，使用fetch请求获取文件的二进制数据（arrayBuffer），接着调用detectEncoding函数判断编码，最后根据不同编码进行相应的解码操作。
+
+这样系统就能同时兼容 UTF - 8 和 GBK 编码的文档了。
+完整代码
+以下是完整代码，包含之前提及的所有功能改进，如分类导航链接、保持 txt 文档排版格式、兼容 UTF - 8 和 GBK 编码等，通过 ` 呈现：
+
+txt-article-website
+具备多种功能且兼容 UTF - 8 和 GBK 编码的文章展示网页
+V20
+生成 index.html
+
+该代码构建了一个功能丰富的文章展示网页，涵盖文章列表展示、文章详情查看、分类导航、搜索功能、分页导航、文章分类统计等功能，并且支持 UTF - 8 和 GBK 编码的 txt 文件。你可以将代码复制到本地的 HTML 文件中运行，或者按照之前提到的部署方法部署到相应平台。
+
+
+

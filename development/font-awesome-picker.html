@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Awesome图标浏览选择器</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#6B7280',
+                        light: '#F3F4F6',
+                        dark: '#1F2937'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .icon-card {
+                @apply flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-all duration-200 cursor-pointer;
+            }
+            .icon-card-active {
+                @apply border-primary bg-primary/10;
+            }
+            .category-item {
+                @apply px-3 py-2 rounded-md hover:bg-primary/10 cursor-pointer transition-colors duration-200;
+            }
+            .category-item-active {
+                @apply bg-primary text-white;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-dark">
+    <div class="min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-font-awesome text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold">Font Awesome图标选择器</h1>
+                    <span class="text-sm bg-gray-100 px-2 py-0.5 rounded text-secondary">v6.7.2</span>
+                </div>
+                
+                <!-- 搜索框 -->
+                <div class="relative w-full md:w-96">
+                    <input 
+                        type="text" 
+                        id="search-input"
+                        placeholder="搜索图标..." 
+                        class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    >
+                    <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-secondary"></i>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 主内容区 -->
+        <main class="flex-1 container mx-auto px-4 py-6">
+            <div class="flex flex-col lg:flex-row gap-6">
+                <!-- 左侧分类 -->
+                <div class="lg:w-64 shrink-0">
+                    <div class="bg-white rounded-xl shadow-sm p-4 sticky top-24">
+                        <h2 class="font-semibold text-lg mb-4">图标分类</h2>
+                        <div class="space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto pr-2" id="categories-container">
+                            <!-- 分类将通过JS动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧图标展示区 -->
+                <div class="flex-1">
+                    <!-- 信息栏 -->
+                    <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <span class="text-secondary">当前分类:</span>
+                            <span class="font-medium ml-2" id="current-category">全部图标</span>
+                        </div>
+                        <div>
+                            <span class="text-secondary">显示:</span>
+                            <span class="font-medium ml-2" id="icons-count">0</span>
+                            <span class="text-secondary ml-1">个图标</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="copy-all-btn" class="px-3 py-1.5 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors text-sm flex items-center gap-1">
+                                <i class="fa fa-copy"></i> 复制全部
+                            </button>
+                            <button id="clear-selection-btn" class="px-3 py-1.5 bg-gray-100 text-secondary rounded-md hover:bg-gray-200 transition-colors text-sm flex items-center gap-1">
+                                <i class="fa fa-times"></i> 清除选择
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 图标网格 -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" id="icons-container">
+                        <!-- 图标将通过JS动态生成 -->
+                        <div class="col-span-full flex items-center justify-center py-12 text-secondary">
+                            <div class="text-center">
+                                <i class="fa fa-spinner fa-spin text-2xl mb-2"></i>
+                                <p>加载图标中...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 没有结果时显示 -->
+                    <div id="no-results" class="hidden col-span-full flex items-center justify-center py-12 text-secondary">
+                        <div class="text-center">
+                            <i class="fa fa-search text-2xl mb-2"></i>
+                            <p>没有找到匹配的图标</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- 底部状态栏 -->
+        <footer class="bg-white border-t border-gray-200 py-4">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-2 text-sm text-secondary">
+                    <div>
+                        已选择 <span id="selected-count" class="font-medium text-primary">0</span> 个图标
+                    </div>
+                    <div id="copy-notification" class="hidden text-primary">
+                        <i class="fa fa-check"></i> 已复制到剪贴板
+                    </div>
+                    <div>
+                        数据来源: Font Awesome 6.7.2
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- 图标详情模态框 -->
+        <div id="icon-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 animate-fade-in">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold">图标详情</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="flex flex-col items-center mb-6">
+                    <div class="text-6xl mb-4" id="modal-icon-preview"></div>
+                    <div class="text-lg font-medium" id="modal-icon-name"></div>
+                    <div class="text-sm text-secondary" id="modal-icon-category"></div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">HTML代码</label>
+                        <div class="flex">
+                            <input type="text" id="modal-html-code" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" readonly>
+                            <button id="copy-html-btn" class="bg-primary text-white px-3 py-2 rounded-r-md hover:bg-primary/90 transition-colors">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">CSS类名</label>
+                        <div class="flex">
+                            <input type="text" id="modal-class-name" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary" readonly>
+                            <button id="copy-class-btn" class="bg-primary text-white px-3 py-2 rounded-r-md hover:bg-primary/90 transition-colors">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="select-icon-btn" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
+                        选择此图标
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Font Awesome 6.7.2 图标数据 - 简化版分类和图标列表
+        // 实际应用中可能需要从官方API获取完整列表
+        const iconData = {
+            all: [
+                // 品牌图标
+                { name: 'Font Awesome', class: 'fa-font-awesome', category: 'brands' },
+                { name: 'Twitter', class: 'fa-twitter', category: 'brands' },
+                { name: 'Facebook', class: 'fa-facebook', category: 'brands' },
+                { name: 'Instagram', class: 'fa-instagram', category: 'brands' },
+                { name: 'Github', class: 'fa-github', category: 'brands' },
+                { name: 'Linkedin', class: 'fa-linkedin', category: 'brands' },
+                { name: 'Youtube', class: 'fa-youtube', category: 'brands' },
+                { name: 'Google', class: 'fa-google', category: 'brands' },
+                { name: 'Apple', class: 'fa-apple', category: 'brands' },
+                { name: 'Microsoft', class: 'fa-microsoft', category: 'brands' },
+                { name: 'Amazon', class: 'fa-amazon', category: 'brands' },
+                { name: 'Whatsapp', class: 'fa-whatsapp', category: 'brands' },
+                
+                // 固体图标
+                { name: 'Home', class: 'fa-home', category: 'solid' },
+                { name: 'User', class: 'fa-user', category: 'solid' },
+                { name: 'Envelope', class: 'fa-envelope', category: 'solid' },
+                { name: 'Phone', class: 'fa-phone', category: 'solid' },
+                { name: 'Map Marker', class: 'fa-map-marker', category: 'solid' },
+                { name: 'Clock', class: 'fa-clock', category: 'solid' },
+                { name: 'Calendar', class: 'fa-calendar', category: 'solid' },
+                { name: 'File', class: 'fa-file', category: 'solid' },
+                { name: 'File Text', class: 'fa-file-text', category: 'solid' },
+                { name: 'Image', class: 'fa-image', category: 'solid' },
+                { name: 'Video', class: 'fa-video', category: 'solid' },
+                { name: 'Music', class: 'fa-music', category: 'solid' },
+                { name: 'Book', class: 'fa-book', category: 'solid' },
+                { name: 'Book Open', class: 'fa-book-open', category: 'solid' },
+                { name: 'Pencil', class: 'fa-pencil', category: 'solid' },
+                { name: 'Edit', class: 'fa-edit', category: 'solid' },
+                { name: 'Trash', class: 'fa-trash', category: 'solid' },
+                { name: 'Search', class: 'fa-search', category: 'solid' },
+                { name: 'Settings', class: 'fa-cog', category: 'solid' },
+                { name: 'Help', class: 'fa-question-circle', category: 'solid' },
+                { name: 'Info', class: 'fa-info-circle', category: 'solid' },
+                { name: 'Alert', class: 'fa-exclamation-circle', category: 'solid' },
+                { name: 'Check', class: 'fa-check', category: 'solid' },
+                { name: 'Times', class: 'fa-times', category: 'solid' },
+                { name: 'Plus', class: 'fa-plus', category: 'solid' },
+                { name: 'Minus', class: 'fa-minus', category: 'solid' },
+                { name: 'Arrow Up', class: 'fa-arrow-up', category: 'solid' },
+                { name: 'Arrow Down', class: 'fa-arrow-down', category: 'solid' },
+                { name: 'Arrow Left', class: 'fa-arrow-left', category: 'solid' },
+                { name: 'Arrow Right', class: 'fa-arrow-right', category: 'solid' },
+                { name: 'Chevron Up', class: 'fa-chevron-up', category: 'solid' },
+                { name: 'Chevron Down', class: 'fa-chevron-down', category: 'solid' },
+                { name: 'Chevron Left', class: 'fa-chevron-left', category: 'solid' },
+                { name: 'Chevron Right', class: 'fa-chevron-right', category: 'solid' },
+                { name: 'Menu', class: 'fa-bars', category: 'solid' },
+                { name: 'X', class: 'fa-x', category: 'solid' },
+                { name: 'Lock', class: 'fa-lock', category: 'solid' },
+                { name: 'Unlock', class: 'fa-unlock', category: 'solid' },
+                { name: 'Eye', class: 'fa-eye', category: 'solid' },
+                { name: 'Eye Slash', class: 'fa-eye-slash', category: 'solid' },
+                { name: 'Star', class: 'fa-star', category: 'solid' },
+                { name: 'Heart', class: 'fa-heart', category: 'solid' },
+                { name: 'Thumbs Up', class: 'fa-thumbs-up', category: 'solid' },
+                { name: 'Thumbs Down', class: 'fa-thumbs-down', category: 'solid' },
+                { name: 'Share', class: 'fa-share', category: 'solid' },
+                { name: 'Copy', class: 'fa-copy', category: 'solid' },
+                { name: 'Download', class: 'fa-download', category: 'solid' },
+                { name: 'Upload', class: 'fa-upload', category: 'solid' },
+                { name: 'Print', class: 'fa-print', category: 'solid' },
+                { name: 'Refresh', class: 'fa-refresh', category: 'solid' },
+                { name: 'Sync', class: 'fa-sync', category: 'solid' },
+                { name: 'Rotate Right', class: 'fa-rotate-right', category: 'solid' },
+                { name: 'Rotate Left', class: 'fa-rotate-left', category: 'solid' },
+                { name: 'Undo', class: 'fa-undo', category: 'solid' },
+                { name: 'Redo', class: 'fa-redo', category: 'solid' },
+                { name: 'Zoom In', class: 'fa-search-plus', category: 'solid' },
+                { name: 'Zoom Out', class: 'fa-search-minus', category: 'solid' },
+                { name: 'Maximize', class: 'fa-expand', category: 'solid' },
+                { name: 'Minimize', class: 'fa-compress', category: 'solid' },
+                { name: 'Sign In', class: 'fa-sign-in', category: 'solid' },
+                { name: 'Sign Out', class: 'fa-sign-out', category: 'solid' },
+                { name: 'User Plus', class: 'fa-user-plus', category: 'solid' },
+                { name: 'User Minus', class: 'fa-user-minus', category: 'solid' },
+                { name: 'Users', class: 'fa-users', category: 'solid' },
+                { name: 'User Circle', class: 'fa-user-circle', category: 'solid' },
+                { name: 'Bell', class: 'fa-bell', category: 'solid' },
+                { name: 'Message', class: 'fa-comment', category: 'solid' },
+                { name: 'Messages', class: 'fa-comments', category: 'solid' },
+                { name: 'Mail', class: 'fa-envelope', category: 'solid' },
+                { name: 'Mail Bounce', class: 'fa-envelope-open', category: 'solid' },
+                { name: 'Map', class: 'fa-map', category: 'solid' },
+                { name: 'Location', class: 'fa-location-dot', category: 'solid' },
+                { name: 'Compass', class: 'fa-compass', category: 'solid' },
+                { name: 'Car', class: 'fa-car', category: 'solid' },
+                { name: 'Plane', class: 'fa-plane', category: 'solid' },
+                { name: 'Ship', class: 'fa-ship', category: 'solid' },
+                { name: 'Bicycle', class: 'fa-bicycle', category: 'solid' },
+                { name: 'Motorcycle', class: 'fa-motorcycle', category: 'solid' },
+                { name: 'Train', class: 'fa-train', category: 'solid' },
+                { name: 'Bus', class: 'fa-bus', category: 'solid' },
+                { name: 'Taxi', class: 'fa-taxi', category: 'solid' },
+                { name: 'Coffee', class: 'fa-coffee', category: 'solid' },
+                { name: 'Cutlery', class: 'fa-utensils', category: 'solid' },
+                { name: 'Glass', class: 'fa-glass-water', category: 'solid' },
+                { name: 'Shopping Cart', class: 'fa-shopping-cart', category: 'solid' },
+                { name: 'Credit Card', class: 'fa-credit-card', category: 'solid' },
+                { name: 'Tag', class: 'fa-tag', category: 'solid' },
+                { name: 'Tags', class: 'fa-tags', category: 'solid' },
+                { name: 'Gift', class: 'fa-gift', category: 'solid' },
+                { name: 'Percent', class: 'fa-percent', category: 'solid' },
+                { name: 'Dollar', class: 'fa-dollar-sign', category: 'solid' },
+                { name: 'Euro', class: 'fa-euro-sign', category: 'solid' },
+                { name: 'Bitcoin', class: 'fa-bitcoin', category: 'solid' },
+                { name: 'Calendar Check', class: 'fa-calendar-check', category: 'solid' },
+                { name: 'Calendar X', class: 'fa-calendar-x', category: 'solid' },
+                { name: 'Clock O', class: 'fa-clock-o', category: 'solid' },
+                { name: 'Hourglass', class: 'fa-hourglass', category: 'solid' },
+                { name: 'Fire', class: 'fa-fire', category: 'solid' },
+                { name: 'Water', class: 'fa-tint', category: 'solid' },
+                { name: 'Leaf', class: 'fa-leaf', category: 'solid' },
+                { name: 'Sun', class: 'fa-sun', category: 'solid' },
+                { name: 'Moon', class: 'fa-moon', category: 'solid' },
+                { name: 'Cloud', class: 'fa-cloud', category: 'solid' },
+                { name: 'Rain', class: 'fa-cloud-rain', category: 'solid' },
+                { name: 'Snow', class: 'fa-snowflake', category: 'solid' },
+                { name: 'Thunder', class: 'fa-bolt', category: 'solid' },
+                { name: 'Wind', class: 'fa-wind', category: 'solid' },
+                { name: 'Umbrella', class: 'fa-umbrella', category: 'solid' },
+                { name: 'Medkit', class: 'fa-medkit', category: 'solid' },
+                { name: 'Heartbeat', class: 'fa-heartbeat', category: 'solid' },
+                { name: 'Stethoscope', class: 'fa-stethoscope', category: 'solid' },
+                { name: 'Bandage', class: 'fa-bandage', category: 'solid' },
+                { name: 'Apple Alt', class: 'fa-apple-alt', category: 'solid' },
+                { name: 'Carrot', class: 'fa-carrot', category: 'solid' },
+                { name: 'Pizza', class: 'fa-pizza-slice', category: 'solid' },
+                { name: 'Hamburger', class: 'fa-hamburger', category: 'solid' },
+                { name: 'Beer', class: 'fa-beer', category: 'solid' },
+                { name: 'Wine', class: 'fa-wine-glass', category: 'solid' },
+                { name: 'Cocktail', class: 'fa-cocktail', category: 'solid' },
+                { name: 'Football', class: 'fa-futbol', category: 'solid' },
+                { name: 'Basketball', class: 'fa-basketball-ball', category: 'solid' },
+                { name: 'Tennis', class: 'fa-table-tennis', category: 'solid' },
+                { name: 'Golf', class: 'fa-golf-ball', category: 'solid' },
+                { name: 'Running', class: 'fa-running', category: 'solid' },
+                { name: 'Swimming', class: 'fa-swimmer', category: 'solid' },
+                { name: 'Dumbbell', class: 'fa-dumbbell', category: 'solid' },
+                { name: 'Medal', class: 'fa-medal', category: 'solid' },
+                { name: 'Trophy', class: 'fa-trophy', category: 'solid' },
+                { name: 'Award', class: 'fa-award', category: 'solid' },
+                { name: 'Gamepad', class: 'fa-gamepad', category: 'solid' },
+                { name: 'Film', class: 'fa-film', category: 'solid' },
+                { name: 'Tv', class: 'fa-tv', category: 'solid' },
+                { name: 'Headphones', class: 'fa-headphones', category: 'solid' },
+                { name: 'Microphone', class: 'fa-microphone', category: 'solid' },
+                { name: 'Camera', class: 'fa-camera', category: 'solid' },
+                { name: 'Video Camera', class: 'fa-video-camera', category: 'solid' },
+                { name: 'Code', class: 'fa-code', category: 'solid' },
+                { name: 'Terminal', class: 'fa-terminal', category: 'solid' },
+                { name: 'Database', class: 'fa-database', category: 'solid' },
+                { name: 'Server', class: 'fa-server', category: 'solid' },
+                { name: 'Wifi', class: 'fa-wifi', category: 'solid' },
+                { name: 'Bluetooth', class: 'fa-bluetooth', category: 'solid' },
+                { name: 'Signal', class: 'fa-signal', category: 'solid' },
+                { name: 'Battery Full', class: 'fa-battery-full', category: 'solid' },
+                { name: 'Battery Empty', class: 'fa-battery-empty', category: 'solid' },
+                { name: 'Lightbulb', class: 'fa-lightbulb', category: 'solid' },
+                { name: 'Flashlight', class: 'fa-flask', category: 'solid' },
+                { name: 'Key', class: 'fa-key', category: 'solid' },
+                { name: 'Keys', class: 'fa-keyboard', category: 'solid' },
+                { name: 'Mouse', class: 'fa-mouse-pointer', category: 'solid' },
+                { name: 'Monitor', class: 'fa-desktop', category: 'solid' },
+                { name: 'Laptop', class: 'fa-laptop', category: 'solid' },
+                { name: 'Tablet', class: 'fa-tablet-alt', category: 'solid' },
+                { name: 'Mobile', class: 'fa-mobile-alt', category: 'solid' },
+                { name: 'Watch', class: 'fa-clock', category: 'solid' },
+                { name: 'Glasses', class: 'fa-glasses', category: 'solid' },
+                { name: 'Hat', class: 'fa-hat-cowboy', category: 'solid' },
+                { name: 'Shirt', class: 'fa-shirt', category: 'solid' },
+                { name: 'Shoe', class: 'fa-shoe-prints', category: 'solid' },
+                { name: 'Suitcase', class: 'fa-suitcase', category: 'solid' },
+                { name: 'Briefcase', class: 'fa-briefcase', category: 'solid' },
+                { name: 'Folder', class: 'fa-folder', category: 'solid' },
+                { name: 'Folder Open', class: 'fa-folder-open', category: 'solid' },
+                { name: 'File PDF', class: 'fa-file-pdf', category: 'solid' },
+                { name: 'File Word', class: 'fa-file-word', category: 'solid' },
+                { name: 'File Excel', class: 'fa-file-excel', category: 'solid' },
+                { name: 'File Powerpoint', class: 'fa-file-powerpoint', category: 'solid' },
+                { name: 'File Image', class: 'fa-file-image', category: 'solid' },
+                { name: 'File Video', class: 'fa-file-video', category: 'solid' },
+                { name: 'File Audio', class: 'fa-file-audio', category: 'solid' },
+                { name: 'File Zip', class: 'fa-file-zipper', category: 'solid' },
+                { name: 'Check Square', class: 'fa-check-square', category: 'solid' },
+                { name: 'Square', class: 'fa-square', category: 'solid' },
+                { name: 'Circle', class: 'fa-circle', category: 'solid' },
+                { name: 'Circle Check', class: 'fa-circle-check', category: 'solid' },
+                { name: 'Radio', class: 'fa-dot-circle', category: 'solid' },
+                { name: 'List', class: 'fa-list', category: 'solid' },
+                { name: 'List Check', class: 'fa-list-check', category: 'solid' },
+                { name: 'List Ol', class: 'fa-list-ol', category: 'solid' },
+                { name: 'List Ul', class: 'fa-list-ul', category: 'solid' },
+                { name: 'Quote', class: 'fa-quote-left', category: 'solid' },
+                { name: 'Quote Right', class: 'fa-quote-right', category: 'solid' },
+                { name: 'Asterisk', class: 'fa-asterisk', category: 'solid' },
+                { name: 'At', class: 'fa-at', category: 'solid' },
+                { name: 'Hash', class: 'fa-hashtag', category: 'solid' },
+                { name: 'Dollar', class: 'fa-dollar-sign', category: 'solid' },
+                { name: 'Percent', class: 'fa-percent', category: 'solid' },
+                { name: 'Caret Up', class: 'fa-caret-up', category: 'solid' },
+                { name: 'Caret Down', class: 'fa-caret-down', category: 'solid' },
+                { name: 'Caret Left', class: 'fa-caret-left', category: 'solid' },
+                { name: 'Caret Right', class: 'fa-caret-right', category: 'solid' },
+                { name: 'Angle Up', class: 'fa-angle-up', category: 'solid' },
+                { name: 'Angle Down', class: 'fa-angle-down', category: 'solid' },
+                { name: 'Angle Left', class: 'fa-angle-left', category: 'solid' },
+                { name: 'Angle Right', class: 'fa-angle-right', category: 'solid' },
+                { name: 'Arrow Circle Up', class: 'fa-arrow-circle-up', category: 'solid' },
+                { name: 'Arrow Circle Down', class: 'fa-arrow-circle-down', category: 'solid' },
+                { name: 'Arrow Circle Left', class: 'fa-arrow-circle-left', category: 'solid' },
+                { name: 'Arrow Circle Right', class: 'fa-arrow-circle-right', category: 'solid' },
+                { name: 'Long Arrow Up', class: 'fa-long-arrow-up', category: 'solid' },
+                { name: 'Long Arrow Down', class: 'fa-long-arrow-down', category: 'solid' },
+                { name: 'Long Arrow Left', class: 'fa-long-arrow-left', category: 'solid' },
+                { name: 'Long Arrow Right', class: 'fa-long-arrow-right', category: 'solid' },
+                { name: 'Random', class: 'fa-random', category: 'solid' },
+                { name: 'Sort', class: 'fa-sort', category: 'solid' },
+                { name: 'Sort Asc', class: 'fa-sort-up', category: 'solid' },
+                { name: 'Sort Desc', class: 'fa-sort-down', category: 'solid' },
+                { name: 'Filter', class: 'fa-filter', category: 'solid' },
+                { name: 'Sliders', class: 'fa-sliders', category: 'solid' },
+                { name: 'Toggle On', class: 'fa-toggle-on', category: 'solid' },
+                { name: 'Toggle Off', class: 'fa-toggle-off', category: 'solid' },
+                { name: 'Volume Up', class: 'fa-volume-up', category: 'solid' },
+                { name: 'Volume Down', class: 'fa-volume-down', category: 'solid' },
+                { name: 'Volume Off', class: 'fa-volume-off', category: 'solid' },
+                { name: 'Mute', class: 'fa-volume-mute', category: 'solid' },
+                { name: 'Play', class: 'fa-play', category: 'solid' },
+                { name: 'Pause', class: 'fa-pause', category: 'solid' },
+                { name: 'Stop', class: 'fa-stop', category: 'solid' },
+                { name: 'Forward', class: 'fa-forward', category: 'solid' },
+                { name: 'Backward', class: 'fa-backward', category: 'solid' },
+                { name: 'Step Forward', class: 'fa-step-forward', category: 'solid' },
+                { name: 'Step Backward', class: 'fa-step-backward', category: 'solid' },
+                { name: 'Eject', class: 'fa-eject', category: 'solid' },
+                { name: 'Repeat', class: 'fa-repeat', category: 'solid' },
+                { name: 'Repeat One', class: 'fa-repeat-1', category: 'solid' },
+                { name: 'Shuffle', class: 'fa-shuffle', category: 'solid' },
+                { name: 'Loop', class: 'fa-redo', category: 'solid' },
+                { name: 'Home', class: 'fa-house', category: 'solid' },
+                { name: 'End', class: 'fa-flag-checkered', category: 'solid' },
+                { name: 'Expand', class: 'fa-expand', category: 'solid' },
+                { name: 'Compress', class: 'fa-compress', category: 'solid' },
+                { name: 'Arrows Alt', class: 'fa-arrows-alt', category: 'solid' },
+                { name: 'Resize Horizontal', class: 'fa-arrows-h', category: 'solid' },
+                { name: 'Resize Vertical', class: 'fa-arrows-v', category: 'solid' },
+                { name: 'Move', class: 'fa-arrows', category: 'solid' },
+                { name: 'Hand Rock', class: 'fa-hand-rock', category: 'solid' },
+                { name: 'Hand Paper', class: 'fa-hand-paper', category: 'solid' },
+                { name: 'Hand Scissors', class: 'fa-hand-scissors', category: 'solid' },
+                { name: 'Hand Peace', class: 'fa-hand-peace', category: 'solid' },
+                { name: 'Hand Spock', class: 'fa-hand-spock', category: 'solid' },
+                { name: 'Hand Pointer', class: 'fa-hand-pointer', category: 'solid' },
+                { name: 'Hand Stop', class: 'fa-hand-stop', category: 'solid' },
+                { name: 'Hand Thumbs Up', class: 'fa-hand-thumbs-up', category: 'solid' },
+                { name: 'Hand Thumbs Down', class: 'fa-hand-thumbs-down', category: 'solid' },
+                { name: 'Smile', class: 'fa-smile', category: 'solid' },
+                { name: 'Meh', class: 'fa-meh', category: 'solid' },
+                { name: 'Frown', class: 'fa-frown', category: 'solid' },
+                { name: 'Laugh', class: 'fa-laugh', category: 'solid' },
+                { name: 'Grin', class: 'fa-grin', category: 'solid' },
+                { name: 'Surprise', class: 'fa-surprise', category: 'solid' },
+                { name: 'Tired', class: 'fa-tired', category: 'solid' },
+                { name: 'Sleep', class: 'fa-bed', category: 'solid' },
+                { name: 'Zzz', class: 'fa-moon', category: 'solid' },
+                { name: 'Mask', class: 'fa-mask', category: 'solid' },
+                { name: 'Ghost', class: 'fa-ghost', category: 'solid' },
+                { name: 'Skull', class: 'fa-skull', category: 'solid' },
+                { name: 'Cross', class: 'fa-cross', category: 'solid' },
+                { name: 'Star Of David', class: 'fa-star-of-david', category: 'solid' },
+                { name: 'Moon', class: 'fa-moon', category: 'solid' },
+                { name: 'Sun', class: 'fa-sun', category: 'solid' },
+                { name: 'Star', class: 'fa-star', category: 'solid' },
+                { name: 'Star Half', class: 'fa-star-half', category: 'solid' },
+                { name: 'Heart', class: 'fa-heart', category: 'solid' },
+                { name: 'Heart Broken', class: 'fa-heart-crack', category: 'solid' },
+                { name: 'Heart Pulse', class: 'fa-heart-pulse', category: 'solid' },
+                { name: 'Diamond', class: 'fa-diamond', category: 'solid' },
+                { name: 'Clover', class: 'fa-clover', category: 'solid' },
+                { name: 'Spade', class: 'fa-spade', category: 'solid' },
+                { name: 'Club', class: 'fa-club', category: 'solid' },
+                { name: 'Anchor', class: 'fa-anchor', category: 'solid' },
+                { name: 'Ship', class: 'fa-ship', category: 'solid' },
+                { name: 'Plane', class: 'fa-plane', category: 'solid' },
+                { name: 'Rocket', class: 'fa-rocket', category: 'solid' },
+                { name: 'Ufo', class: 'fa-ufo', category: 'solid' },
+                { name: 'Satellite', class: 'fa-satellite', category: 'solid' },
+                { name: 'Globe', class: 'fa-globe', category: 'solid' },
+                { name: 'Earth', class: 'fa-earth-americas', category: 'solid' },
+                { name: 'Moon', class: 'fa-moon', category: 'solid' },
+                { name: 'Mars', class: 'fa-mars', category: 'solid' },
+                { name: 'Venus', class: 'fa-venus', category: 'solid' },
+                { name: 'Mercury', class: 'fa-mercury', category: 'solid' },
+                { name: 'Jupiter', class: 'fa-jupiter', category: 'solid' },
+                { name: 'Saturn', class: 'fa-saturn', category: 'solid' },
+                { name: 'Uranus', class: 'fa-uranus', category: 'solid' },
+                { name: 'Neptune', class: 'fa-neptune', category: 'solid' },
+                { name: 'Meteor', class: 'fa-meteor', category: 'solid' },
+                { name: 'Comet', class: 'fa-comet', category: 'solid' },
+                { name: 'Asteroid', class: 'fa-asteroid', category: 'solid' },
+                { name: 'Galaxy', class: 'fa-galaxy', category: 'solid' },
+                { name: 'Black Hole', class: 'fa-circle', category: 'solid' },
+                { name: 'Nebula', class: 'fa-cloud', category: 'solid' },
+                { name: 'Telescope', class: 'fa-telescope', category: 'solid' },
+                { name: 'Binoculars', class: 'fa-binoculars', category: 'solid' },
+                { name: 'Microscope', class: 'fa-microscope', category: 'solid' },
+                { name: 'Flask', class: 'fa-flask', category: 'solid' },
+                { name: 'Beaker', class: 'fa-flask', category: 'solid' },
+                { name: 'Test Tube', class: 'fa-vial', category: 'solid' },
+                { name: 'Pipette', class: 'fa-pipette', category: 'solid' },
+                { name: 'Bunsen Burner', class: 'fa-fire-flame-curved', category: 'solid' },
+                { name: 'Magnifying Glass', class: 'fa-search', category: 'solid' },
+                { name: 'Ruler', class: 'fa-ruler', category: 'solid' },
+                { name: 'Protractor', class: 'fa-protractor', category: 'solid' },
+                { name: 'Compass', class: 'fa-compass', category: 'solid' },
+                { name: 'Calculator', class: 'fa-calculator', category: 'solid' },
+                { name: 'Abacus', class: 'fa-abacus', category: 'solid' },
+                { name: 'Book', class: 'fa-book', category: 'solid' },
+                { name: 'Book Open', class: 'fa-book-open', category: 'solid' },
+                { name: 'Book Reader', class: 'fa-book-reader', category: 'solid' },
+                { name: 'Pen', class: 'fa-pen', category: 'solid' },
+                { name: 'Pencil', class: 'fa-pencil', category: 'solid' },
+                { name: 'Marker', class: 'fa-highlighter', category: 'solid' },
+                { name: 'Eraser', class: 'fa-eraser', category: 'solid' },
+                { name: 'Scissors', class: 'fa-scissors', category: 'solid' },
+                { name: 'Glue', class: 'fa-jar', category: 'solid' },
+                { name: 'Stapler', class: 'fa-stapler', category: 'solid' },
+                { name: 'Paperclip', class: 'fa-paperclip', category: 'solid' },
+                { name: 'Pushpin', class: 'fa-thumbtack', category: 'solid' },
+                { name: 'Clipboard', class: 'fa-clipboard', category: 'solid' },
+                { name: 'Notebook', class: 'fa-notebook', category: 'solid' },
+                { name: 'Sticky Note', class: 'fa-sticky-note', category: 'solid' },
+                { name: 'Calendar', class: 'fa-calendar', category: 'solid' },
+                { name: 'Alarm Clock', class: 'fa-clock', category: 'solid' },
+                { name: 'Timer', class: 'fa-hourglass-start', category: 'solid' },
+                { name: 'Stopwatch', class: 'fa-stopwatch', category: 'solid' },
+                { name: 'Bell', class: 'fa-bell', category: 'solid' },
+                { name: 'Bell Slash', class: 'fa-bell-slash', category: 'solid' },
+                { name: 'Flag', class: 'fa-flag', category: 'solid' },
+                { name: 'Flag Checkered', class: 'fa-flag-checkered', category: 'solid' },
+                { name: 'Trophy', class: 'fa-trophy', category: 'solid' },
+                { name: 'Award', class: 'fa-award', category: 'solid' },
+                { name: 'Medal', class: 'fa-medal', category: 'solid' },
+                { name: 'Cup', class: 'fa-cup-trophy', category: 'solid' },
+                { name: 'Certificate', class: 'fa-certificate', category: 'solid' },
+                { name: 'Badge', class: 'fa-award', category: 'solid' },
+                { name: 'Shield', class: 'fa-shield', category: 'solid' },
+                { name: 'Shield Check', class: 'fa-shield-check', category: 'solid' },
+                { name: 'Shield X', class: 'fa-shield-times', category: 'solid' },
+                { name: 'Lock', class: 'fa-lock', category: 'solid' },
+                { name: 'Unlock', class: 'fa-unlock', category: 'solid' },
+                { name: 'Lock Open', class: 'fa-lock-open', category: 'solid' },
+                { name: 'Key', class: 'fa-key', category: 'solid' },
+                { name: 'Keyhole', class: 'fa-keyhole', category: 'solid' },
+                { name: 'Fingerprint', class: 'fa-fingerprint', category: 'solid' },
+                { name: 'Id Card', class: 'fa-id-card', category: 'solid' },
+                { name: 'Passport', class: 'fa-passport', category: 'solid' },
+                { name: 'Ticket', class: 'fa-ticket', category: 'solid' },
+                { name: 'Credit Card', class: 'fa-credit-card', category: 'solid' },
+                { name: 'Money Bill', class: 'fa-money-bill', category: 'solid' },
+                { name: 'Money Bill Wave', class: 'fa-money-bill-wave', category: 'solid' },
+                { name: 'Coins', class: 'fa-coins', category: 'solid' },
+                { name: 'Dollar Sign', class: 'fa-dollar-sign', category: 'solid' },
+                { name: 'Euro Sign', class: 'fa-euro-sign', category: 'solid' },
+                { name: 'Pound Sign', class: 'fa-pound-sign', category: 'solid' },
+                { name: 'Yen Sign', class: 'fa-yen-sign', category: 'solid' },
+                { name: 'Ruble Sign', class: 'fa-ruble-sign', category: 'solid' },
+                { name: 'Bitcoin', class: 'fa-bitcoin', category: 'solid' },
+                { name: 'Wallet', class: 'fa-wallet', category: 'solid' },
+                { name: 'Shopping Cart', class: 'fa-shopping-cart', category: 'solid' },
+                { name: 'Shopping Bag', class: 'fa-shopping-bag', category: 'solid' },
+                { name: 'Shopping Basket', class: 'fa-shopping-basket', category: 'solid' },
+                { name: 'Tag', class: 'fa-tag', category: 'solid' },
+                { name: 'Tags', class: 'fa-tags', category: 'solid' },
+                { name: 'Percent', class: 'fa-percent', category: 'solid' },
+                { name: 'Gift', class: 'fa-gift', category: 'solid' },
+                { name: 'Box', class: 'fa-box', category: 'solid' },
+                { name: 'Box Open', class: 'fa-box-open', category: 'solid' },
+                { name: 'Package', class: 'fa-package', category: 'solid' },
+                { name: 'Truck', class: 'fa-truck', category: 'solid' },
+                { name: 'Shipping Fast', class: 'fa-truck-fast', category: 'solid' },
+                { name: 'Warehouse', class: 'fa-warehouse', category: 'solid' },
+                { name: 'Store', class: 'fa-store', category: 'solid' },
+                { name: 'Shop', class: 'fa-shop', category: 'solid' },
+                { name: 'Credit Card', class: 'fa-credit-card', category: 'solid' },
+                { name: 'Money Check', class: 'fa-money-check', category: 'solid' },
+                { name: 'Receipt', class: 'fa-receipt', category: 'solid' },
+                { name: 'File Invoice', class: 'fa-file-invoice', category: 'solid' },
+                { name: 'File Invoice Dollar', class: 'fa-file-invoice-dollar', category: 'solid' },
+                { name: 'Calculator', class: 'fa-calculator', category: 'solid' },
+                { name: 'Chart Line', class: 'fa-chart-line', category: 'solid' },
+                { name: 'Chart Bar', class: 'fa-chart-bar', category: 'solid' },
+                { name: 'Chart Pie', class: 'fa-chart-pie', category: 'solid' },
+                { name: 'Chart Area', class: 'fa-chart-area', category: 'solid' },
+                { name: 'Graph', class: 'fa-chart-line', category: 'solid' },
+                { name: 'Trending Up', class: 'fa-trending-up', category: 'solid' },
+                { name: 'Trending Down', class: 'fa-trending-down', category: 'solid' },
+                { name: 'Trending Flat', class: 'fa-trending-flat', category: 'solid' },
+                { name: 'Arrow Up Right', class: 'fa-arrow-up-right', category: 'solid' },
+                { name: 'Arrow Down Right', class: 'fa-arrow-down-right', category: 'solid' },
+                { name: 'Arrow Up Left', class: 'fa-arrow-up-left', category: 'solid' },
+                { name: 'Arrow Down Left', class: 'fa-arrow-down-left', category: 'solid' },
+                { name: 'Maximize', class: 'fa-expand', category: 'solid' },
+                { name: 'Minimize', class: 'fa-compress', category: 'solid' },
+                { name: 'Arrows Alt', class: 'fa-arrows-alt', category: 'solid' },
+                { name: 'Resize', class: 'fa-arrows', category: 'solid' },
+                { name: 'Zoom In', class: 'fa-search-plus', category: 'solid' },
+                { name: 'Zoom Out', class: 'fa-search-minus', category: 'solid' },
+                { name: 'Fullscreen', class: 'fa-expand', category: 'solid' },
+                { name: 'Exit Fullscreen', class: 'fa-compress', category: 'solid' },
+                { name: 'Copy', class: 'fa-copy', category: 'solid' },
+                { name: 'Cut', class: 'fa-cut', category: 'solid' },
+                { name: 'Paste', class: 'fa-paste', category: 'solid' },
+                { name: 'Delete', class: 'fa-trash', category: 'solid' },
+                { name: 'Undo', class: 'fa-undo', category: 'solid' },
+                { name: 'Redo', class: 'fa-redo', category: 'solid' },
+                { name: 'Save', class: 'fa-save', category: 'solid' },
+                { name: 'Save As', class: 'fa-file-export', category: 'solid' },
+                { name: 'Open', class: 'fa-file-import', category: 'solid' },
+                { name: 'New', class: 'fa-file-circle-plus', category: 'solid' },
+                { name: 'Print', class: 'fa-print', category: 'solid' },
+                { name: 'Download', class: 'fa-download', category: 'solid' },
+                { name: 'Upload', class: 'fa-upload', category: 'solid' },
+                { name: 'Share', class: 'fa-share', category: 'solid' },
+                { name: 'Share Alt', class: 'fa-share-alt', category: 'solid' },
+                { name: 'Share From Square', class: 'fa-share-from-square', category: 'solid' },
+                { name: 'External Link', class: 'fa-external-link', category: 'solid' },
+                { name: 'Link', class: 'fa-link', category: 'solid' },
+                { name: 'Unlink', class: 'fa-unlink', category: 'solid' },
+                { name: 'Chain', class: 'fa-link', category: 'solid' },
+                { name: 'Chain Broken', class: 'fa-unlink', category: 'solid' },
+                { name: 'Qrcode', class: 'fa-qrcode', category: 'solid' },
+                { name: 'Barcode', class: 'fa-barcode', category: 'solid' },
+                { name: 'Wifi', class: 'fa-wifi', category: 'solid' },
+                { name: 'Bluetooth', class: 'fa-bluetooth', category: 'solid' },
+                { name: 'Signal', class: 'fa-signal', category: 'solid' },
+                { name: 'Network', class: 'fa-wifi', category: 'solid' },
+                { name: 'Server', class: 'fa-server', category: 'solid' },
+                { name: 'Database', class: 'fa-database', category: 'solid' },
+                { name: 'Cloud', class: 'fa-cloud', category: 'solid' },
+                { name: 'Cloud Download', class: 'fa-cloud-download', category: 'solid' },
+                { name: 'Cloud Upload', class: 'fa-cloud-upload', category: 'solid' },
+                { name: 'Cloud Sync', class: 'fa-cloud-sync', category: 'solid' },
+                { name: 'Cloud Me', class: 'fa-cloud-meatball', category: 'solid' },
+                { name: 'Laptop', class: 'fa-laptop', category: 'solid' },
+                { name: 'Desktop', class: 'fa-desktop', category: 'solid' },
+                { name: 'Tablet', class: 'fa-tablet-alt', category: 'solid' },
+                { name: 'Mobile', class: 'fa-mobile-alt', category: 'solid' },
+                { name: 'Watch', class: 'fa-clock', category: 'solid' },
+                { name: 'Tv', class: 'fa-tv', category: 'solid' },
+                { name: 'Monitor', class: 'fa-desktop', category: 'solid' },
+                { name: 'Keyboard', class: 'fa-keyboard', category: 'solid' },
+                { name: 'Mouse', class: 'fa-mouse-pointer', category: 'solid' },
+                { name: 'Touchpad', class: 'fa-hand-pointer', category: 'solid' },
+                { name: 'Headphones', class: 'fa-headphones', category: 'solid' },
+                { name: 'Headset', class: 'fa-headset', category: 'solid' },
+                { name: 'Microphone', class: 'fa-microphone', category: 'solid' },
+                { name: 'Microphone Slash', class: 'fa-microphone-slash', category: 'solid' },
+                { name: 'Speaker', class: 'fa-volume-high', category: 'solid' },
+                { name: 'Camera', class: 'fa-camera', category: 'solid' },
+                { name: 'Video Camera', class: 'fa-video-camera', category: 'solid' },
+                { name: 'Webcam', class: 'fa-video-camera', category: 'solid' },
+                { name: 'Projector', class: 'fa-film', category: 'solid' },
+                { name: 'Printer', class: 'fa-print', category: 'solid' },
+                { name: 'Scanner', class: 'fa-scanner', category: 'solid' },
+                { name: 'Fax', class: 'fa-fax', category: 'solid' },
+                { name: 'Phone', class: 'fa-phone', category: 'solid' },
+                { name: 'Phone Rotate', class: 'fa-phone-rotate', category: 'solid' },
+                { name: 'Phone Volume', class: 'fa-phone-volume', category: 'solid' },
+                { name: 'Envelope', class: 'fa-envelope', category: 'solid' },
+                { name: 'Envelope Open', class: 'fa-envelope-open', category: 'solid' },
+                { name: 'Envelope Open Text', class: 'fa-envelope-open-text', category: 'solid' },
+                { name: 'Paper Plane', class: 'fa-paper-plane', category: 'solid' },
+                { name: 'Paper Plane Send', class: 'fa-paper-plane-up', category: 'solid' },
+                { name: 'Comment', class: 'fa-comment', category: 'solid' },
+                { name: 'Comment Alt', class: 'fa-comment-alt', category: 'solid' },
+                { name: 'Comments', class: 'fa-comments', category: 'solid' },
+                { name: 'Comments Alt', class: 'fa-comments-alt', category: 'solid' },
+                { name: 'Message', class: 'fa-comment', category: 'solid' },
+                { name: 'Message Square', class: 'fa-comment-dots', category: 'solid' },
+                { name: 'Chat', class: 'fa-comments', category: 'solid' },
+                { name: 'Chat Square', class: 'fa-comments-dots', category: 'solid' },
+                { name: 'User', class: 'fa-user', category: 'solid' },
+                { name: 'User Plus', class: 'fa-user-plus', category: 'solid' },
+                { name: 'User Minus', class: 'fa-user-minus', category: 'solid' },
+                { name: 'User Edit', class: 'fa-user-pen', category: 'solid' },
+                { name: 'User Circle', class: 'fa-user-circle', category: 'solid' },
+                { name: 'User Check', class: 'fa-user-check', category: 'solid' },
+                { name: 'User X', class: 'fa-user-times', category: 'solid' },
+                { name: 'Users', class: 'fa-users', category: 'solid' },
+                { name: 'User Friends', class: 'fa-users', category: 'solid' },
+                { name: 'User Secret', class: 'fa-user-secret', category: 'solid' },
+                { name: 'User Shield', class: 'fa-user-shield', category: 'solid' },
+                { name: 'User Tie', class: 'fa-user-tie', category: 'solid' },
+                { name: 'Id Card', class: 'fa-id-card', category: 'solid' },
+                { name: 'Id Card Alt', class: 'fa-id-card-clip', category: 'solid' },
+                { name: 'Address Card', class: 'fa-address-card', category: 'solid' },
+                { name: 'Address Book', class: 'fa-address-book', category: 'solid' },
+                { name: 'Bookmark', class: 'fa-bookmark', category: 'solid' },
+                { name: 'Bookmark Check', class: 'fa-bookmark-check', category: 'solid' },
+                { name: 'Bookmark X', class: 'fa-bookmark-times', category: 'solid' },
+                { name: 'History', class: 'fa-history', category: 'solid' },
+                { name: 'Clock History', class: 'fa-clock-rotate-left', category: 'solid' },
+                { name: 'Star', class: 'fa-star', category: 'solid' },
+                { name: 'Star Half', class: 'fa-star-half', category: 'solid' },
+                { name: 'Star Check', class: 'fa-star-check', category: 'solid' },
+                { name: 'Star X', class: 'fa-star-times', category: 'solid' },
+                { name: 'Heart', class: 'fa-heart', category: 'solid' },
+                { name: 'Heart Broken', class: 'fa-heart-crack', category: 'solid' },
+                { name: 'Heart Pulse', class: 'fa-heart-pulse', category: 'solid' },
+                { name: 'Thumbs Up', class: 'fa-thumbs-up', category: 'solid' },
+                { name: 'Thumbs Down', class: 'fa-thumbs-down', category: 'solid' },
+                { name: 'Thumbs Up All', class: 'fa-thumbs-up-all', category: 'solid' },
+                { name: 'Thumbs Down All', class: 'fa-thumbs-down-all', category: 'solid' },
+                { name: 'Like', class: 'fa-thumbs-up', category: 'solid' },
+                { name: 'Dislike', class: 'fa-thumbs-down', category: 'solid' },
+                { name: 'Eye', class: 'fa-eye', category: 'solid' },
+                { name: 'Eye Slash', class: 'fa-eye-slash', category: 'solid' },
+                { name: 'Eye Low Vision', class: 'fa-eye-low-vision', category: 'solid' },
+                { name: 'Eye Dropper', class: 'fa-eyedropper', category: 'solid' },
+                { name: 'Ear', class: 'fa-ear-listen', category: 'solid' },
+                { name: 'Ear Deaf', class: 'fa-ear-deaf', category: 'solid' },
+                { name: 'Nose', class: 'fa-nose-blunt', category: 'solid' },
+                { name: 'Mouth', class: 'fa-comment', category: 'solid' },
+                { name: 'Hand', class: 'fa-hand', category: 'solid' },
+                { name: 'Hand Pointing Up', class: 'fa-hand-point-up', category: 'solid' },
+                { name: 'Hand Pointing Down', class: 'fa-hand-point-down', category: 'solid' },
+                { name: 'Hand Pointing Left', class: 'fa-hand-point-left', category: 'solid' },
+                { name: 'Hand Pointing Right', class: 'fa-hand-point-right', category: 'solid' },
+                { name: 'Hand Peace', class: 'fa-hand-peace', category: 'solid' },
+                { name: 'Hand Rock', class: 'fa-hand-rock', category: 'solid' },
+                { name: 'Hand Paper', class: 'fa-hand-paper', category: 'solid' },
+                { name: 'Hand Scissors', class: 'fa-hand-scissors', category: 'solid' },
+                { name: 'Hand Spock', class: 'fa-hand-spock', category: 'solid' },
+                { name: 'Hand Thumbs Up', class: 'fa-hand-thumbs-up', category: 'solid' },
+                { name: 'Hand Thumbs Down', class: 'fa-hand-thumbs-down', category: 'solid' },
+                { name: 'Hand Stop', class: 'fa-hand-stop', category: 'solid' },
+                { name: 'Handshake', class: 'fa-handshake', category: 'solid' },
+                { name: 'People Arrows', class: 'fa-people-arrows', category: 'solid' },
+                { name: 'Person Circle Plus', class: 'fa-person-circle-plus', category: 'solid' },
+                { name: 'Person Circle Minus', class: 'fa-person-circle-minus', category: 'solid' },
+                { name: 'Person Biking', class: 'fa-person-biking', category: 'solid' },
+                { name: 'Person Hiking', class: 'fa-person-hiking', category: 'solid' },
+                { name: 'Person Running', class: 'fa-person-running', category: 'solid' },
+                { name: 'Person Swimming', class: 'fa-person-swimming', category: 'solid' },
+                { name: 'Person Skiing', class: 'fa-person-skiing', category: 'solid' },
+                { name: 'Person Snowboarding', class: 'fa-person-snowboarding', category: 'solid' },
+                { name: 'Person Skating', class: 'fa-person-skating', category: 'solid' },
+                { name: 'Person Walking', class: 'fa-person-walking', category: 'solid' },
+                { name: 'Person Standing', class: 'fa-person', category: 'solid' },
+                { name: 'Person Sitting', class: 'fa-person-sitting', category: 'solid' },
+                { name: 'Person Sleeping', class: 'fa-bed', category: 'solid' },
+                { name: 'Person Working', class: 'fa-briefcase', category: 'solid' },
+                { name: 'Person Reading', class: 'fa-book-reader', category: 'solid' },
+                { name: 'Person Writing', class: 'fa-pen', category: 'solid' },
+                { name: 'Person Drinking', class: 'fa-glass-water', category: 'solid' },
+                { name: 'Person Eating', class: 'fa-utensils', category: 'solid' },
+                { name: 'Person Dancing', class: 'fa-music', category: 'solid' },
+                { name: 'Person Singing', class: 'fa-microphone', category: 'solid' },
+                { name: 'Person Playing', class: 'fa-gamepad', category: 'solid' },
+                { name: 'Person Gaming', class: 'fa-gamepad', category: 'solid' },
+                { name: 'Person Watching', class: 'fa-tv', category: 'solid' },
+                { name: 'Person Filming', class: 'fa-video-camera', category: 'solid' },
+                { name: 'Person Photographing', class: 'fa-camera', category: 'solid' },
+                { name: 'Person Coding', class: 'fa-code', category: 'solid' },
+                { name: 'Person Praying', class: 'fa-hands-praying', category: 'solid' },
+                { name: 'Person Meditating', class: 'fa-spa', category: 'solid' },
+                { name: 'Person Hugging', class: 'fa-hands-holding-circle', category: 'solid' },
+                { name: 'Person Frowning', class: 'fa-frown', category: 'solid' },
+                { name: 'Person Meh', class: 'fa-meh', category: 'solid' },
+                { name: 'Person Smiling', class: 'fa-smile', category: 'solid' },
+                { name: 'Person Laughing', class: 'fa-laugh', category: 'solid' },
+                { name: 'Person Surprised', class: 'fa-surprise', category: 'solid' },
+                { name: 'Person Confused', class: 'fa-question-circle', category: 'solid' },
+                { name: 'Person Sad', class: 'fa-frown', category: 'solid' },
+                { name: 'Person Happy', class: 'fa-smile', category: 'solid' },
+                { name: 'Person Angry', class: 'fa-angry', category: 'solid' },
+                { name: 'Person Tired', class: 'fa-tired', category: 'solid' },
+                { name: 'Person Mask', class: 'fa-mask', category: 'solid' },
+                { name: 'Person Ghost', class: 'fa-ghost', category: 'solid' },
+                { name: 'Person Robot', class: 'fa-robot', category: 'solid' },
+                { name: 'Person Alien', class: 'fa-alien', category: 'solid' },
+                { name: 'Person Ninja', class: 'fa-user-secret', category: 'solid' },
+                { name: 'Person Superhero', class: 'fa-user-graduate', category: 'solid' },
+                { name: 'Person Doctor', class: 'fa-user-md', category: 'solid' },
+                { name: 'Person Nurse', class: 'fa-user-nurse', category: 'solid' },
+                { name: 'Person Chef', class: 'fa-user-chef', category: 'solid' },
+                { name: 'Person Farmer', class: 'fa-tractor', category: 'solid' },
+                { name: 'Person Police', class: 'fa-shield', category: 'solid' },
+                { name: 'Person Firefighter', class: 'fa-fire-flame-curved', category: 'solid' },
+                { name: 'Person Astronaut', class: 'fa-rocket', category: 'solid' },
+                { name: 'Person Pilot', class: 'fa-plane', category: 'solid' },
+                { name: 'Person Sailor', class: 'fa-ship', category: 'solid' },
+                { name: 'Person Engineer', class: 'fa-cogs', category: 'solid' },
+                { name: 'Person Scientist', class: 'fa-flask', category: 'solid' },
+                { name: 'Person Teacher', class: 'fa-chalkboard-user', category: 'solid' },
+                { name: 'Person Student', class: 'fa-user-graduate', category: 'solid' },
+                { name: 'Person Artist', class: 'fa-palette', category: 'solid' },
+                { name: 'Person Musician', class: 'fa-music', category: 'solid' },
+                { name: 'Person Actor', class: 'fa-mask', category: 'solid' },
+                { name: 'Person Athlete', class: 'fa-dumbbell', category: 'solid' },
+                { name: 'Person Business', class: 'fa-briefcase', category: 'solid' },
+                { name: 'Person Banker', class: 'fa-university', category: 'solid' },
+                { name: 'Person Lawyer', class: 'fa-balance-scale', category: 'solid' },
+                { name: 'Person Judge', class: 'fa-gavel', category: 'solid' },
+                { name: 'Person Detective', class: 'fa-search', category: 'solid' },
+                { name: 'Person Spy', class: 'fa-user-secret', category: 'solid' },
+                { name: 'Person Thief', class: 'fa-user-secret', category: 'solid' },
+                { name: 'Person Zombie', class: 'fa-brain', category: 'solid' },
+                { name: 'Person Vampire', class: 'fa-blood-drop', category: 'solid' },
+                { name: 'Person Werewolf', class: 'fa-dog', category: 'solid' },
+                { name: 'Person Mummy', class: 'fa-wrapping-paper', category: 'solid' },
+                { name: 'Person Pirate', class: 'fa-ship', category: 'solid' },
+                { name: 'Person Clown', class: 'fa-face-laugh-beam', category: 'solid' },
+                { name: 'Person Santa', class: 'fa-sleigh', category: 'solid' },
+                { name: 'Person Reindeer', class: 'fa-deer', category: 'solid' },
+                { name: 'Person Elf', class: 'fa-user', category: 'solid' },
+                { name: 'Person Angel', class: 'fa-halo', category: 'solid' },
+                { name: 'Person Devil', class: 'fa-fire-flame-curved', category: 'solid' },
+                { name: 'Person God', class: 'fa-sun', category: 'solid' },
+                { name: 'Person Buddha', class: 'fa-om', category: 'solid' },
+                { name: 'Person Jesus', class: 'fa-cross', category: 'solid' },
+                { name: 'Person Moses', class: 'fa-tablets', category: 'solid' },
+                { name: 'Person Muhammad', class: 'fa-mosque', category: 'solid' },
+                { name: 'Person Krishna', class: 'fa-om', category: 'solid' },
+                { name: 'Person Shiva', class: 'fa-om', category: 'solid' },
+                { name: 'Person Vishnu', class: 'fa-om', category: 'solid' },
+                { name: 'Person Buddha', class: 'fa-om', category: 'solid' },
+                { name: 'Person Confucius', class: 'fa-book', category: 'solid' },
+                { name: 'Person Laozi', class: 'fa-leaf', category: 'solid' },
+                { name: 'Person Zoroaster', class: 'fa-fire-flame-curved', category: 'solid' },
+                { name: 'Person Bahaullah', class: 'fa-star', category: 'solid' },
+                { name: 'Person Guru Nanak', class: 'fa-khanda', category: 'solid' },
+                { name: 'Person Mahavira', class: 'fa-om', category: 'solid' },
+                { name: 'Person Zarathustra', class: 'fa-fire-flame-curved', category: 'solid' },
+                { name: 'Person Socrates', class: 'fa-question-circle', category: 'solid' },
+                { name: 'Person Plato', class: 'fa-book', category: 'solid' },
+                { name: 'Person Aristotle', class: 'fa-balance-scale', category: 'solid' },
+                { name: 'Person Descartes', class: 'fa-brain', category: 'solid' },
+                { name: 'Person Kant', class: 'fa-brain', category: 'solid' },
+                { name: 'Person Nietzsche', class: 'fa-brain', category: 'solid' },
+                { name: 'Person Einstein', class: 'fa-brain', category: 'solid' },
+                { name: 'Person Newton', class: 'fa-apple-alt', category: 'solid' },
+                { name: 'Person Darwin', class: 'fa-dna', category: 'solid' },
+                { name: 'Person Tesla', class: 'fa-bolt', category: 'solid' },
+                { name: 'Person Edison', class: 'fa-lightbulb', category: 'solid' },
+                { name: 'Person Marie Curie', class: 'fa-flask', category: 'solid' },
+                { name: 'Person Hawking', class: 'fa-wheelchair', category: 'solid' },
+                { name: 'Person Turing', class: 'fa-code', category: 'solid' },
+                { name: 'Person Jobs', class: 'fa-apple', category: 'solid' },
+                { name: 'Person Gates', class: 'fa-microsoft', category: 'solid' },
+                { name: 'Person Zuckerberg', class: 'fa-facebook', category: 'solid' },
+                { name: 'Person Musk', class: 'fa-rocket', category: 'solid' },
+                { name: 'Person Bezos', class: 'fa-amazon', category: 'solid' },
+                { name: 'Person Buffett', class: 'fa-money-bill', category: 'solid' },
+                { name: 'Person Gates', class: 'fa-microsoft', category: 'solid' },
+                { name: 'Person Trump', class: 'fa-building', category: 'solid' },
+                { name: 'Person Obama', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Putin', class: 'fa-flag-ru', category: 'solid' },
+                { name: 'Person Xi', class: 'fa-flag-cn', category: 'solid' },
+                { name: 'Person Merkel', class: 'fa-flag-de', category: 'solid' },
+                { name: 'Person Macron', class: 'fa-flag-fr', category: 'solid' },
+                { name: 'Person Johnson', class: 'fa-flag-gb', category: 'solid' },
+                { name: 'Person Trudeau', class: 'fa-flag-ca', category: 'solid' },
+                { name: 'Person Modi', class: 'fa-flag-in', category: 'solid' },
+                { name: 'Person Abe', class: 'fa-flag-jp', category: 'solid' },
+                { name: 'Person Bolsonaro', class: 'fa-flag-br', category: 'solid' },
+                { name: 'Person Erdogan', class: 'fa-flag-tr', category: 'solid' },
+                { name: 'Person Netanyahu', class: 'fa-flag-il', category: 'solid' },
+                { name: 'Person Khamenei', class: 'fa-flag-ir', category: 'solid' },
+                { name: 'Person Kim', class: 'fa-flag-kp', category: 'solid' },
+                { name: 'Person Moon', class: 'fa-flag-kr', category: 'solid' },
+                { name: 'Person Duterte', class: 'fa-flag-ph', category: 'solid' },
+                { name: 'Person Jokowi', class: 'fa-flag-id', category: 'solid' },
+                { name: 'Person Xi', class: 'fa-flag-cn', category: 'solid' },
+                { name: 'Person Putin', class: 'fa-flag-ru', category: 'solid' },
+                { name: 'Person Biden', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Harris', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Pence', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Sanders', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Warren', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Buttigieg', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bloomberg', class: 'fa-building', category: 'solid' },
+                { name: 'Person Steyer', class: 'fa-money-bill', category: 'solid' },
+                { name: 'Person Yang', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Gabbard', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Klobuchar', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Buttigieg', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person O\'Rourke', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Booker', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Castro', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Delaney', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Williamson', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bullock', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bennet', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Sestak', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Patrick', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Yang', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Gabbard', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Klobuchar', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Buttigieg', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person O\'Rourke', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Booker', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Castro', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Delaney', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Williamson', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bullock', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bennet', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Sestak', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Patrick', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Yang', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Gabbard', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Klobuchar', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Buttigieg', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person O\'Rourke', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Booker', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Castro', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Delaney', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Williamson', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bullock', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Bennet', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Sestak', class: 'fa-flag-usa', category: 'solid' },
+                { name: 'Person Patrick', class: 'fa-flag-usa', category: 'solid' }
+            ],
+            solid: [],
+            regular: [],
+            brands: []
+        };
+
+        // 初始化分类数据
+        function initCategoryData() {
+            // 将图标分配到对应的分类中
+            iconData.all.forEach(icon => {
+                if (iconData[icon.category]) {
+                    iconData[icon.category].push(icon);
+                }
+            });
+        }
+
+        // 渲染分类列表
+        function renderCategories() {
+            const categoriesContainer = document.getElementById('categories-container');
+            categoriesContainer.innerHTML = '';
+
+            // 添加"全部图标"分类
+            const allCategory = document.createElement('div');
+            allCategory.className = 'category-item category-item-active';
+            allCategory.dataset.category = 'all';
+            allCategory.textContent = '全部图标';
+            categoriesContainer.appendChild(allCategory);
+
+            // 添加其他分类
+            Object.keys(iconData).forEach(category => {
+                if (category === 'all') return;
+                
+                const categoryElement = document.createElement('div');
+                categoryElement.className = 'category-item';
+                categoryElement.dataset.category = category;
+                categoryElement.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                categoriesContainer.appendChild(categoryElement);
+            });
+
+            // 为分类添加点击事件
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    // 移除所有分类的活跃状态
+                    document.querySelectorAll('.category-item').forEach(i => {
+                        i.classList.remove('category-item-active');
+                    });
+                    
+                    // 添加当前分类的活跃状态
+                    item.classList.add('category-item-active');
+                    
+                    // 更新当前分类显示
+                    document.getElementById('current-category').textContent = item.textContent;
+                    
+                    // 过滤并显示图标
+                    filterIcons(item.dataset.category);
+                });
+            });
+        }
+
+        // 渲染图标列表
+        function renderIcons(icons) {
+            const iconsContainer = document.getElementById('icons-container');
+            iconsContainer.innerHTML = '';
+            
+            const noResults = document.getElementById('no-results');
+            
+            if (icons.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            
+            // 更新图标计数
+            document.getElementById('icons-count').textContent = icons.length;
+            
+            icons.forEach(icon => {
+                const iconCard = document.createElement('div');
+                iconCard.className = 'icon-card';
+                iconCard.dataset.icon = icon.class;
+                iconCard.dataset.name = icon.name;
+                iconCard.dataset.category = icon.category;
+                
+                const iconElement = document.createElement('i');
+                iconElement.className = `fa ${icon.class} text-3xl mb-2`;
+                
+                const iconName = document.createElement('span');
+                iconName.className = 'text-sm text-center truncate w-full';
+                iconName.textContent = icon.name;
+                
+                iconCard.appendChild(iconElement);
+                iconCard.appendChild(iconName);
+                
+                // 点击图标打开详情模态框
+                iconCard.addEventListener('click', () => {
+                    openIconModal(icon);
+                });
+                
+                iconsContainer.appendChild(iconCard);
+            });
+            
+            // 恢复选中状态
+            updateSelectedIcons();
+        }
+
+        // 过滤图标
+        function filterIcons(category = 'all', searchTerm = '') {
+            let filteredIcons = [];
+            
+            if (category === 'all') {
+                filteredIcons = [...iconData.all];
+            } else {
+                filteredIcons = [...(iconData[category] || [])];
+            }
+            
+            // 应用搜索过滤
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredIcons = filteredIcons.filter(icon => 
+                    icon.name.toLowerCase().includes(term) || 
+                    icon.class.toLowerCase().includes(term)
+                );
+            }
+            
+            renderIcons(filteredIcons);
+        }
+
+        // 打开图标详情模态框
+        function openIconModal(icon) {
+            const modal = document.getElementById('icon-modal');
+            const iconPreview = document.getElementById('modal-icon-preview');
+            const iconName = document.getElementById('modal-icon-name');
+            const iconCategory = document.getElementById('modal-icon-category');
+            const htmlCode = document.getElementById('modal-html-code');
+            const className = document.getElementById('modal-class-name');
+            
+            // 设置模态框内容
+            iconPreview.innerHTML = `<i class="fa ${icon.class}"></i>`;
+            iconName.textContent = icon.name;
+            iconCategory.textContent = icon.category;
+            htmlCode.value = `<i class="fa ${icon.class}"></i>`;
+            className.value = `fa ${icon.class}`;
+            
+            // 保存当前图标信息到模态框
+            modal.dataset.currentIcon = JSON.stringify(icon);
+            
+            // 显示模态框
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // 关闭图标详情模态框
+        function closeIconModal() {
+            const modal = document.getElementById('icon-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // 复制文本到剪贴板
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // 显示复制成功提示
+                const notification = document.getElementById('copy-notification');
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 2000);
+            });
+        }
+
+        // 选中/取消选中图标
+        function toggleIconSelection(icon) {
+            let selectedIcons = getSelectedIcons();
+            
+            const index = selectedIcons.findIndex(i => i.class === icon.class);
+            
+            if (index > -1) {
+                // 取消选中
+                selectedIcons.splice(index, 1);
+            } else {
+                // 选中
+                selectedIcons.push(icon);
+            }
+            
+            // 保存选中状态
+            localStorage.setItem('selectedIcons', JSON.stringify(selectedIcons));
+            
+            // 更新UI
+            updateSelectedIcons();
+            updateSelectedCount();
+        }
+
+        // 获取选中的图标
+        function getSelectedIcons() {
+            const selected = localStorage.getItem('selectedIcons');
+            return selected ? JSON.parse(selected) : [];
+        }
+
+        // 更新选中的图标UI
+        function updateSelectedIcons() {
+            const selectedIcons = getSelectedIcons();
+            
+            // 移除所有选中状态
+            document.querySelectorAll('.icon-card').forEach(card => {
+                card.classList.remove('icon-card-active');
+            });
+            
+            // 添加选中状态
+            selectedIcons.forEach(icon => {
+                const card = document.querySelector(`.icon-card[data-icon="${icon.class}"]`);
+                if (card) {
+                    card.classList.add('icon-card-active');
+                }
+            });
+        }
+
+        // 更新选中计数
+        function updateSelectedCount() {
+            const count = getSelectedIcons().length;
+            document.getElementById('selected-count').textContent = count;
+        }
+
+        // 复制所有选中的图标
+        function copyAllSelectedIcons() {
+            const selectedIcons = getSelectedIcons();
+            
+            if (selectedIcons.length === 0) {
+                alert('没有选中任何图标');
+                return;
+            }
+            
+            const htmlCodes = selectedIcons.map(icon => `<i class="fa ${icon.class}"></i>`);
+            copyToClipboard(htmlCodes.join('\n'));
+        }
+
+        // 清除所有选中的图标
+        function clearAllSelectedIcons() {
+            localStorage.removeItem('selectedIcons');
+            updateSelectedIcons();
+            updateSelectedCount();
+        }
+
+        // 初始化事件监听
+        function initEventListeners() {
+            // 搜索框事件
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', () => {
+                const currentCategory = document.querySelector('.category-item-active').dataset.category;
+                filterIcons(currentCategory, searchInput.value);
+            });
+            
+            // 关闭模态框按钮
+            document.getElementById('close-modal').addEventListener('click', closeIconModal);
+            
+            // 复制HTML代码按钮
+            document.getElementById('copy-html-btn').addEventListener('click', () => {
+                const htmlCode = document.getElementById('modal-html-code').value;
+                copyToClipboard(htmlCode);
+            });
+            
+            // 复制类名按钮
+            document.getElementById('copy-class-btn').addEventListener('click', () => {
+                const className = document.getElementById('modal-class-name').value;
+                copyToClipboard(className);
+            });
+            
+            // 选择图标按钮
+            document.getElementById('select-icon-btn').addEventListener('click', () => {
+                const modal = document.getElementById('icon-modal');
+                const icon = JSON.parse(modal.dataset.currentIcon);
+                toggleIconSelection(icon);
+                closeIconModal();
+            });
+            
+            // 复制所有选中图标按钮
+            document.getElementById('copy-all-btn').addEventListener('click', copyAllSelectedIcons);
+            
+            // 清除选择按钮
+            document.getElementById('clear-selection-btn').addEventListener('click', clearAllSelectedIcons);
+            
+            // 点击模态框外部关闭模态框
+            document.getElementById('icon-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('icon-modal')) {
+                    closeIconModal();
+                }
+            });
+            
+            // 键盘ESC关闭模态框
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !document.getElementById('icon-modal').classList.contains('hidden')) {
+                    closeIconModal();
+                }
+            });
+        }
+
+        // 初始化应用
+        function initApp() {
+            initCategoryData();
+            renderCategories();
+            filterIcons();
+            initEventListeners();
+            updateSelectedCount();
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>

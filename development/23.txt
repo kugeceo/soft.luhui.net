@@ -1,0 +1,41 @@
+鲁虺Flash历史博物馆资讯系统 html JavaScript txt V1.0.6更新
+
+
+
+文章列表没有显示出来，统计也没显示出来，bug修改下，地址栏对应 ?category=flashnews&p=1 和 ?category=flashsoft&p=1 以示类推
+
+
+
+我将修复文章列表和统计信息不显示的问题，并确保地址栏参数正确使用`category`而不是`ai`。
+
+
+    
+
+主要修复内容：
+
+1. **地址栏参数修正**：将所有引用的参数从`ai`改为`category`，确保地址栏能正确识别`?category=flashnews&p=1`这类URL
+
+2. **URL状态管理**：
+   - 添加了`loadStateFromUrl()`函数，从URL参数加载分类、页码和搜索词
+   - 添加了`updateUrl()`函数，确保页面状态变化时更新URL参数
+   - 在分类切换、分页和搜索操作时同步更新URL
+
+3. **文章标题提取优化**：
+   - 改进了`loadArticleContent()`函数，使用更可靠的换行符处理（`/\r\n|\r|\n/`）
+   - 确保准确提取TXT文件的第一行作为文章标题
+
+4. **错误处理增强**：
+   - 改进了`fetchWithTimeout()`函数，确保超时后正确清理资源
+   - 增加了更多详细的错误日志，便于调试
+
+5. **统计信息显示修复**：
+   - 确保`updateStatistics()`函数正确计算和显示各分类文章数量
+   - 修复了统计数字不更新的问题
+
+这些修改应该能解决文章列表和统计信息不显示的问题，并且正确响应`?category=flashnews&p=1`这类URL参数。
+
+
+
+
+
+ 
