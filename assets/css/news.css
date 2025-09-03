@@ -1,0 +1,197 @@
+body {
+  font-family: Helvetica Neue,PingFang SC,Microsoft YaHei;
+  margin: 0;
+}
+
+
+
+img {
+  height: 41px;
+}
+
+.main-words {
+  padding: 80px 15% 1% 15%;
+  background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 768px) {
+
+  .main-words {
+    padding: 80px 2% 1% 2%;
+    background-color: #f0f0f0;
+  }
+
+  h1 {
+    display: none;
+  }
+
+  img {
+    height: 40px;
+  }
+}
+
+.learn-more {
+  color: #5396ee;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  /* 添加了 margin-bottom，让下一个 a 标签跟它有一定的距离 */
+  margin-top: 1em
+}
+
+
+header h1 {
+  font-size: 36px;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+#search-form {
+  margin: 0;
+}
+
+#search-box {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+}
+
+#search-button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #222;
+}
+
+.contentwords{
+	font-weight: bold;
+	padding-left: 20px;
+}
+
+#announcement-containers {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  margin-top: 20px;
+}
+
+.term {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.term h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  line-height: inherit;
+  font-family: Helvetica Neue,PingFang SC,Microsoft YaHei;
+}
+
+.term p {
+  font-size: 14px;
+  margin: 0;
+  font-weight: 400;
+  margin-bottom: 10px;
+  font-family: Helvetica Neue,PingFang SC,Microsoft YaHei;
+}
+
+.date-label {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+
+.content-para {
+    line-height: 1.5; /* 设置 content 文本的行高 */
+    font-size: 16px; /* 设置 content 文本的字体大小 */
+    margin-bottom: 1rem; /* 设置 content 和链接之间的距离 */
+    word-break: break-word; /* 如果内容过长，允许自动换行 */
+}
+
+.learn-more {
+    display: inline-block; /* 将链接设为行内块元素 */
+    font-size: 14px; /* 设置链接文本的字体大小 */
+    color: #007bff; /* 设置链接文本的颜色 */
+    text-decoration: none; /* 移除链接的下划线 */
+}
+.learn-more:hover {
+    text-decoration: underline; /* 鼠标悬停时显示下划线 */
+}
+
+/* 针对移动设备的响应式样式 */
+@media (max-width: 767px) {
+    .term {
+        padding: 1.5rem; /* 为卡片添加内边距 */
+    }
+}
+
+
+.sk-folding-cube {
+			  margin: 0 auto;
+			  width: 40px;
+			  height: 40px;
+			  position: fixed;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%) rotateZ(45deg);
+			}
+			
+			.sk-folding-cube .sk-cube {
+			  float: left;
+			  width: 50%;
+			  height: 50%;
+			  position: relative;
+			  transform: scale(1.1);
+			}
+			.sk-folding-cube .sk-cube:before {
+			  content: '';
+			  position: absolute;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background-color: #333;
+			  animation: sk-foldCubeAngle 2.4s infinite linear both;
+			  transform-origin: 100% 100%;
+			}
+			.sk-folding-cube .sk-cube2 {
+			  transform: scale(1.1) rotateZ(90deg);
+			}
+			.sk-folding-cube .sk-cube3 {
+			  transform: scale(1.1) rotateZ(180deg);
+			}
+			.sk-folding-cube .sk-cube4 {
+			  transform: scale(1.1) rotateZ(270deg);
+			}
+			.sk-folding-cube .sk-cube2:before {
+			  animation-delay: 0.3s;
+			}
+			.sk-folding-cube .sk-cube3:before {
+			  animation-delay: 0.6s;
+			}
+			.sk-folding-cube .sk-cube4:before {
+			  animation-delay: 0.9s;
+			}
+			@keyframes sk-foldCubeAngle {
+			  0%, 10% {
+			    transform: perspective(140px) rotateX(-180deg);
+			    opacity: 0; 
+			  } 25%, 75% {
+			    transform: perspective(140px) rotateX(0deg);
+			    opacity: 1; 
+			  } 90%, 100% {
+			    transform: perspective(140px) rotateY(180deg);
+			    opacity: 0; 
+			  } 
+			}

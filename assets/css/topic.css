@@ -1,0 +1,102 @@
+#content {
+  display: grid;
+  grid-gap: 30px;
+  border-radius: 10px;
+  margin-top: 3%;
+  font-family: Helvetica Neue,PingFang SC,Microsoft YaHei;
+  grid-template-columns: 1fr;
+}
+
+
+/* 在屏幕宽度大于600px时，每行显示2个项目 */
+@media screen and (min-width: 900px) {
+  #content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 在屏幕宽度大于1200px时，每行显示3个项目 */
+@media screen and (min-width: 1300px) {
+  #content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 在屏幕宽度大于1200px时，每行显示4个项目 */
+@media screen and (min-width: 1600px) {
+  #content {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.term {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 1.6rem;
+  margin: 0px;
+  width: 100%;
+  cursor: pointer;
+  height: auto;
+  font-family: Helvetica Neue, PingFang SC, Microsoft YaHei;
+  position: relative; 
+  padding-bottom: 40px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.term:hover {
+  transform: scale(1.05); 
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.term:active {
+  transform: scale(0.95); 
+}
+
+.term img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.term h3 {
+  font-weight: bold;
+  margin: 15px 0 10px 0;
+  font-size: 18px;
+}
+
+.term p {
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.tags {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.tags span {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.term a {
+  text-decoration: none;
+}
+
+@media screen and (min-width:768px) {
+
+  .term h3 {
+    font-size: 18px;
+  }
+
+  .term p {
+    font-size: 13px;
+  }
+}

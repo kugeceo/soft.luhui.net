@@ -1,0 +1,194 @@
+.feed-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.item {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 1.6rem;
+  cursor: pointer;
+  height: 300px;
+  margin-top: 20px;
+  font-family: Helvetica Neue,PingFang SC,Microsoft YaHei;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+  width: 100%; /* 默认情况下，每行只显示一个项目 */
+}
+
+/* 在屏幕宽度大于600px时，每行显示2个项目 */
+@media screen and (min-width: 500px) {
+  .item {
+    width: calc((100% - 2 * 1rem) / 2);
+  }
+}
+
+@media only screen and (min-width: 767px) and (max-width: 800px) {
+   .item {
+     width: calc((100% - 2 * 1rem) / 1);
+   }
+}
+
+/* 在屏幕宽度大于1200px时，每行显示3个项目 */
+@media screen and (min-width: 1200px) {
+  .item {
+    width: calc((100% - 4 * 1rem) / 3);
+  }
+}
+
+/* 在屏幕宽度大于1200px时，每行显示4个项目 */
+@media screen and (min-width: 1600px) {
+  .item {
+    width: calc((100% - 4 * 1rem) / 4);
+  }
+}
+
+
+.item img {
+  display: block;
+  width: 100%;
+  height: 60%;
+  object-fit: cover; /* 保持图片纵横比，但可能会裁剪 */
+  border-radius: 5px;
+}
+
+/* 手机端样式 */
+@media (max-width: 767px) {
+	.feed-container {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: space-between;
+	}
+
+	.item {
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	  border-radius: 10px;
+	  padding: 1.6rem;
+	  cursor: pointer;
+	  height: auto;
+	  margin-top: 20px;
+	  font-family: Helvetica Neue,PingFang SC,Microsoft YaHei;
+	  transition: transform 0.3s ease, box-shadow 0.3s ease;
+	  background-color: rgba(255, 255, 255, 0.5);
+	  position: relative;
+	}
+
+	.item img {
+	  display: block;
+	  max-width: 100%;
+	  height: auto;
+	  margin: auto;
+	  object-fit: cover;
+	  border-radius: 5px;
+	}
+}
+
+.item a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.item-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 12px;
+  position: absolute;
+  width: 90%;
+  bottom: 10px;
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 600px) {
+  .item {
+    width: 100%;
+  }
+}
+
+.item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.item:active {
+  transform: scale(0.95);
+}
+			
+			
+			.sk-folding-cube {
+			  margin: 0 auto;
+			  width: 40px;
+			  height: 40px;
+			  position: fixed;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%) rotateZ(45deg);
+			}
+			
+			.sk-folding-cube .sk-cube {
+			  float: left;
+			  width: 50%;
+			  height: 50%;
+			  position: relative;
+			  transform: scale(1.1);
+			}
+			.sk-folding-cube .sk-cube:before {
+			  content: '';
+			  position: absolute;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background-color: #333;
+			  animation: sk-foldCubeAngle 2.4s infinite linear both;
+			  transform-origin: 100% 100%;
+			}
+			.sk-folding-cube .sk-cube2 {
+			  transform: scale(1.1) rotateZ(90deg);
+			}
+			.sk-folding-cube .sk-cube3 {
+			  transform: scale(1.1) rotateZ(180deg);
+			}
+			.sk-folding-cube .sk-cube4 {
+			  transform: scale(1.1) rotateZ(270deg);
+			}
+			.sk-folding-cube .sk-cube2:before {
+			  animation-delay: 0.3s;
+			}
+			.sk-folding-cube .sk-cube3:before {
+			  animation-delay: 0.6s;
+			}
+			.sk-folding-cube .sk-cube4:before {
+			  animation-delay: 0.9s;
+			}
+			@keyframes sk-foldCubeAngle {
+			  0%, 10% {
+			    transform: perspective(140px) rotateX(-180deg);
+			    opacity: 0; 
+			  } 25%, 75% {
+			    transform: perspective(140px) rotateX(0deg);
+			    opacity: 1; 
+			  } 90%, 100% {
+			    transform: perspective(140px) rotateY(180deg);
+			    opacity: 0; 
+			  } 
+			}
