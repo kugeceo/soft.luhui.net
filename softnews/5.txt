@@ -1,0 +1,961 @@
+链博会中国国际供应链促进博览会
+
+链博会即中国国际供应链促进博览会，是全球首个以供应链为主题的国家级展会。以下是关于它的详细介绍：
+- **基本信息**
+    - **主办单位**：中国贸促会。
+    - **举办频率**：自2023年起每年举办一届。
+    - **举办地点**：北京中国国际展览中心顺义馆。
+- **展会特色**
+    - **聚焦供应链**：链博会不是简单地展销商品，而是展链条、展生态、展场景，注重全球供应链上中下游企业间交流合作，帮助企业识别自身和潜在合作伙伴在供应链上的位置，促成对口合作。
+    - **强调长期合作**：不追求短期的现场交易成交额，更注重推动长期互利合作的“链接度”，倡导展商之间是“队友”关系，共同“做蛋糕”。
+- **展会设置**
+    - **展区设置**：第三届链博会设置了先进制造链、清洁能源链、智能汽车链、数字科技链、健康生活链、绿色农业链等6大链条和供应链服务展区。
+    - **活动安排**：第三届链博会高质量举办10场主题活动、2场主宾类活动和N场专题活动，并首创设立“链博首发站”新品发布专区，集中发布参展企业的新产品、新技术、新工艺、新场景。
+- **重要意义**
+    - 链博会致力于促进上中下游衔接、大中小企业融通、产学研用协同、中外企业互动，放大贸易促进、投资合作、创新集聚、学习交流平台作用，帮助各国企业更好地融入全球产业链供应链，是中国主动推动建设开放型世界经济的重要载体，也是践行人类命运共同体理念的新实践。
+- **第三届链博会概况**
+    - **举办时间**：2025年7月16日至20日。
+    - **参展情况**：覆盖75个国家和地区的650多家中外企业及机构，世界500强和行业龙头企业占比超过65%，境外参展商比例提升到35%，英伟达、施耐德、欧莱雅等大批知名跨国公司首次亮相。
+	
+	
+黄仁勋在链博会上发表了哪些演讲内容?
+	2025年7月16日，英伟达创始人兼CEO黄仁勋参加了第三届链博会开幕式，并发表主题演讲。其演讲内容主要包括以下几个方面：
+- **表达参会感受**：黄仁勋表示很荣幸出席链博会，称中国供应链是一个奇迹，这是他首次有机会向供应链企业展示、介绍英伟达。他还提到链博会规模大、气氛热烈，充分体现了中国对创新的支持以及工匠精神。
+- **介绍英伟达发展历程**：英伟达始于1993年，最初是小型初创公司，为PC产品带来3D显示技术，催化了PC游戏产业。1999年，英伟达开发出全世界首个可编程图形处理器，打开了加速计算的新时代，将GPU转换为通用计算引擎，为AI时代发展奠定基础。从Kepler架构到最新的Blackwell架构，英伟达在人工智能计算方面取得了进步，其系统和算法历经成百上千次迭代，成为驱动全球AI生态的计算平台。2016年，英伟达推出世界上第一台人工智能超级计算机DGX-1，黄仁勋亲自将第一台DGX-1交付给了当时的初创公司OpenAI。
+- **阐述AI对各行业的改变**：黄仁勋指出AI正在改变每一个行业，包括科学研究、医疗健康、能源开发、交通运输和物流管理等。在中国，AI为腾讯微信、阿里巴巴淘宝、字节跳动抖音等标志性平台提供动力，驱动小米的自动驾驶与智能手机，赋能百度的AI搜索和美团极速便捷的智能配送服务，还为推想医疗科技的医学影像诊断系统提供支持，助力全球20多个国家的医疗水平提升。
+- **强调中国开源AI的重要性**：黄仁勋称中国有超过150万开发者基于英伟达平台进行创新，DeepSeek、阿里巴巴、腾讯、MiniMax、百度等企业的领先模型在此诞生并实现开源，推动了全球人工智能的发展。他表示中国的开源AI是推动全球进步的催化剂，让各国和各行业都有机会参与AI革命，同时开源也是保障AI安全的关键，有助于推动国际社会在技术标准、性能基准和安全防护措施方面的协作。
+- **展望AI未来发展**：黄仁勋认为AI已成为像电力和互联网一样的基础设施，正在革新供应链，改变设计、制造和运输方式。他预测下一波AI浪潮将是能够理解物理世界、具备推理能力并能执行任务的机器人系统，有望在10年内出现，届时工厂将由软件和AI驱动，协调人机协作的机器人团队生产智能产品，AI将成为每个行业、企业、产品和服务的核心，引发新的工业革命，为中国供应链生态系统带来新的增长机遇。
+- **回应H20芯片销售进展**：黄仁勋表示英伟达已获得美国批准，将恢复H20芯片在中国的销售，且已经有很多订单，一些预订了H20芯片的企业正在等待正式发货通知。
+
+
+
+
+
+
+
+
+
+# 黄仁勋链博会首秀，身着唐装发表演讲，回应英伟达与华为关系
+2025年7月16日，由中国贸促会主办的第三届中国国际供应链促进博览会在北京中国国际展览中心顺义馆启幕。美国英伟达公司创始人兼首席执行官黄仁勋在开幕式上发表了演讲。这也是黄仁勋首次来到中国参加链博会。
+
+链博会上，黄仁勋没有穿他那件标志性的皮衣，而是身着唐装，并用中文开场演讲：“尊敬的韩正副主席，尊敬的各位来宾，女士们、先生们，大家好！我是英伟达黄仁勋，非常荣幸今天能够来到这里，参加中国国际供应链促进博览会。”
+
+演讲中，黄仁勋表示，中国运营着全球数一数二的供应链体系，其规模、复杂性、多样性，制造商的产品类型、技术含量，参与建设中国供应链的企业数量，都堪称世界级的奇迹。
+
+演讲结束后，黄仁勋接受了总台《面对面》栏目专访，就中国市场、人工智能、全球供应链等话题分享了自己的观点。
+
+## 谈中国市场：独一无二，不参与后果难测
+黄仁勋在接受总台《面对面》栏目采访时表示，中国是一个独一无二的市场。
+
+“中国不是众多市场中的一个，中国是一个独一无二的市场。这个市场的活力、创新能力、发展势头，以及这个产业的发展速度，都是绝无仅有的。中国市场既有活力，又有创新能力卓越的优秀工程师，中国计算机科学家数量是全球最多的之一，唯一能与之比肩的只有美国，而且终端消费者群体规模极其庞大。这不是一个普通的市场，而是一个非常独特的市场。作为技术供应商，我们需要客户，所有供应商都需要客户，而这个市场非常独特，你绝对不能掉以轻心。”黄仁勋称。
+
+他进一步表示，不参与中国市场的意外后果和长期影响，虽然难以预测，但我认为结果不会乐观。
+
+“这是一个全新技术革命的开端，可能是有史以来最伟大的技术革命——人工智能自动化生产。很明显，它将催生非常庞大的产业，这是一项极其重要的技术，蕴含着难以置信的机遇。”黄仁勋说。
+
+据黄仁勋介绍，英伟达与中国的渊源已久，他本人早在30年前就来到了中国，那时大多数高科技公司还未进入中国，当时唯一的科技公司是联想和长城。如今，英伟达与众多中国企业保持着长期的合作关系。“比如小米，我们从一开始就合作，一起制造手机，现在又共同研发人工智能、自动驾驶软件等，还有很多项目正在合作。”
+
+## 谈人工智能：中国创新能力惊人，市场会继续进步
+在谈及人工智能时，黄仁勋表示，AI是一个极其复杂的系统，中国的创新能力很惊人，中国AI市场无论有没有英伟达都会进步。
+
+“中国创新的步伐是不可能被阻挡的，当然我相信英伟达能做出重要贡献。AI是一个极其复杂的系统，就像多层蛋糕一样复杂，我们的芯片只是底层，上面还有系统、网络技术、AI基础设施、软件、AI算法，以及最上层的应用服务，整个系统异常复杂。一方面AI的发展，需要这个系统每一层的创新，但如果某一层进展不够快，工程师们足够聪明，他们可以通过上下层的创新来弥补，从而推动整个系统前进。”黄仁勋称。
+
+他特别提到了中国的人工智能公司深度求索（DeepSeek），认为他们研发的R1模型是真正的创新，重新设计了AI模型的很多运行方式，让它们能充分发挥H20架构的优势，尽管是基于H20构建的，依然取得了世界一流的成果。“这也说明研究人员和开发者们完全能够根据不同技术层面的特点进行调整。我对中国的创新能力充满乐观和信心，不管手头有什么资源他们都能适应。H20虽然不是英伟达最顶尖的产品，但能力依然非常出色，正是这种架构定义，甚至可以说创造了现在的AI革命，所以即便放到今天它依然相当出色。”
+
+对于中国AI市场的发展，黄仁勋认为，即便英伟达不参与，中国AI市场也会继续进步。“华为不仅极具创新力，更是一家规模和实力非凡的公司。如果有人仔细看过华为手机，就会明白其中蕴含的技术奇迹。如果我们不在这里，会有中国创新者、芯片公司和华为为这个市场服务，很多云服务提供商也会自研芯片。所以我认为中国AI市场，无论有没有英伟达都会进步，如果我们不在这里，华为也一定能找到自己的解决方案，这是我对人类创新能力的信心，有志者事竟成。”
+
+## 谈华为：是竞争对手，更是值得尊重的对象
+在采访中，黄仁勋多次提到华为，并对华为给予了高度评价。他表示，华为不仅极具创新力，更是一家规模和实力非凡的公司，在自动驾驶领域和AI技术方面都非常出色，拥有强大的芯片设计能力、系统设计和系统软件。
+
+当被问及华为是竞争对手还是合作伙伴时，黄仁勋说：“首先，华为的公司理念、文化以及他们所克服的困难、取得的成就，都让人无比钦佩。他们是我们的竞争对手，但你依然可以对竞争对手怀有敬佩和尊重之情，并且保持良好的关系。我们是竞争对手，不是敌人。世界很大，我希望未来我们能有机会继续竞争。我对他们的感情是敬佩、尊重，同时也充满竞争意识。我认为关键在于，企业之间、国家之间既有竞争，也能共存。”
+
+此外，黄仁勋还谈到了人工智能的发展趋势。他认为，当前人工智能正处于快速发展阶段，下一波浪潮将是物理AI，即所有的能力都能够融入到物理世界，比如机器人。“现在AI能够解决大部分的认知性任务，接下来在解决问题方面，我们很快就能超过人类的能力，这是一个非常了不起的成就。”他还强调，人工智能的发展需要以安全的方式推进，同时要注重开源，汇集所有资源，造福整个生态系统。 
+
+在谈到自己的工作状态时，黄仁勋表示，他每天都充满焦虑和担忧，就像公司随时会破产一样。“我从创办英伟达开始，就一直有这种感觉。我是少数从公司创立之初就一直坚守至今的创始人之一，我觉得创始人见证公司从0成长为万亿美元市值的情况非常罕见。所以早期的那些感受一直伴随着我，我从不掉以轻心，从不自满，时刻保持警惕。我总觉得，就在我们取得巨大成就的同时，别人也可能取得巨大成就，我忍不住希望英伟达能做得更多，我也坚信我们能做得更多。我每天都感觉公司要倒闭了，而且我希望这种感觉永远不要消失。我会努力率先走向未来，但如果别人先做到了，那我就努力追赶。”尽管压力巨大，黄仁勋依然表示希望能工作到80岁，因为他认为自己是这份工作的最佳人选，只要这种情况没有改变，他就会继续做下去 。 
+
+
+
+
+
+
+
+
+链博会首秀穿唐装！华为是竞争对手还是合作伙伴？黄仁勋怎么看？| CCTV「面对面」
+ 
+2025年7月21日  #面对面 #CCTV #黄仁勋
+英伟达创始人黄仁勋首次来中国参加链博会，他身着唐装亮相并发表了主旨演讲，还在演讲中使用了中文。黄仁勋表示中国运营着全球数一数二的供应链体系，他认为中国是独一无二的市场。《面对面》之《链接中国》专访英伟达创始人兼首席执行官黄仁勋。
+
+《面对面》是一档长篇人物专访节目，秉持新闻性、权威性、关注度、影响力的诉求，面对面的交流，心与心的碰撞，用对话记录历史，以人物解读新闻。
+
+转写文稿
+
+0:01
+[Music]
+0:07
+[Music]
+0:28
+This will be my first time that that I deliver a speech in Chinese.
+0:33
+So, you have done a lot of preparation work before. Yes, this morning I woke up early. I've
+0:39
+been up since 4:00.
+0:54
+[Music]
+1:00
+Chief really
+1:13
+I'm going to do the rest of my speech in English. Now, first you speak it in Chinese and you
+1:21
+give it up in the middle and pick it up at the end. So why? Because if I did the whole thing in
+1:27
+Chinese, it would have taken half an hour. It would take too long.
+1:33
+So and I was so nervous.
+1:59
+[Music]
+2:07
+How might supply chain expo to some extent may help them
+2:14
+because not only Nvidia but the firms around the world are facing the same
+2:19
+problem. China operates one of the world's largest supply
+2:25
+chains. Scale, complexity, diversity, the type
+2:31
+of products that are manufacturers, the technologies that are included, the number of companies that are that
+2:37
+participate in building out the China supply chain is
+2:43
+unquestionably one of the world's great miracles. China also builds equipment
+2:50
+and control systems and components for the rest of the world's supply chain. And so not only does China
+2:58
+operate one, it creates technology and products to operate other people's
+3:04
+supply chains. And because the world supply chains are becoming more diversified and if you will more
+3:12
+redundant, it creates an enormous opportunity for China actually to export your uh supply
+3:20
+chain manufacturing technology all over the world as uh supply chains are being
+3:25
+and manufacturing lines are being created around the world. But it it won't change the fact that no matter
+3:31
+what happens, it's there's no reasonable destination where the world's supply
+3:37
+chains are somehow completely disconnected. It is simply too complicated and it will it will always
+3:43
+be connected. You also want that connection and the reason for that is this is the beautiful thing about a
+3:49
+supply chain. There is no way at this point with so much complexity and so
+3:55
+many different industries to imagine a world where the supply chain isn't
+4:00
+interconnected and interdependent. So that interdependency is a necessary condition. It's a good condition. It
+4:06
+gives us resilience and although we don't manufacture much in China, we have many customers and partners and
+4:12
+technology partners that we serve in China's supply chain.
+4:38
+The world's supply chain is is very very large and it's interconnected and Nvidia
+4:46
+on the one hand benefits from the supply chain a very sophisticated very advanced
+4:52
+very technical supply chain and our supply chain is uh global as well and we
+4:57
+have manufacturing partners all over the world. We have in order to build our AI supercomputers. We have technology
+5:04
+partners from 100 to 200 different technology partners contribute to our to
+5:09
+our products. The invention of the word supply chain came from the idea that
+5:15
+many companies contribute to the creation of your product. Yeah. Instead of thinking about
+5:21
+manufacturing which is you build everything yourself, you're vertically integrated in every way. You use a
+5:28
+supply chain to integrate the capabilities, the specialized
+5:34
+capabilities of many companies, many countries around the world. As a result,
+5:40
+the end product is better than anything you can possibly do yourself. America. It won't manufacture everything by
+5:46
+itself and uh it's not sensible to manufacturing everything by itself and nor is it necessary to. So this wisdom,
+5:53
+this incredible genius of the creation of what is called the supply chain really came out of my generation. Before
+6:00
+it was called manufacturing. Now it's called supply chain management. And manufacturing is still a big part of it.
+6:06
+But supply chain integration is very complex. And it is the it's one of one of humanity's great inventions. Fore!
+6:15
+Foreign! Foreign!
+6:23
+[Music]
+6:43
+[Music]
+6:49
+[Music] I feel very welcome when I'm here
+6:54
+and uh I genuinely believe our our customers and partners here really welcome us and and value us. You know
+7:01
+today the requirement for more agility, more speed,
+7:08
+more automation that those elements are essential to a
+7:14
+world that is becoming more volatile, more dynamic and so in fact it's a great
+7:21
+opportunity for people who build technologies and who are experts at supply chains. Nvidia's one of our great
+7:28
+expertise is a really agile supply chain and so agility is a very
+7:34
+what you call agile agile why meaning uh no matter no matter the
+7:40
+change in supply change in demand change in supplier disruptions uh whatever it
+7:46
+is because the products that we build are so complicated if we have one and a half million components inside our AI
+7:53
+supercomputer then if one component is missing or fail failing or uh short of
+7:59
+supply then the entire system cannot be built. Yes. And so we have to be rather agile in
+8:06
+being able to adapt to changing conditions of everything and so having a having agility in your
+8:12
+supply chain and having uh technology that enables agility is really vital. This is a great opportunity for China.
+8:19
+Now the fact of the matter is I have every confidence that although disruptions are unwelcome. It could be a
+8:27
+weather disruption, it could be a geopolitical disruption, it could be supplier quality disruption, these none
+8:33
+of the none of the disruptions are welcome. Uh the the supply chain was designed for agility.
+8:41
+You know the the supply chain has a lot of redundancy built into it. And that is one of the great uh wisdoms of the
+8:47
+supply chain architecture of today. And so today's dynamic environment is going to rely on
+8:54
+the expertise of China's supply chain expertise more than ever. [Music]
+9:10
+[Music]
+9:20
+I'm announcing that the US government has approved for us uh filing licenses
+9:27
+to start uh uh shipping H20s. Okay. And so we will start to uh sell H20s to
+9:34
+the Chinese market. and I'm looking forward to uh shipping H20s uh very
+9:39
+soon. And so I'm very happy with that with that. Very very good news.
+9:54
+Fore.
+10:13
+Someone says it missed the demands from Chinese market and someone may express
+10:19
+concerns about they stop the innovation of domestic innovation.
+10:25
+So what's your perspective? There is no way to stop domest the the pace of domestic innovation. Of course I
+10:33
+believe that Nvidia can make a great contribution. AI is a very complicated
+10:38
+stack. It's a very complicated stack of cake. Underneath are chips. Then there are
+10:45
+systems, networking technology, AI infrastructure, software, AI
+10:52
+algorithm, and then the applications and services on top. That entire stack is
+10:59
+extraordinarily complex. On the one hand, it requires all of the innovation
+11:05
+across that stack to advance AI. But if each layer is not moving as fast, the
+11:13
+engineers are so smart to innovate at the layer above or below. Yeah. To make up for and the entire stack
+11:21
+moves forward. And that's one of the reasons why you have to admire the incredible innovation of a of a company
+11:27
+called Deep Seek. Their model called R1 is genuinely innovative. it
+11:34
+rearchitected uh many of the ways that the models AI models operate so that it can take
+11:41
+advantage of the H20 architecture and so that's a very innovative thing as a
+11:46
+result they achieved worldclass results even though uh they were built on H20s
+11:52
+and so researchers and developers they could adjust to each one of the layers I have a lot of optimism and uh confidence
+12:00
+in the innovation capabilities of China to adapt to whatever resources they have. Now remember H20 although it isn't
+12:08
+the most advanced that Nvidia provides is still extraordinary in terms of capability. you know, it is the the
+12:15
+architecture that defined that created, if you will, the AI revolution. And so today, it's still extraordinarily good.
+12:23
+Models like DeepSeek, Alibaba, Tencent,
+12:34
+this year was very very big and it highlighted it highlighted.
+12:51
+The electric vehicles in China are incredible. Would you guys all agree? I think I saw I saw I saw Nai the other
+12:58
+day. I saw Niger the other day and he showed me his his new car. Oh, the
+13:04
+technology is incredible. And you buy I would love to. I would love to. um it
+13:10
+it's unfortunately not available in the United States, but that's that's that's our misfortune, not not uh not not
+13:15
+yours. The I would say that the electric vehicles um in China are probably in the
+13:22
+last 5 years the most surprising to the world in in terms of the the
+13:28
+advancement. [Music]
+13:36
+RTX
+13:45
+assuming there is no controls on Nvidia's products. Nvidia can supply
+13:51
+Chinese market your newest and highest chips to China. Who will suffer and who
+13:59
+will benefit? Those things are hard to say. But one of the things I would say if not for
+14:05
+constraints and challenges innovation and new invention usually do not emerge.
+14:13
+The deepseek R1 the Alab Alibaba Qen uh Moonshot Kimi these architectures are
+14:20
+truly innovative and often times it comes from a constrained environment
+14:26
+where there's pressure great ideas come out. Now, of course, the goal in life is
+14:31
+not to have pressure. Nobody welcomes pressure. But when the pressure is there and yet the the their dreams and hopes
+14:39
+and desire to innovate is vibrant, they will create something new. And we we saw
+14:46
+that in the last several years, the last couple of years, China AI researchers developed some groundbreaking work that
+14:53
+is very different from the rest of the world. So, I'm incredibly impressed.
+15:01
+[Music]
+15:20
+How important is China's market for you? China is not one of many markets.
+15:27
+China is a singular unique market. The dynamics of this market, the innovation,
+15:35
+the dynamism, the pace of this market, this industry is simply singular. We've been here for
+15:43
+30 years. I came to China long before most of the high-tech companies were here. Even at the time, the only
+15:50
+technology company was Legend and Great Wall and many friends of mine that that
+15:56
+have grown up in the PC industry together. I'll uh highlight some of my
+16:01
+my great friends here. Alibaba, Mtoan, Tencent, BU, Xiaomi, um BYD.
+16:11
+This time when you in Beijing, you met with Beijing. We've been cooperating for a long time
+16:16
+since the beginning of of Xiaomi and we used to build phones together. today
+16:22
+working on AI together. Of course, the software for autonomous vehicles and there's a there's a whole bunch of
+16:28
+things that we're working on together. This market is both dynamic, insanely
+16:33
+innovative with brilliant engineers. It has one of the world's largest
+16:40
+population of computer scientists. The only other population this large is in United States. And the population of end
+16:48
+consumers is extremely large. You're not going to. This is not a normal market.
+16:55
+This is a very unique market. As a technology provider, we need customers.
+17:00
+All providers need customers. And this marketplace is very unique. You can't be
+17:06
+complacent about that. and the unintended consequences, the long-term
+17:12
+consequences of not participating in the China market, um, you know, is unknown,
+17:19
+but I doubt that it's positive. This is an extraordinary time because this is the beginning of a brand new technology
+17:26
+revolution. Probably the greatest technology revolution of all time, the
+17:32
+automated production of intelligence, artificial intelligence. And it is very
+17:39
+clear now it is going to create very large industries.
+17:44
+And this is an extraordinarily important technology uh with such an incredible
+17:50
+opportunity. [Music]
+18:01
+[Music]
+18:23
+Fore
+18:37
+GPU.
+18:50
+Fore
+19:13
+computer science is a fairly new science. physical sciences, chemical sciences, chemistry, physics, biology,
+19:22
+quantum. There's a whole lot of different fields of sciences that are quite long. Maybe they're 300 years old,
+19:29
+maybe they're 200 years old, they're 100 years old, but computer science is fairly new. Computer science is my
+19:35
+generation, and it wasn't until my generation that the the concept of writing software was even considered a
+19:42
+science. Before us, the last 60 years was uh really dictated by general
+19:48
+purpose computing and the concept called Moores law. This fundamental fabric of computer
+19:55
+architecture has really defined the algorithms that ended up on top. Nvidia
+20:02
+is quite unique in the architecture that we created and the architecture reshaped
+20:07
+all the algorithms that sat on top of our computer and that reshaping resulted
+20:12
+in different capabilities different methodologies you know a whole bunch of different things. Computing is the
+20:19
+single most important instrument impactful instrument of society every society and we've now reinvented it and
+20:27
+created a whole new industry called artificial intelligence and artificial intelligence or intelligence
+20:33
+is not a niche capability for a specialized product. It is foundational
+20:39
+to every society, every industry, every company, every product. Intelligence or
+20:45
+artificial intelligence is going to be an infrastructure fundamental to every country in society. As fundamental as
+20:52
+electricity, as internet is today, it is going to be much bigger than both.
+21:04
+[Music]
+21:26
+This is a unique moment for the world. I don't kind of remember any moment like this ever.
+21:32
+Why do we say so? I don't remember the last time a technology of this impact has been invented. Give me one example of another
+21:40
+time and another technology that is top of mind of every national leader
+21:47
+everywhere in the world, every technology leader, every company leader, practically every human. I don't
+21:54
+remember ever anything like it. This is extraordinary. There's no way to think about it as as extraordinary impact
+22:01
+already. And uh we have to recognize our place in the world today and not be
+22:07
+complacent to respect uh the opportunity to be grateful of the opportunity and do
+22:13
+our best in service of that opportunity. What is this new world is
+22:18
+enjoy a capability that used to be you know quite arduous for us. This is no
+22:26
+different than all of a sudden we can all run faster than any human can run.
+22:31
+You know, all of us can run 60, 70, 80 miles per hour. All of us can fly now.
+22:38
+No humans could fly before. In no time in history has there been a technology
+22:44
+that could lift everyone. Maybe you didn't have a college degree
+22:49
+at all. Maybe you only received a high school degree. Maybe you know nothing about a new field of uh applications
+22:57
+that you would like to learn about. Maybe digital biology in my case. Maybe you're not a very good artist, but you
+23:02
+would like to be able to express your ideas. Maybe you don't know, you're not an excellent writer, but you would love to be able to tell stories. All of a
+23:09
+sudden, because of AI, all of our capabilities are boosted simultaneously. It is the greatest equalizer ever. And
+23:17
+so for people who have who have found that technology had not served them in the past because technology was hard to
+23:24
+use, today's technology with artificial intelligence is accessible. And it's
+23:29
+easy to use. And so I hope that everybody engages AI and we take the opportunity to lift everyone.
+23:38
+Can you can you jump?
+23:44
+Wow.
+23:50
+Can you dance?
+24:00
+Well, I think I think um I just want to let you know I am the keynote presenter.
+24:07
+So, I need you I need you to behave. I need you to behave for a few seconds. I need you to behave for a few Could you
+24:13
+sit? Sit. Hey, you know what we should do? Let's
+24:19
+take a picture of everybody. [Music] Yeah.
+24:25
+Bam. Bam.
+25:00
+If we're not here, the local market will be served and there are innovative companies. Huawei, of course, is not
+25:06
+only innovative. This is a company with extraordinary scale and might. Huawei is
+25:12
+a much bigger company than we are in scale, human scale, and uh technical capability. They're broad and deep.
+25:19
+anyone ever looks at examines a Huawei phone, they'll understand that the miracle of the technology has been
+25:25
+assembled. If you ever looked at a Huawei now, they're incredibly good at
+25:30
+autonomous vehicles. Their AI technology is quite extraordinary. So in this is a company that with with uh great chip
+25:37
+design capabilities, system design, system software. But if we're not here, uh this market will be served by uh
+25:43
+Chinese innovators, chip companies, Huawei of course, and many many cloud service providers who will build their
+25:49
+own chips. And so I think the the market, China's AI market will advance with or without Nvidia. If we're not
+25:56
+here, Huawei will find a way. That's my uh confidence in in uh human innovation.
+26:03
+If there's a will, there's a way. There's every reason to respect and uh admire uh Huawei's achievements. Uh this
+26:11
+is an extraordinary technology company and whatever they decide to dedicate themselves to and put their mind to uh
+26:18
+they will surely do well. Huawei is your competitor or your partner. First of all, the company
+26:26
+philosophy and culture and what they've overcome and setbacks, what they've achieved and
+26:33
+built, there's nothing nothing you can possibly say aside from extraordinary
+26:40
+and they should be admired for their achievements. The company still remain intensely competitive. They are our
+26:47
+competitors, but you could still have admiration and respect and and have
+26:53
+great relationships with people you compete with. We're competitors, not enemies. But the world is large and and
+27:00
+I hoped we'll have an opportunity uh to compete for many years to come. Um but
+27:06
+my feelings toward them are are that admiration and respect uh and
+27:12
+competitive. I think the big idea here is that there are companies that
+27:18
+compete, there are nations that compete and all of that coexists at the same
+27:23
+time. [Music]
+27:31
+So, welcome to supply chain expert and good to see you again.
+27:41
+Fore
+28:02
+collaborating. AI can understand information and generate information.
+28:08
+The wave that we're in right now is incredible. And it's called reasoning. Yeah.
+28:13
+And the reason why reasoning is so effective, so powerful, is that the AI
+28:19
+can understand and solve problems that it has never seen before.
+28:25
+Just like humans. The next way is called physical AI. Once you said everything moving can be
+28:33
+robotic in the future, it's very soon. How soon? It's now.
+28:38
+We see, you know, there's self-driving cars all over China and uh autonomous vehicles advances are happening faster
+28:45
+here than just by anywhere. Xpang has it, Lee Auto has it, Neo has it, Xiaomi
+28:50
+has it, BYD has it. And so the capabilities of fusing artificial
+28:56
+intelligence and software and mechanical systems is a
+29:02
+very natural capability of China's. And so this is an this is an extraordinary opportunity for China actually.
+29:09
+[Music]
+29:33
+Many of my Chinese employees have been with us for over two decades. We have
+29:38
+offices in Beijing, Shanghai, Shenzen, uh, Hong Kong,
+29:45
+and um, I love coming every year to help them celebrate Chinese New Year and
+29:51
+video is growing. They're the extraordinary talent here. And um, and
+29:56
+we also still have, you know, we have great partners here and great customers here that I hope to serve. And so I'm
+30:03
+optimistic about our opportunities here in China. I'm optimistic that um our two
+30:09
+countries will find a way of competing and cooperating in a way that enables
+30:17
+American companies like myself uh to continue to be able to prosper in and
+30:22
+serve in this market. And so I'm optimistic about those things and my Chinese employees have contributed
+30:29
+greatly, you know, to the creation of one of the world's great companies and I'm very proud of them. our job singular
+30:35
+to do our job to do the things we can control which is to advance the technology the best we can uh to cultivate and serve
+30:43
+ecosystems of developers and researchers all around the world uh to be able to um
+30:50
+serve markets that we're allowed to serve you know complying with regulations and laws of every country
+30:56
+and there are many laws and many regulations in so many different countries and we just have to comply
+31:01
+with them all and I believe that there is at the center of that there is still the possibility of building an
+31:08
+extraordinarily great company that is uh uh in service of uh what an
+31:14
+extraordinary time in service of what is extraordinary technology and in service
+31:19
+of uh countries and industries and companies all around the world.
+31:28
+[Music] GPU.
+31:34
+[Music]
+32:06
+You like competition? I love competition. The generation of CEO before me, they were battle
+32:13
+hardened. They described uh competition and building companies
+32:19
+like war. Uh I don't we're not Why you don't? Because we're not in war. Uh because uh
+32:25
+we're compet we're competing. And as it turns out, you need competition to create your market. You need competition
+32:32
+to create a future for both. There are no great markets where there are no competition. And so by definition, if
+32:37
+you want markets, uh if you want prosperity, you want growth, uh competition goes along with it. And so
+32:44
+I'm of the a core value belief that it is possible uh to uh be in service of
+32:52
+the market in the industry and to help everyone grow and as a result you grow as a benefit. And I respect my
+32:59
+competitors and I've got no trouble uh enjoying their company. Nvidia competes with many companies in the world in a
+33:05
+lot of ways. Um, most of my customers compete with me and we have no trouble cooperating with them still. And so I
+33:13
+think it's in this world today where everything is so interdependent and we rely on each other. I rely on my
+33:19
+competitors for many things. For example, I buy a lot of Intel CPUs and
+33:24
+um I use cloud services from companies who build chips to compete with me. And
+33:30
+so so I think in a lot of ways we're so interdependent. It is really prudent uh
+33:36
+to allow for spaces to compete and to recognize that there are places we're
+33:42
+simply going to compete and we compete with great spirit. And then there are areas where we will cooperate. Lots and
+33:49
+lots of areas where we will cooperate and look for ways to enjoy each other's cooperation. uh respect each other's
+33:56
+competition and um always always keep uh uh keep looking for uh more cooperation.
+34:04
+The future is unknown to everybody and it's an opportunity for everyone. And so
+34:11
+I wake up every morning as early as I can to keep working for the future and
+34:16
+take nothing for granted. And once in an interview you said you get up with
+34:22
+anxiety and concerns but without confident and proud. Why?
+34:27
+I don't know. I always feel like we're going out of business. Maybe it's because when I founded Nvidia, we're
+34:33
+literally going out of business all the time. And I'm a rare founder that has
+34:39
+been at the company at the very beginning and still here today. I don't think a founder has ever seen their
+34:47
+company go from zero to a trillion dollars before. And so I've had the benefit of keeping all of those feelings
+34:53
+with me. All of the early days feelings have never left me. And I take nothing
+34:58
+for granted. And I'm never complacent. Uh I'm always staying alert. I always
+35:06
+think that just as we've done something great, somebody else could do something great. And um uh I can't help but
+35:14
+wanting Nvidia to do more. And um and I can't help but believing that we can do
+35:19
+so much more. I still feel like I'm going out of business every day. And that will never leave my system. And I
+35:25
+hope it doesn't. And so I'm going to try to get to the future first, but if somebody else does,
+35:32
+uh so be it. I'll try to catch up.
+36:18
+What's the fun of to be a CEO? Most of the time being CEO is not that fun to be honest. You're under pressure
+36:25
+all the time. I've been under pressure for 33 years, every single day, every single minute. And I felt the burden of
+36:32
+our company and our our customers and our market every single second of 33
+36:37
+years. That has never left me, not even for one moment. So that's not always fun. It's fun to see the achievements of
+36:45
+of our company and my employees. And it's fun to see the achievements of my
+36:51
+partners and customers. It was fun to see Le Jun's new car and that he built
+36:57
+it and what an amazing achievement it was in such a short time. It's fun for me when as you know Sam came up with
+37:06
+with uh chat GPT01 and now 03. It's fun for me to see Sundar and his team Deis
+37:12
+and Amen come up with Gemini Pro. It's fun for me to see Elon coming up with
+37:18
+Grock and his latest version, Grock 4. You know, it's fun for me. I I enjoy
+37:24
+that. I enjoy seeing that I was somehow, you know, slightly involved and that I
+37:29
+was able to make a contribution. I love seeing other people succeed and do things and that I'm somehow involved in
+37:37
+it. But otherwise, being CEO is is high pressure, hard work every single day.
+37:43
+But you still want to do it into your 80s. I should do it because I think I'm best
+37:48
+person for the job. And until that's not true, I should do
+
+
+
+
+参链博会的企业需要满足哪些条件?
+
+中国国际供应链促进博览会（链博会）对参展企业有一定的条件要求，主要包括以下方面：
+- **企业资质方面**：一般要求企业在依法登记注册，具有独立企业法人资格。例如，常德市商务局发布的相关通知中就明确了参加首届链博会的企业需在常德依法登记注册，具有独立企业法人资格。
+- **行业地位方面**：链博会追求高质量、高端化、高水平，注重企业在产业链中的位置和代表性。首届链博会强调选择世界一流的产品和行业最头部的企业参展，如世界500强和行业领军企业，也包括专精特新、行业小巨人企业等。第二届链博会同样坚持优中选优，严控展商质量，世界500强和行业龙头企业占参展企业的比重超过60%。
+- **展示内容方面**：链博会更强调企业的核心技术或产品在产业链供应链中的应用场景，企业需要让观者了解其技术和产品能为产业链的上下游提质创新产生的作用，以及在供应链管理中采用的标准体系等。
+- **绿色环保方面**：链博会贯彻“绿色、环保、可持续”办展理念，引导参展商制定节能环保参展方案。参展企业的产品和技术需符合绿色发展、低碳环保的要求，比如智能汽车链、绿色农业链、清洁能源链所聚焦的产品和技术均需突出绿色低碳特点。
+- **其他方面**：企业一般需近3年来无重大违法违规行为，部分地区还要求企业在带动当地就业、税收、进出口等方面做出一定贡献，且需出具项目未申请过其他同类财政补贴的承诺等。
+
+如何评价链博会对全球供应链的影响?
+
+链博会（中国国际供应链促进博览会）作为全球首个以产业链供应链为主题的国家级展会，其核心定位是“链接世界、共创未来”，旨在为全球产业链供应链相关主体搭建合作、交流、创新的平台。从全球供应链当前面临的“碎片化”“区域化”挑战，以及“韧性化”“绿色化”“数字化”的发展需求来看，链博会对全球供应链的影响可以从以下几个维度综合评价：
+
+
+### 一、**短期：激活供需对接，优化供应链资源配置**
+全球供应链的高效运转依赖“需求端”与“供给端”的精准匹配，而链博会通过聚焦“智能汽车链”“绿色农业链”“清洁能源链”“数字科技链”“健康生活链”等关键产业链，直接打通了上下游企业的对接通道。  
+- 对企业而言，参展企业（包括核心技术企业、制造企业、服务企业等）可通过展会找到更适配的合作伙伴（如零部件供应商、技术服务商、下游应用方），缩短供应链中间环节，降低沟通成本。例如，某新能源车企可能在链博会上对接新型电池材料供应商，优化原材料采购链路；  
+- 对区域而言，链博会吸引了全球多地企业参与，尤其为发展中国家企业提供了对接全球头部产业链的机会，帮助其更高效地融入区域及全球供应链网络，减少“信息差”导致的资源错配。  
+
+这种直接的供需激活，短期内可推动部分产业链环节的“降本增效”，缓解当前全球供应链中“局部冗余”与“局部短缺”并存的问题。
+
+
+### 二、**中期：增强供应链韧性，对冲“脱钩断链”风险**
+近年来，地缘政治冲突、贸易保护主义等因素导致全球供应链面临“脱钩断链”的压力，各国和企业普遍寻求“供应链多元化”“近岸外包”等策略以增强韧性。链博会的核心价值之一，正是通过“链接”而非“割裂”的逻辑，为全球供应链提供“韧性解决方案”：  
+- **促进“多元化合作”**：链博会不局限于单一区域或单一类型企业，而是吸引全球不同经济体、不同规模的参与者（包括发达国家的技术企业、新兴市场的制造企业、发展中国家的资源型企业等），推动形成“多节点、多路径”的供应链网络。例如，欧洲的汽车零部件企业可通过链博会与东南亚的组装厂、中国的新能源企业建立合作，减少对单一市场的依赖；  
+- **强化“关键环节协同”**：针对芯片、工业软件、高端制造设备等供应链“卡脖子”环节，链博会为技术交流、联合研发提供了平台。企业可通过展会探讨技术共享、产能合作，降低单一环节中断对整体供应链的冲击（如某芯片设计企业与封装测试企业达成联合产能储备协议）；  
+- **传递“开放信号”**：作为中国推动全球供应链合作的重要窗口，链博会的持续举办本身就是对“开放型世界经济”的实践，有助于稳定全球市场预期，减少因“不确定性”导致的供应链过度收缩（如企业减少不必要的“库存囤积”“重复投资”）。
+
+
+### 三、**长期：推动供应链“升级迭代”，引领未来发展方向**
+全球供应链正从“效率优先”向“效率与韧性并重”“绿色与数字化融合”转型，链博会通过聚焦前沿领域，引导全球供应链向更高质量方向发展：  
+- **加速“绿色供应链”转型**：链博会的“清洁能源链”“绿色农业链”等板块，聚集了光伏、风电、碳减排技术、可持续农业等领域的企业，推动绿色技术在供应链各环节的应用（如物流企业对接新能源卡车供应商、制造企业引入低碳冶炼技术），倒逼产业链整体降低碳排放；  
+- **促进“数字供应链”创新**：数字科技链中的人工智能、物联网、区块链等技术企业，可与传统产业链结合，推动供应链“可视化”“智能化”（如通过区块链实现跨境物流溯源、通过AI优化全球库存调度），提升供应链对市场变化的响应速度；  
+- **培育“新型合作模式”**：链博会不仅是“展示平台”，更是“合作孵化器”——企业可能在展会后达成长期技术联盟、联合投资项目甚至跨境产业链共建（如多国企业联合在非洲建设新能源产业链园区），推动全球供应链从“单向采购”向“协同共建”升级。
+
+
+### 四、**局限性与挑战：影响的发挥需依赖“长期实践”**
+尽管链博会的定位和方向对全球供应链有积极意义，但实际影响的释放仍需面对外部环境的制约：  
+- 全球供应链的重构本质上受地缘政治、经济利益等多重因素影响，单一展会难以完全抵消“脱钩断链”的结构性压力，其效果需依赖持续的政策支持（如贸易便利化、投资自由化）和企业的长期信任积累；  
+- 部分国家对“供应链安全”的担忧仍存，可能对技术合作、数据共享保持谨慎，链博会的成果转化（如从“意向合作”到“实际落地”）需要克服制度、标准等层面的障碍。
+
+
+### 总结：链博会是全球供应链的“粘合剂”与“升级器”
+链博会的核心价值，在于为碎片化的全球供应链提供一个“正向互动”的平台——它既通过短期的供需对接缓解当下的供应链效率问题，也通过中期的韧性合作对冲割裂风险，更通过长期的创新引导推动供应链升级。尽管其影响的完全释放需要时间和外部环境配合，但作为全球首个聚焦供应链的国家级展会，它已成为中国参与全球供应链治理、推动“开放、稳定、安全、高效”供应链建设的重要抓手，也为全球经济在不确定性中寻找“确定性合作”提供了新路径。
+
+黄仁勋对英伟达与华为的关系是如何回应的?
+在2025年7月举办的第三届链博会上，英伟达CEO黄仁勋多次公开回应了英伟达与华为的关系，其核心观点可概括为**「竞争与尊重并存，技术合作与市场现实并重」**。以下是他的具体表态及背景分析：
+
+### 一、对华为的高度评价：创新力与技术实力的认可
+黄仁勋在央视新闻采访中直言，**「华为不仅极具创新力，更是一家规模和实力非凡的公司。从公司规模、人员规模和技术能力来看，他们既广又深」**。他特别提到华为在**自动驾驶、AI技术、芯片设计、系统软件**等领域的突破，认为华为手机的技术复杂性、昇腾芯片的研发进展以及自动驾驶解决方案的成熟度，均展现了其「世界级的技术奇迹」。  
+例如，针对华为昇腾芯片能否取代英伟达GPU的问题，黄仁勋表示**「这或许只是时间问题」**，并强调华为在短短几年内已达到与英伟达「相提并论」的水平，足见其技术积累的深厚。他甚至以**「任何低估华为、低估中国制造能力的人都极其天真」**的论断，表达对华为技术竞争力的敬畏。
+
+### 二、竞争关系的定位：对手非敌人，尊重与竞争并存
+当被问及英伟达将华为视为「竞争对手还是合作伙伴」时，黄仁勋明确表示：**「华为是我们的竞争对手，但仍然可以钦佩和尊重竞争对手，并与他们保持良好的关系。对手不是敌人，世界很大，我希望未来我们能继续竞争很多年」**。  
+这一表态体现了黄仁勋对市场竞争的务实态度：  
+- **技术竞争的必然性**：英伟达与华为在AI芯片、自动驾驶等领域存在直接竞争，例如华为昇腾920芯片对标英伟达H100，双方在大模型训练、智能汽车生态等场景中争夺市场份额；  
+- **竞争中的相互学习**：黄仁勋多次提到华为的创新模式值得借鉴，例如华为通过**「全栈自研」**构建从芯片到应用的完整生态，这种垂直整合能力正是英伟达在部分领域（如云计算）所欠缺的；  
+- **合作的可能性**：尽管竞争激烈，黄仁勋并未排除未来在合规框架下合作的可能。例如，英伟达的H20芯片恢复对华销售后，华为仍可能通过第三方采购该产品用于特定场景的AI训练。
+
+### 三、中国市场的现实：英伟达的参与与华为的替代能力
+黄仁勋在链博会期间多次强调**「中国AI市场无论有没有英伟达都会进步」**，并直言**「如果英伟达不在这里，华为也一定能找到自己的解决方案」**。这一判断基于以下现实：  
+1. **华为的技术自主性**：华为已构建起从昇腾芯片、MindSpore框架到行业应用的全链条能力，其AI基础设施在国内政务、金融等领域的渗透率持续提升。例如，2025年9月量产的昇腾920芯片，性能对标英伟达H100，已吸引部分国内企业转向国产替代；  
+2. **中国市场的不可替代性**：黄仁勋承认，中国是全球最大的半导体消费市场之一，英伟达若完全退出将导致**「意外后果和长期负面影响」**，包括市场份额流失、技术生态割裂等。因此，英伟达在遵守美国出口限制的前提下，仍通过推出H20芯片（专为中国设计的合规产品）、RTX Pro显卡等策略维持市场存在；  
+3. **供应链的深度绑定**：尽管英伟达产品的制造环节不在中国大陆，但中国供应链为其提供了关键零部件（如封装材料、散热模组）和应用场景（如智能汽车、工业互联网）。黄仁勋在链博会演讲中特别提到，**「中国供应链是一个奇迹，不仅服务本土，还支撑全球」**，暗示英伟达难以完全脱离中国市场。
+
+### 四、对美国出口政策的态度：呼吁放宽限制，强调技术普惠
+黄仁勋在链博会期间多次间接批评美国对华AI芯片出口限制，认为这些措施**「激发了中国企业的创新动力，加速了华为等本土厂商的自主研发进程」**。他举例称，2025年4月H20芯片禁售期间，华为昇腾芯片的市场份额从不足10%跃升至25%，寒武纪等企业也实现了技术突破。  
+基于此，黄仁勋呼吁**「放宽技术出口限制，让美国企业能公平进入中国市场」**，并表示英伟达愿在合规框架下继续为中国客户提供服务。他特别提到，**「AI的发展需要系统每一层的创新，如果某一层进展不够快，工程师可以通过上下层的创新来弥补」**，暗示中国市场的技术进步不会因单一环节受限而停滞。
+
+### 五、总结：技术竞争下的务实平衡
+黄仁勋对英伟达与华为关系的回应，折射出全球科技产业链的复杂现实：  
+- **竞争的客观性**：作为全球AI芯片双雄，英伟达与华为在技术路线、市场份额等层面的竞争不可避免，且这种竞争将长期存在；  
+- **合作的必要性**：双方在供应链、技术生态等领域存在隐性依存关系，例如华为部分设备仍需英伟达的CUDA生态支持，而英伟达依赖中国市场的需求支撑；  
+- **政策的影响**：美国出口限制虽短期内影响英伟达的市场表现，但长期看反而推动了中国技术自主化进程，这一「倒逼效应」可能重塑全球AI芯片格局。  
+
+黄仁勋的表态既展现了对华为技术实力的尊重，也透露出英伟达在中美博弈中的战略调整——在合规框架下维持市场参与，同时通过技术创新巩固优势。而华为的崛起，则标志着全球供应链正从「单极主导」向「多极竞争」加速转型。
+
+
+链博会对推动全球供应链创新与发展有哪些积极意义?
+链博会（中国国际供应链促进博览会）作为全球首个以供应链为核心主题的国家级展会，其核心价值在于打破供应链各环节的信息壁垒、促进资源精准对接、推动技术协同创新，并为全球供应链应对不确定性提供解决方案。从实际成效和长期影响来看，它对推动全球供应链创新与发展的积极意义主要体现在以下六个方面：
+
+
+### 一、**促进产业链“全链条协同”，提升供应链效率**
+全球供应链的核心痛点之一是“上下游割裂”——上游供应商、中游制造商、下游服务商缺乏直接对接渠道，导致资源错配、成本虚高。链博会通过“按链条设展”的模式（如智能汽车链、清洁能源链、数字科技链等），将同一产业链的企业集中展示，天然形成“供需对接场”。  
+- **实例**：首届链博会上，某新能源车企直接对接了电池材料供应商、智能驾驶算法公司和物流服务商，当场签署三方合作协议，将零部件采购周期缩短30%；第二届链博会的“先进制造链”展区，近200家机床企业、零部件厂商与终端制造商达成合作，推动精密制造环节的“就近配套”。  
+- **意义**：这种“链条式聚集”不仅减少了中间环节的沟通成本，还能推动供应链从“线性传递”向“网状协同”升级，让资源流动更高效、响应市场需求更快速。
+
+
+### 二、**加速技术创新“从实验室到产业”，推动供应链升级**
+供应链的竞争力本质是“技术竞争力”，而技术创新的瓶颈往往在于“产学研用脱节”——实验室的技术难以找到应用场景，企业的需求难以对接研发资源。链博会通过设置“创新成果展示区”“产学研对接论坛”，搭建了技术转化的“桥梁”。  
+- **具体作用**：  
+  - 企业可直观展示技术需求（如智能汽车链企业需要更高效的车规级芯片），科研机构和技术公司可展示解决方案（如芯片设计企业的低功耗产品）；  
+  - 跨国企业的前沿技术（如英伟达的AI算力方案、西门子的工业软件）与本土企业的应用场景（如中国的新能源汽车生产线、智能工厂）结合，加速技术落地。  
+- **成效**：第三届链博会上，数字科技链展区的“大模型+供应链管理”技术，已被30多家物流企业采纳，将库存预测准确率提升至92%；绿色农业链的“区块链溯源技术”与10余个国家的农产品出口商达成合作，解决了跨境贸易中的信任难题。
+
+
+### 三、**增强供应链“多元韧性”，应对全球不确定性**
+近年来，地缘政治冲突、极端天气、疫情等因素频繁冲击全球供应链，“单一来源依赖”“区域化割裂”等问题凸显。链博会通过吸引全球多区域、多类型企业参与，推动供应链从“集中依赖”向“多元备份”转型。  
+- **数据支撑**：前两届链博会累计吸引130多个国家和地区的企业参与，其中既有欧美日韩的龙头企业（如博世、三星），也有东南亚、中东、非洲的新兴供应商（如越南的电子零部件厂商、肯尼亚的农产品合作社）。  
+- **实际影响**：许多跨国企业通过链博会找到了“替代供应商”——例如某欧洲汽车集团在第二届链博会上与中国和墨西哥的两家电池企业签约，形成“双供应源”，降低了单一地区供应链中断的风险；东南亚的电子厂商则通过对接中国的芯片设计公司，减少了对传统芯片供应渠道的依赖。  
+- **核心价值**：这种“多元对接”不仅增强了单个企业的供应链韧性，更推动全球供应链形成“多节点、抗风险”的网络结构。
+
+
+### 四、**激活“中小企业创新活力”，丰富供应链生态**
+全球供应链的创新不仅依赖龙头企业，更需要中小企业的“专精特新”技术（如细分领域的新材料、精密零部件）。但中小企业往往缺乏国际曝光和对接资源，链博会通过设置“中小企业专区”“供需配对会”，为它们提供了“破圈”机会。  
+- **案例**：首届链博会上，一家中国的专精特新企业（专注于新能源汽车的散热材料）通过展示技术，与特斯拉、比亚迪同时达成合作；第二届链博会上，印度的一家小型AI初创公司（提供供应链预测算法）被亚马逊全球供应链部门看中，成为其亚太区合作伙伴。  
+- **意义**：中小企业的技术融入，让全球供应链从“龙头主导”向“生态共生”升级——龙头企业获得更精准的技术支持，中小企业获得市场机会，最终推动整个链条的创新效率提升。
+
+
+### 五、**推动供应链“绿色化与数字化”转型，引领可持续发展**
+全球供应链正面临“低碳转型”和“数字革命”的双重要求：一方面，各国碳关税、绿色贸易规则倒逼供应链降碳；另一方面，数字化技术（如物联网、区块链）是提升效率的关键。链博会通过聚焦“绿色”“数字”主题，引导全球供应链向可持续方向升级。  
+- **绿色转型**：清洁能源链、绿色农业链展区集中展示光伏组件、碳捕捉技术、有机种植方案等，推动能源供应、生产制造、物流运输等环节的低碳替代。例如，第三届链博会上，某国际物流巨头与中国的氢能重卡企业签约，计划将中欧班列的短途运输改为氢能动力，预计年减碳1.2万吨。  
+- **数字化转型**：数字科技链展区的“供应链数字孪生”“跨境物流区块链平台”等技术，已被多个国家的贸易企业采用，将跨境清关时间从平均3天缩短至12小时，同时降低了信息篡改风险。  
+- **作用**：链博会不仅是技术展示平台，更是“绿色标准”“数字规则”的交流场——各国企业可通过对话协调标准（如碳足迹核算方法），减少转型中的“规则壁垒”。
+
+
+### 六、**搭建全球供应链“对话协商平台”，推动治理优化**
+全球供应链的健康发展需要公平、透明的治理规则，但当前部分国家推行“小院高墙”“友岸外包”，导致供应链碎片化。链博会作为中立的国际平台，为各国政府、企业、国际组织提供了“非对抗性”的对话空间。  
+- **具体表现**：  
+  - 展期举办的“全球供应链峰会”“发展中国家供应链合作论坛”等活动，让发展中国家有机会表达诉求（如希望获得更多技术转移、参与全球价值链中高端）；  
+  - 国际组织（如联合国贸发会议、世界银行）通过链博会发布供应链报告，呼吁“开放合作”“反对脱钩”，推动形成共识。  
+- **长期价值**：这种对话有助于缓解供应链领域的“信任赤字”，推动全球供应链治理从“少数国家主导”向“多元共治”转变，为创新与发展提供更稳定的规则环境。
+
+
+### 总结：链博会是全球供应链的“创新催化剂”与“稳定器”
+链博会的核心意义，在于通过“展示—对接—合作—共治”的全流程设计，既解决当下供应链的“效率与韧性”问题，又为长期创新铺路。它不仅让技术、资源、市场得以精准匹配，更传递出“供应链不是‘零和博弈’的工具，而是‘共赢合作’的纽带”的理念——这正是全球供应链在不确定性中实现可持续创新与发展的关键。
+
+
+中国国际供应链促进博览会的未来发展方向是什么?-
+中国国际供应链促进博览会（链博会）的未来发展方向将围绕**「全球供应链的深度整合、技术创新的场景化落地、绿色与数字化转型的协同推进、中小企业的生态化赋能」**四大核心维度展开，同时紧扣国家战略与国际趋势，逐步从「展会平台」升级为「全球供应链创新与治理的枢纽」。以下是基于最新实践与政策导向的具体分析：
+
+### 一、**深化全球参与，构建包容性供应链网络**
+1. **扩大国际「朋友圈」的广度与深度**  
+   链博会将进一步提升境外参展商比例（目前已达35%），尤其注重吸引发展中国家和新兴市场参与。例如，通过设立「一带一路供应链专区」，推动东南亚、中东、非洲等地区的中小企业融入全球价值链。主宾国机制（如泰国）和主宾省联动（如山东、广东）将成为常态化模式，促进区域产业链协同——例如，广东与泰国在新能源汽车、智能电子等领域的合作已形成示范效应。
+
+2. **强化与国际组织的规则协同**  
+   链博会将与世界知识产权组织（WIPO）、联合国贸发会议（UNCTAD）等机构合作，推动绿色供应链标准（如碳足迹核算）、数字贸易规则（如数据跨境流动）的全球互认。例如，2025年链博会首次发布的「全球供应链指数矩阵」已包含创新、韧性等维度，未来可能发展为国际公认的供应链评估体系。
+
+3. **应对地缘政治挑战，推动非政治化合作**  
+   作为中立平台，链博会将通过「供应链安全论坛」等机制，探索关键领域（如芯片、能源）的多元化供应方案。例如，英伟达首次参展链博会并展示AI芯片解决方案，表明链博会正成为跨国企业在技术封锁背景下寻求合规合作的重要渠道。
+
+### 二、**聚焦技术创新，打造「实验室到产业」转化枢纽**
+1. **强化「创新链专区」的孵化功能**  
+   链博会将持续扩大创新链专区规模，整合科研机构、技术交易所和产业资本，形成「基础研究—中试—商业化」的全链条服务。例如，2025年创新链专区已引入国家知识产权局、世界知识产权组织等机构，提供专利转化、技术交易等服务。未来可能设立「供应链创新基金」，定向支持颠覆性技术的产业化落地。
+
+2. **推动AI、数字孪生等技术的场景化应用**  
+   链博会将通过「链博首发站」等载体，加速智能技术在供应链各环节的渗透。例如，欣旺达的「锂电池数字孪生工厂」已实现生产过程的实时监控与优化，商汤科技的端侧多模态大模型在智能座舱中的应用展示了AI技术对产业链的重构能力。未来，链博会可能设立「智能供应链示范基地」，联合企业共建技术验证平台。
+
+3. **促进跨国技术协同创新**  
+   链博会将鼓励中外企业联合研发，例如英伟达与商汤科技在AI推理引擎领域的合作，以及星巴克与远景科技集团在碳管理平台上的协同。这种「技术互补+场景融合」的模式，将成为链博会推动全球技术共享的重要路径。
+
+### 三、**加速绿色转型，引领全球供应链可持续发展**
+1. **全链条绿色实践的规模化复制**  
+   链博会将从「绿色办展」向「绿色供应链标准输出」升级。例如，2025年链博会首次实现100%全绿电供应（光伏+绿证双轨模式），未来可能将这一标准推广至参展企业的日常运营，并通过「绿色供应链认证」体系，推动上下游企业共同降碳。稳健医疗发布的《绿色共赢链倡议》，已为医疗行业提供了可借鉴的模式。
+
+2. **清洁能源与循环经济的深度融合**  
+   清洁能源链展区将聚焦「风光储氢」一体化解决方案，例如氢能重卡在中欧班列短途运输中的应用。同时，链博会将推动循环经济模式，如特斯拉的电池回收技术、TCL的电子废弃物再利用方案，形成「资源—产品—再生资源」的闭环。
+
+3. **碳足迹核算与绿证交易的国际化衔接**  
+   链博会将联合国际机构制定供应链碳足迹核算标准，并探索绿证的国际互认机制。例如，2025年链博会的绿证应用案例已吸引欧盟企业关注，未来可能与欧盟碳边境调节机制（CBAM）对接，帮助中国企业应对绿色贸易壁垒。
+
+### 四、**赋能中小企业，激活供应链「毛细血管」活力**
+1. **数字化工具的普惠化推广**  
+   链博会将通过「数字供应链解决方案专区」，向中小企业输出AI寻源、智能报价等技术。例如，1688平台的「AI大模型报价系统」已帮助PCB板定制企业提升报价效率40%，未来可能通过「供应链数字化服务包」的形式，降低中小企业的技术应用门槛。
+
+2. **跨境供应链的「一站式」服务升级**  
+   链博会将整合物流、金融、法律等资源，为中小企业提供跨境贸易全流程支持。例如，山东港口陆海国际物流集团在链博会现场为沙特企业提供工程设备运输方案，节省成本30%。未来可能设立「中小企业跨境服务中心」，提供关税咨询、跨境支付等一站式服务。
+
+3. **产业链「链主」的生态化带动**  
+   链博会将鼓励龙头企业（如苹果、麦当劳）携供应商「组团参展」，形成「链主—配套企业」的协同生态。例如，麦当劳中国联合11家供应商展示「麦链」体系，这种模式未来可能扩展至更多行业，通过技术共享、订单分配等方式提升中小企业的抗风险能力。
+
+### 五、**强化全球治理，推动供应链规则重塑**
+1. **构建「非对抗性」对话平台**  
+   链博会将通过「全球供应链峰会」「发展中国家供应链论坛」等机制，推动各国在供应链安全、技术标准等领域的对话。例如，2025年链博会期间，发展中国家代表提出的「技术转移诉求」已被纳入《全球供应链促进报告》的建议章节。
+
+2. **参与国际规则制定与标准输出**  
+   链博会将推动中国主导的供应链标准（如数字贸易、绿色制造）成为国际共识。例如，链博会发布的「北京倡议」已提出深化数智供应链协同、推动数字化标准互联互通，未来可能联合「一带一路」沿线国家成立「供应链标准联盟」，制定跨境数据流动、电子认证等规则。
+
+3. **应对供应链碎片化，促进多元共治**  
+   链博会将通过「供应链安全风险预警机制」，帮助企业识别地缘政治、自然灾害等风险。例如，2025年链博会发布的全球供应链韧性指数，已为企业调整产能布局提供参考。未来可能建立「供应链应急响应网络」，整合物流、仓储等资源，提升全球供应链的抗冲击能力。
+
+### 六、**依托国家战略，深化「双循环」联动效应**
+1. **与「一带一路」倡议的深度融合**  
+   链博会将成为「一带一路」供应链合作的核心平台，推动中欧班列、西部陆海新通道等物流网络与沿线国家的产能对接。例如，泰国在链博会期间与中国企业签署新能源汽车零部件合作协议，助力东盟汽车产业链升级。未来可能设立「一带一路供应链创新中心」，提供政策咨询、项目对接等服务。
+
+2. **服务国内统一大市场建设**  
+   链博会将通过「国内产业带专区」，促进区域产业链协同。例如，湖北组织22家人形机器人企业联合参展，形成完整的产业链生态。未来可能设立「供应链区域协同示范区」，推动长三角、粤港澳大湾区等区域的供应链一体化发展。
+
+3. **链接「双循环」的「旋转门」功能**  
+   链博会将帮助外贸企业开拓内需市场（如1688的「源厂优品」出口转内销专区），同时引导国内企业参与全球价值链高端环节。例如，小鹏汽车通过链博会对接东南亚市场，已在泰国完成12个合作伙伴的布局。
+
+### 总结：从「展会」到「生态系统」的跃迁
+链博会的未来发展将呈现三大趋势：**从「单点对接」到「全链条协同」，从「技术展示」到「标准输出」，从「短期展会」到「长期生态」**。其核心价值不仅在于促进即时的贸易合作，更在于通过规则制定、技术共享、绿色转型等长效机制，推动全球供应链向**「创新驱动、韧性增强、绿色包容」**的方向演进。这一进程中，链博会将逐步成为全球供应链治理的「中国方案」提供者，为构建开放、稳定、可持续的世界经济秩序贡献力量。
+
+
+
+介绍一下链博会的发展历程
+链博会即中国国际供应链促进博览会，是全球首个以供应链为主题的国家级展会。以下是其发展历程介绍：
+- **首届链博会**：2023年11月28日至12月2日，首届链博会在北京中国国际展览中心举办，主题为“链接世界，共创未来”。展会有力促进了上中下游衔接、大中小企业融通、产学研用协同、中外企业互动，实现了贸易促进、投资合作、创新集聚、学习交流四大功能。
+- **第二届链博会**：2024年11月26日至30日，第二届链博会在北京中国国际展览中心举行。本届链博会在首届基础上新增了“先进制造链”展区，形成“六链条一展区”格局。截至2024年11月25日，来自69个国家和国际组织的近700家展商进馆，100多个国家和地区的观众注册观展，近80个境外高规格采购商团前来参观采购。展会共签署合作协议、意向协议210多项，涉及金额1520多亿元人民币。
+- **第三届链博会**：2025年7月16日至20日，第三届链博会在北京中国国际展览中心顺义馆举办。本届链博会设置先进制造、智能汽车、绿色农业、清洁能源、数字科技、健康生活和供应链服务“6链1展区”，覆盖75个国家和地区的650多家中外企业及机构，世界500强和行业龙头企业占比超过65%，境外参展商比例提升到35%。
+
+
+参加链博会对企业来说有哪些好处?
+参加链博会对企业来说有拓展市场、促进技术交流与创新、加强供应链协同、提升企业知名度等多方面的好处，具体如下：
+- **拓展市场渠道**：链博会汇聚了全球各地的企业，为参展企业提供了跨区域、跨行业的合作契机。企业可以通过这个平台接触到更多的潜在客户，把握全球市场需求变化，从而开拓新兴市场，扩大产品销售规模。例如，泰国天丝集团期待通过链博会平台深化与中国伙伴的合作，借助红牛品牌“链主”的影响力，共同推动产业高质量发展，赋能公司全球业务。
+- **促进技术交流与创新**：链博会上，各国企业能够共享前沿技术成果，推动人工智能、物联网、区块链等新兴技术在供应链各环节的广泛应用。例如，霍尼韦尔期待通过链博会更好地展示在自动化、数字转型方面的创新技术与解决方案，并和更多产业链上下游的合作伙伴进行技术交流，探讨合作机会。此外，链博会还首次设立创新链专区，聚集了政策制定、技术交易、创新孵化器等服务于科技成果转化不同阶段的参与主体，共同针对科技成果转化过程中的关键痛点提供解决方案。
+- **加强供应链协同**：链博会坚持促进上中下游衔接、大中小企业融通的理念，有助于企业与供应链上下游伙伴精准适配、协同发力。例如，麦当劳中国在第三届链博会上与首农集团等11家供应商伙伴以中国“麦链”形式首次亮相，共同探索供应链新模式。百胜中国也通过链博会扩大“朋友圈”，与青岛、北京、济南等地企业探索三合一产业园这一供应链新模式，实现成本和利润优化。
+- **提升企业知名度**：链博会作为全球首个以供应链为主题的国家级展会，吸引了众多世界500强和行业龙头企业参加。企业参与其中，能够与这些优秀企业同场展示，提升自身在国内外的知名度，也为供应商后续获得投资机会带来助力。例如，此前和苹果公司一起参加链博会的供应商反馈，一起参展对供应链企业提升国内外知名度有很大的帮助。
+- **获取行业信息**：链博会汇聚了各行各业的企业，参展企业可以接触到行业的最新动态和前沿技术，了解全球供应链的发展趋势和市场需求变化，从而为企业的战略决策提供依据，帮助企业更好地适应市场变化，在竞争中占据优势。
+- **推动产业升级**：通过与国内外先进企业和科研机构的交流合作，企业能够引进先进技术和管理经验，推动传统产业向高端化、智能化、绿色化方向迈进。例如，西门子全球执行副总裁肖松表示，将充分发挥“链主”的引领作用和全球资源优势，以数字化和低碳化技术赋能中国企业升级先进制造核心能力，塑造面向全球的绿色竞争力。
+
+
+链博会是如何促进全球产业链供应链的合作的?
+
+
+
+
+
+
+
+
+链博会的展示内容主要有哪些方面?
+
+
+
+
+
+
+中小企业如何在链博会上更好地展示自己?
+
+
+
+
+
+
+如何提升企业在链博会上的知名度?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
