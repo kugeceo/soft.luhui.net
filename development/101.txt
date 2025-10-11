@@ -1,0 +1,1208 @@
+鲁虺文本内容搜索展示系统luhuitxtcms html JavaScript txt Version2.0.8更新
+
+
+更新鲁虺文本内容搜索展示系统luhuitxtcms html JavaScript txt Version2.0.7搜索框界面一下部分的内容和图片全部都不显示了，修改下。
+
+
+
+<luhuicanvas type="webview" identifier="luhuitxtcms-fix-content-display" title="修复内容不显示问题的鲁虺文本内容搜索展示系统" genre="">
+    <luhuicanvas-part path="index.html" language="html" description="修复搜索框下方内容和图片不显示的问题"><!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="鲁虺文本内容搜索展示系统，高效检索与展示各类文本内容">
+    <meta name="keywords" content="鲁虺,文本内容,搜索系统,文档管理">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>鲁虺文本内容搜索展示系统</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+        }
+        .content-wrapper {
+            display: block !important; /* 确保内容容器始终显示 */
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
+            font-weight: bold;
+            margin: 1.5rem 0 1rem;
+        }
+        .markdown-content h1 { font-size: 1.8rem; }
+        .markdown-content h2 { font-size: 1.5rem; }
+        .markdown-content h3 { font-size: 1.2rem; }
+        .markdown-content p { margin-bottom: 1rem; }
+        .markdown-content ul, .markdown-content ol { 
+            margin-left: 1.5rem; 
+            margin-bottom: 1rem;
+        }
+        .markdown-content ul { list-style-type: disc; }
+        .markdown-content ol { list-style-type: decimal; }
+        .markdown-content blockquote {
+            border-left: 4px solid #ddd;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #666;
+        }
+        .markdown-content a { color: #3b82f6; text-decoration: underline; }
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 1.5rem auto;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .nav-link.active {
+            color: #1e40af;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .error-message {
+            background-color: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        .system-error {
+            background-color: #ffebee;
+            border: 1px solid #ef9a9a;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        .search-options {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .search-options label {
+            display: flex;
+            align-items: center;
+            margin-right: 1.5rem;
+            cursor: pointer;
+        }
+        .search-options input[type="radio"] {
+            margin-right: 0.3rem;
+        }
+        .image-error-container {
+            position: relative;
+            max-width: 100%;
+            min-height: 150px;
+            margin: 1.5rem auto;
+            background-color: #f3f4f6;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .image-error-icon {
+            font-size: 2rem;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+        }
+        .image-error-message {
+            color: #6b7280;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        .debug-info {
+            font-size: 0.8rem;
+            color: #6b7280;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <header class="mb-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">鲁虺文本内容搜索展示系统</h1>
+                    <p class="text-gray-600">高效检索与展示各类文本内容</p>
+                </div>
+                <button id="home-button" class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition">
+                    <i class="fas fa-home mr-1"></i> 首页
+                </button>
+            </div>
+        </header>
+        
+        <div class="mb-6">
+            <div class="search-options">
+                <label>
+                    <input type="radio" name="search-type" value="title" checked> 标题搜索
+                </label>
+                <label>
+                    <input type="radio" name="search-type" value="fulltext"> 全文搜索
+                </label>
+            </div>
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="search-input" placeholder="搜索文章标题或内容..."
+                    class="border border-gray-300 p-2 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button id="search-button" class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
+                    <i class="fas fa-search mr-1"></i> 搜索
+                </button>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 - 添加强制显示的类 -->
+        <div class="content-wrapper">
+            <!-- 分类导航 -->
+            <div id="category-nav" class="mb-6 overflow-x-auto pb-2">
+                <div class="flex space-x-4 min-w-max">
+                    <!-- 分类导航链接将在这里动态生成 -->
+                    <div class="nav-placeholder text-gray-500">加载分类中...</div>
+                </div>
+            </div>
+            
+            <!-- 分类统计 -->
+            <div id="category-stats" class="mb-6 p-4 bg-white rounded-lg shadow-sm">
+                <!-- 统计信息将在这里动态生成 -->
+                <div class="stats-placeholder text-gray-500">加载统计中...</div>
+            </div>
+            
+            <!-- 加载状态 -->
+            <div id="loading-indicator" class="hidden mb-6 text-center">
+                <div class="loading mx-auto"></div>
+                <p class="text-gray-600 mt-2">正在加载内容...</p>
+            </div>
+            
+            <!-- 系统错误提示 -->
+            <div id="system-error" class="hidden mb-6">
+                <div class="system-error">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span id="system-error-message">发生系统错误</span>
+                </div>
+            </div>
+            
+            <!-- 错误信息 -->
+            <div id="error-container" class="hidden mb-6">
+                <div id="error-message" class="error-message">
+                    <!-- 错误信息将在这里显示 -->
+                </div>
+            </div>
+            
+            <!-- 文章列表容器 -->
+            <div id="article-list-container" class="mb-8">
+                <div id="article-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 文章列表将在这里动态生成 -->
+                    <div class="col-span-full text-center py-10 text-gray-500">
+                        <i class="fas fa-circle-notch fa-spin text-3xl mb-2"></i>
+                        <p>准备加载文章列表...</p>
+                    </div>
+                </div>
+                
+                <!-- 分页控件 -->
+                <div id="pagination" class="flex flex-wrap justify-center gap-2 mt-6">
+                    <!-- 分页按钮将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 文章详情页 -->
+    <div id="article-detail" class="container mx-auto p-4 md:p-8 max-w-4xl hidden">
+        <button id="back-button" class="mb-6 inline-flex items-center bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
+            <i class="fas fa-arrow-left mr-2"></i> 返回列表
+        </button>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+            <h2 id="article-title" class="text-2xl md:text-3xl font-bold mb-4 text-gray-800"></h2>
+            <div id="article-meta" class="text-gray-500 text-sm mb-6">
+                <!-- 文章元数据将在这里显示 -->
+            </div>
+            <div id="article-content" class="markdown-content text-gray-700 leading-relaxed">
+                <!-- 文章内容将在这里显示 -->
+            </div>
+        </div>
+        
+        <div class="flex justify-between">
+            <button id="prev-article-button" class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
+                <i class="fas fa-chevron-left mr-1"></i> 上一篇
+            </button>
+            <button id="next-article-button" class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
+                下一篇 <i class="fas fa-chevron-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 全局错误处理
+        window.addEventListener('error', function(error) {
+            showSystemError(`页面发生错误: ${error.message}，请刷新页面重试。`, error);
+            return true; // 阻止默认处理
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            showSystemError(`发生未处理的异步错误: ${event.reason?.message || '未知错误'}`, event.reason);
+            event.preventDefault();
+        });
+
+        // DOM元素
+        const articleList = document.getElementById('article-list');
+        const articleDetail = document.getElementById('article-detail');
+        const articleTitle = document.getElementById('article-title');
+        const articleContent = document.getElementById('article-content');
+        const articleMeta = document.getElementById('article-meta');
+        const backButton = document.getElementById('back-button');
+        const homeButton = document.getElementById('home-button');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const searchTypeRadios = document.querySelectorAll('input[name="search-type"]');
+        const pagination = document.getElementById('pagination');
+        const articleListContainer = document.getElementById('article-list-container');
+        const categoryStats = document.getElementById('category-stats');
+        const prevArticleButton = document.getElementById('prev-article-button');
+        const nextArticleButton = document.getElementById('next-article-button');
+        const categoryNav = document.getElementById('category-nav').querySelector('div');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const errorContainer = document.getElementById('error-container');
+        const errorMessage = document.getElementById('error-message');
+        const systemError = document.getElementById('system-error');
+        const systemErrorMessage = document.getElementById('system-error-message');
+
+        // 配置参数
+        const categories = ['category1', 'category2', 'category3', 'category4', 'category5', 'category6','category7', 'category8'];
+        const categoryNames = {
+            'category1': '鲁虺软件',
+            'category2': '商业文案',
+            'category3': '视频剪辑',
+            'category4': '录音剪辑',
+            'category5': '网站运维',
+            'category6': '标志设计',
+            'category7': '诗词歌赋',
+            'category8': '社会观察'
+        };
+        const IMAGE_BASE_PATH = '/luhuitxtcms/';
+        const itemsPerPage = 10;
+        const LOAD_TIMEOUT = 10000;
+        const MAX_DETECTION_ATTEMPTS = 50;
+
+        // 状态管理
+        let currentPage = 1;
+        let currentCategory = null;
+        let searchTerm = '';
+        let searchType = 'title';
+        let totalArticles = 0;
+        let totalPages = 0;
+        let categoryArticleCounts = {};
+        let articleCache = new Map();
+        let loadTimeout = null;
+
+        // 显示系统级错误
+        function showSystemError(message, error = null) {
+            try {
+                // 显示错误信息
+                systemErrorMessage.textContent = message;
+                systemError.classList.remove('hidden');
+                
+                // 确保主要内容区域可见
+                document.querySelector('.content-wrapper').style.display = 'block';
+                
+                // 在控制台显示详细错误
+                console.error('系统错误:', error);
+                
+                // 显示友好的替代内容
+                articleList.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <div class="system-error inline-block">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <span>${message}</span>
+                        </div>
+                        <p class="mt-4 text-gray-600">请尝试刷新页面或返回首页</p>
+                        <button onclick="window.location.reload()" class="mt-2 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
+                            <i class="fas fa-sync-alt mr-1"></i> 刷新页面
+                        </button>
+                    </div>
+                `;
+                
+                // 隐藏加载状态
+                hideLoading();
+            } catch (e) {
+                console.error('显示错误信息时发生错误:', e);
+                alert(`系统错误: ${message}\n请刷新页面重试`);
+            }
+        }
+
+        // 初始化
+        function init() {
+            try {
+                // 增强的marked配置
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    renderer: {
+                        image(href, title, text) {
+                            let imageUrl = href || '';
+                            
+                            if (href && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+                                imageUrl = IMAGE_BASE_PATH + (currentCategory ? currentCategory + '/' : '') + href;
+                            }
+                            
+                            const titleAttr = title ? `title="${title}"` : '';
+                            return `<img src="${imageUrl}" alt="${text}" ${titleAttr} loading="lazy">`;
+                        }
+                    }
+                });
+
+                // 立即尝试生成分类导航
+                try {
+                    generateCategoryNav();
+                } catch (e) {
+                    console.error('生成分类导航失败:', e);
+                    document.querySelector('.nav-placeholder').textContent = '分类加载失败，请刷新页面';
+                }
+                
+                // 显示加载状态
+                showLoading();
+                
+                // 设置加载超时
+                loadTimeout = setTimeout(() => {
+                    hideLoading();
+                    showError('加载超时，请检查网络连接或重试');
+                }, LOAD_TIMEOUT);
+                
+                // 加载数据
+                Promise.all([
+                    loadCategoryStats().catch(e => {
+                        console.error('加载分类统计失败:', e);
+                        document.querySelector('.stats-placeholder').textContent = '统计加载失败';
+                        return {}; // 返回空对象继续执行
+                    }),
+                    handleUrlParams().catch(e => {
+                        console.error('处理URL参数失败:', e);
+                        return null; // 返回null继续执行
+                    })
+                ]).catch(error => {
+                    showSystemError('初始化失败: ' + (error.message || '未知错误'), error);
+                });
+            } catch (error) {
+                showSystemError('初始化系统时发生错误: ' + error.message, error);
+            }
+        }
+
+        // 处理URL参数
+        async function handleUrlParams() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const category = urlParams.get('category');
+                const articleId = urlParams.get('id');
+                const page = parseInt(urlParams.get('p')) || 1;
+                const q = urlParams.get('q') || '';
+
+                searchInput.value = q;
+                searchTerm = q;
+                currentPage = page;
+
+                if (articleId && category) {
+                    currentCategory = category;
+                    await showArticleDetail(category, articleId);
+                } else if (category && categories.includes(category)) {
+                    currentCategory = category;
+                    await loadArticlesByCategory(category, page);
+                    updateNavActiveState(category);
+                } else {
+                    await loadAllArticles(page);
+                }
+            } catch (error) {
+                console.error('处理URL参数出错:', error);
+                showError('加载内容失败: ' + error.message);
+                // 显示默认文章列表占位符
+                articleList.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-gray-500">
+                        <i class="fas fa-search-minus text-3xl mb-2"></i>
+                        <p>无法加载内容，请尝试搜索或浏览分类</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 加载分类统计信息
+        async function loadCategoryStats() {
+            try {
+                categoryArticleCounts = {};
+                
+                for (const category of categories) {
+                    categoryArticleCounts[category] = await detectArticleCount(category);
+                }
+                
+                displayCategoryStats();
+                return categoryArticleCounts;
+            } catch (error) {
+                console.error('加载分类统计出错:', error);
+                throw error;
+            }
+        }
+
+        // 检测分类中的文章数量
+        async function detectArticleCount(category) {
+            try {
+                let count = 0;
+                let consecutiveFailures = 0;
+                
+                for (let id = 1; id <= MAX_DETECTION_ATTEMPTS; id++) {
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 1000);
+                        
+                        const response = await fetch(`${category}/${id}.txt`, { 
+                            method: 'HEAD',
+                            signal: controller.signal 
+                        });
+                        
+                        clearTimeout(timeoutId);
+                        
+                        if (response.ok) {
+                            count = id;
+                            consecutiveFailures = 0;
+                        } else {
+                            consecutiveFailures++;
+                        }
+                    } catch (error) {
+                        consecutiveFailures++;
+                    }
+                    
+                    if (consecutiveFailures >= 5) {
+                        break;
+                    }
+                }
+                
+                return count;
+            } catch (error) {
+                console.error(`检测分类 ${category} 文章数量出错:`, error);
+                return 0; // 出错时返回0
+            }
+        }
+
+        // 显示分类统计
+        function displayCategoryStats() {
+            try {
+                let totalCount = 0;
+                let statsHtml = '<div class="flex flex-wrap gap-x-6 gap-y-2">';
+                statsHtml += '<span class="font-medium">文章分类统计：</span>';
+                
+                for (const category in categoryArticleCounts) {
+                    const count = categoryArticleCounts[category];
+                    totalCount += count;
+                    statsHtml += `<div><span class="text-gray-700">${categoryNames[category]}:</span> <span class="font-medium">${count}</span> 篇</div>`;
+                }
+                
+                statsHtml += `<div class="w-full mt-2 pt-2 border-t border-gray-100"><span class="font-medium">总计:</span> ${totalCount} 篇文章</div>`;
+                statsHtml += '</div>';
+                
+                categoryStats.innerHTML = statsHtml;
+            } catch (error) {
+                console.error('显示分类统计出错:', error);
+                categoryStats.innerHTML = `<div class="error-message">无法加载统计数据: ${error.message}</div>`;
+            }
+        }
+
+        // 生成分类导航
+        function generateCategoryNav() {
+            try {
+                // 清空占位符
+                categoryNav.innerHTML = '';
+                
+                // 添加"全部文章"链接
+                const allLink = document.createElement('a');
+                allLink.href = '?p=1';
+                allLink.textContent = '全部文章';
+                allLink.className = 'nav-link text-blue-500 hover:text-blue-700 whitespace-nowrap';
+                if (!currentCategory) {
+                    allLink.classList.add('active');
+                }
+                allLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentCategory = null;
+                    currentPage = 1;
+                    showLoading();
+                    loadAllArticles(1).finally(() => hideLoading());
+                    updateNavActiveState(null);
+                });
+                categoryNav.appendChild(allLink);
+                
+                // 添加各分类链接
+                categories.forEach(category => {
+                    const link = document.createElement('a');
+                    link.href = `?category=${category}&p=1`;
+                    link.textContent = categoryNames[category];
+                    link.className = 'nav-link text-blue-500 hover:text-blue-700 whitespace-nowrap';
+                    if (currentCategory === category) {
+                        link.classList.add('active');
+                    }
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentCategory = category;
+                        currentPage = 1;
+                        showLoading();
+                        loadArticlesByCategory(category, 1).finally(() => hideLoading());
+                        updateNavActiveState(category);
+                    });
+                    categoryNav.appendChild(link);
+                });
+            } catch (error) {
+                console.error('生成分类导航出错:', error);
+                categoryNav.innerHTML = `<div class="text-red-500">分类导航加载失败: ${error.message}</div>`;
+            }
+        }
+
+        // 更新导航激活状态
+        function updateNavActiveState(activeCategory) {
+            try {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                if (activeCategory === null) {
+                    categoryNav.querySelector('a:first-child').classList.add('active');
+                } else {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        if (link.href.includes(`category=${activeCategory}`)) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('更新导航状态出错:', error);
+            }
+        }
+
+        // 加载所有分类的文章
+        async function loadAllArticles(page) {
+            try {
+                let allArticles = [];
+                const batchSize = 2;
+                
+                for (let i = 0; i < categories.length; i += batchSize) {
+                    const batch = categories.slice(i, i + batchSize);
+                    const promises = batch.map(category => 
+                        loadArticlesFromCategory(category, 1, categoryArticleCounts[category] || 0)
+                    );
+                    const results = await Promise.all(promises);
+                    results.forEach(articles => allArticles.push(...articles));
+                }
+                
+                let filteredArticles = allArticles;
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filteredArticles = allArticles.filter(article => {
+                        if (searchType === 'title') {
+                            return article.title.toLowerCase().includes(term);
+                        } else {
+                            return article.title.toLowerCase().includes(term) || 
+                                   article.content.toLowerCase().includes(term);
+                        }
+                    });
+                }
+                
+                filteredArticles.sort((a, b) => {
+                    if (a.category === b.category) {
+                        return a.id - b.id;
+                    }
+                    return a.category.localeCompare(b.category);
+                });
+                
+                totalArticles = filteredArticles.length;
+                totalPages = Math.ceil(totalArticles / itemsPerPage);
+                const startIndex = (page - 1) * itemsPerPage;
+                const pageArticles = filteredArticles.slice(startIndex, startIndex + itemsPerPage);
+                
+                displayArticles(pageArticles);
+                displayPagination();
+                updateUrl();
+            } catch (error) {
+                console.error('加载所有文章出错:', error);
+                showError('加载文章失败: ' + error.message);
+                articleList.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-gray-500">
+                        <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
+                        <p>无法加载文章列表: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 按分类加载文章
+        async function loadArticlesByCategory(category, page) {
+            try {
+                const maxId = categoryArticleCounts[category] || 0;
+                const articles = await loadArticlesFromCategory(category, 1, maxId);
+                
+                let filteredArticles = articles;
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filteredArticles = articles.filter(article => {
+                        if (searchType === 'title') {
+                            return article.title.toLowerCase().includes(term);
+                        } else {
+                            return article.title.toLowerCase().includes(term) || 
+                                   article.content.toLowerCase().includes(term);
+                        }
+                    });
+                }
+                
+                totalArticles = filteredArticles.length;
+                totalPages = Math.ceil(totalArticles / itemsPerPage);
+                const startIndex = (page - 1) * itemsPerPage;
+                const pageArticles = filteredArticles.slice(startIndex, startIndex + itemsPerPage);
+                
+                displayArticles(pageArticles);
+                displayPagination();
+                updateUrl();
+            } catch (error) {
+                console.error(`加载分类 ${category} 文章出错:`, error);
+                showError('加载文章失败: ' + error.message);
+                articleList.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-gray-500">
+                        <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
+                        <p>无法加载分类文章: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 从指定分类加载文章
+        async function loadArticlesFromCategory(category, startId, endId) {
+            try {
+                if (endId < startId) return [];
+                
+                const articles = [];
+                const cacheKeyPrefix = `${category}_`;
+                
+                for (let id = startId; id <= endId; id++) {
+                    const cacheKey = cacheKeyPrefix + id;
+                    if (articleCache.has(cacheKey)) {
+                        articles.push(articleCache.get(cacheKey));
+                    }
+                }
+                
+                if (articles.length >= endId - startId + 1) {
+                    return articles;
+                }
+                
+                for (let id = startId; id <= endId; id++) {
+                    const cacheKey = cacheKeyPrefix + id;
+                    if (articleCache.has(cacheKey)) {
+                        continue;
+                    }
+                    
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 3000);
+                        
+                        const response = await fetch(`${category}/${id}.txt`, { 
+                            signal: controller.signal 
+                        });
+                        
+                        clearTimeout(timeoutId);
+                        
+                        if (!response.ok) {
+                            continue;
+                        }
+                        
+                        const arrayBuffer = await response.arrayBuffer();
+                        const encoding = detectEncoding(arrayBuffer);
+                        let text = '';
+                        
+                        if (encoding === 'utf-8') {
+                            const decoder = new TextDecoder('utf-8');
+                            text = decoder.decode(arrayBuffer);
+                        } else {
+                            const decoder = new TextDecoder('gbk');
+                            text = decoder.decode(arrayBuffer);
+                        }
+                        
+                        const lines = text.split('\n');
+                        const title = lines[0] || `未命名文章 (${category}-${id})`;
+                        const content = lines.slice(1).join('\n');
+                        
+                        const isMarkdown = title.toLowerCase().endsWith('.md') || 
+                                          id.toString().includes('.md');
+                        
+                        const article = {
+                            id,
+                            title: title.replace(/\.md$/i, ''),
+                            content,
+                            category,
+                            path: `${category}/${id}.txt`,
+                            isMarkdown
+                        };
+                        
+                        articles.push(article);
+                        articleCache.set(cacheKey, article);
+                    } catch (error) {
+                        if (error.name !== 'AbortError') {
+                            console.error(`加载文章 ${category}/${id}.txt 失败:`, error);
+                        }
+                        continue;
+                    }
+                }
+                
+                return articles;
+            } catch (error) {
+                console.error(`从分类 ${category} 加载文章出错:`, error);
+                return []; // 出错时返回空数组
+            }
+        }
+
+        // 显示文章列表
+        function displayArticles(articles) {
+            try {
+                articleList.innerHTML = '';
+                
+                if (articles.length === 0) {
+                    articleList.innerHTML = `
+                        <div class="col-span-full text-center py-10 text-gray-500">
+                            <i class="fas fa-search-minus text-3xl mb-2"></i>
+                            <p>未找到相关文章</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                articles.forEach(article => {
+                    const articleItem = document.createElement('div');
+                    articleItem.className = 'bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition';
+                    
+                    const link = document.createElement('a');
+                    link.href = `?category=${article.category}&id=${article.id}`;
+                    link.className = 'block h-full';
+                    link.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-medium text-gray-800 hover:text-blue-600 line-clamp-2">${article.title}</h3>
+                            <span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-full">${categoryNames[article.category]}</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-2">ID: ${article.id}</p>
+                    `;
+                    
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showArticleDetail(article.category, article.id);
+                    });
+                    
+                    articleItem.appendChild(link);
+                    articleList.appendChild(articleItem);
+                });
+            } catch (error) {
+                console.error('显示文章列表出错:', error);
+                articleList.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-gray-500">
+                        <i class="fas fa-exclamation-circle text-3xl mb-2"></i>
+                        <p>无法显示文章列表: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 显示文章详情
+        async function showArticleDetail(category, id) {
+            try {
+                showLoading();
+                
+                const cacheKey = `${category}_${id}`;
+                let article;
+                
+                if (articleCache.has(cacheKey)) {
+                    article = articleCache.get(cacheKey);
+                } else {
+                    const articles = await loadArticlesFromCategory(category, parseInt(id), parseInt(id));
+                    article = articles[0];
+                    
+                    if (!article) {
+                        throw new Error('文章不存在或无法加载');
+                    }
+                }
+                
+                articleListContainer.classList.add('hidden');
+                articleDetail.classList.remove('hidden');
+                
+                articleTitle.textContent = article.title;
+                articleMeta.innerHTML = `
+                    <span class="mr-4"><i class="fas fa-folder text-gray-400 mr-1"></i> ${categoryNames[article.category]}</span>
+                    <span><i class="fas fa-file-alt text-gray-400 mr-1"></i> ID: ${article.id}</span>
+                    ${article.isMarkdown ? '<span class="ml-4 px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">Markdown</span>' : ''}
+                `;
+                
+                if (article.isMarkdown) {
+                    articleContent.innerHTML = marked.parse(article.content);
+                } else {
+                    articleContent.innerHTML = `<pre>${escapeHtml(article.content)}</pre>`;
+                }
+                
+                await updateNavigationButtons(category, id);
+                
+                window.history.pushState({}, '', `?category=${category}&id=${id}`);
+            } catch (error) {
+                console.error(`显示文章 ${category}/${id} 详情出错:`, error);
+                showError('无法加载文章: ' + error.message);
+                // 确保列表可见
+                articleListContainer.classList.remove('hidden');
+                articleDetail.classList.add('hidden');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // 更新导航按钮状态
+        async function updateNavigationButtons(category, currentId) {
+            try {
+                const id = parseInt(currentId);
+                const maxId = categoryArticleCounts[category] || 0;
+                
+                let hasPrev = id > 1;
+                let hasNext = id < maxId;
+                
+                prevArticleButton.disabled = !hasPrev;
+                prevArticleButton.classList.toggle('opacity-50', !hasPrev);
+                prevArticleButton.classList.toggle('cursor-not-allowed', !hasPrev);
+                
+                nextArticleButton.disabled = !hasNext;
+                nextArticleButton.classList.toggle('opacity-50', !hasNext);
+                nextArticleButton.classList.toggle('cursor-not-allowed', !hasNext);
+                
+                prevArticleButton.onclick = hasPrev ? () => {
+                    showLoading();
+                    showArticleDetail(category, id - 1).finally(() => hideLoading());
+                } : null;
+                
+                nextArticleButton.onclick = hasNext ? () => {
+                    showLoading();
+                    showArticleDetail(category, id + 1).finally(() => hideLoading());
+                } : null;
+            } catch (error) {
+                console.error('更新导航按钮状态出错:', error);
+            }
+        }
+
+        // 显示分页控件
+        function displayPagination() {
+            try {
+                pagination.innerHTML = '';
+                
+                if (totalPages <= 1) {
+                    pagination.classList.add('hidden');
+                    return;
+                }
+                
+                pagination.classList.remove('hidden');
+                
+                const firstButton = createPageButton('首页', 1);
+                firstButton.disabled = currentPage === 1;
+                pagination.appendChild(firstButton);
+                
+                const prevButton = createPageButton('<i class="fas fa-chevron-left"></i>', currentPage - 1);
+                prevButton.disabled = currentPage === 1;
+                pagination.appendChild(prevButton);
+                
+                const visiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
+                let endPage = startPage + visiblePages - 1;
+                
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = Math.max(1, endPage - visiblePages + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageButton = createPageButton(i, i);
+                    if (i === currentPage) {
+                        pageButton.classList.add('bg-blue-700');
+                        pageButton.disabled = true;
+                    }
+                    pagination.appendChild(pageButton);
+                }
+                
+                const nextButton = createPageButton('<i class="fas fa-chevron-right"></i>', currentPage + 1);
+                nextButton.disabled = currentPage === totalPages;
+                pagination.appendChild(nextButton);
+                
+                const lastButton = createPageButton('末页', totalPages);
+                lastButton.disabled = currentPage === totalPages;
+                pagination.appendChild(lastButton);
+            } catch (error) {
+                console.error('显示分页控件出错:', error);
+                pagination.innerHTML = ''; // 出错时隐藏分页
+            }
+        }
+
+        // 创建分页按钮
+        function createPageButton(text, pageNumber) {
+            const button = document.createElement('button');
+            button.innerHTML = text;
+            button.className = 'bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition';
+            button.addEventListener('click', () => {
+                currentPage = pageNumber;
+                showLoading();
+                if (currentCategory) {
+                    loadArticlesByCategory(currentCategory, pageNumber).finally(() => hideLoading());
+                } else {
+                    loadAllArticles(pageNumber).finally(() => hideLoading());
+                }
+            });
+            return button;
+        }
+
+        // 执行搜索
+        function performSearch() {
+            try {
+                const term = searchInput.value.trim().toLowerCase();
+                searchType = document.querySelector('input[name="search-type"]:checked').value;
+                
+                if (term !== searchTerm) {
+                    searchTerm = term;
+                    currentPage = 1;
+                    showLoading();
+                    
+                    if (currentCategory) {
+                        loadArticlesByCategory(currentCategory, 1).finally(() => hideLoading());
+                    } else {
+                        loadAllArticles(1).finally(() => hideLoading());
+                    }
+                }
+            } catch (error) {
+                console.error('执行搜索出错:', error);
+                showError('搜索失败: ' + error.message);
+                hideLoading();
+            }
+        }
+
+        // 更新URL
+        function updateUrl() {
+            try {
+                const urlParams = new URLSearchParams();
+                
+                if (currentCategory) {
+                    urlParams.set('category', currentCategory);
+                }
+                
+                if (searchTerm) {
+                    urlParams.set('q', searchTerm);
+                }
+                
+                urlParams.set('p', currentPage);
+                
+                window.history.replaceState({}, '', `?${urlParams.toString()}`);
+            } catch (error) {
+                console.error('更新URL出错:', error);
+            }
+        }
+
+        // 编码检测函数
+        function detectEncoding(arrayBuffer) {
+            try {
+                const uint8Array = new Uint8Array(arrayBuffer);
+                
+                for (let i = 0; i < Math.min(100, uint8Array.length); i++) {
+                    if ((uint8Array[i] & 0x80) === 0) {
+                        continue;
+                    } else if ((uint8Array[i] & 0xE0) === 0xC0) {
+                        if (i + 1 >= uint8Array.length) return 'gbk';
+                        if ((uint8Array[i + 1] & 0xC0) !== 0x80) return 'gbk';
+                        i++;
+                    } else if ((uint8Array[i] & 0xF0) === 0xE0) {
+                        if (i + 2 >= uint8Array.length) return 'gbk';
+                        if ((uint8Array[i + 1] & 0xC0) !== 0x80 || (uint8Array[i + 2] & 0xC0) !== 0x80) return 'gbk';
+                        i += 2;
+                    } else {
+                        return 'gbk';
+                    }
+                }
+                
+                return 'utf-8';
+            } catch (error) {
+                console.error('检测编码出错:', error);
+                return 'utf-8'; // 出错时默认使用utf-8
+            }
+        }
+
+        // HTML转义函数
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 显示加载状态
+        function showLoading() {
+            try {
+                loadingIndicator.classList.remove('hidden');
+                errorContainer.classList.add('hidden');
+                systemError.classList.add('hidden');
+            } catch (error) {
+                console.error('显示加载状态出错:', error);
+            }
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            try {
+                loadingIndicator.classList.add('hidden');
+            } catch (error) {
+                console.error('隐藏加载状态出错:', error);
+            }
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            try {
+                errorMessage.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${message}`;
+                errorContainer.classList.remove('hidden');
+                loadingIndicator.classList.add('hidden');
+            } catch (error) {
+                console.error('显示错误信息出错:', error);
+                alert(message);
+            }
+        }
+
+        // 事件监听 - 使用try-catch确保事件绑定不会失败
+        try {
+            backButton.addEventListener('click', () => {
+                try {
+                    articleDetail.classList.add('hidden');
+                    articleListContainer.classList.remove('hidden');
+                    updateUrl();
+                } catch (error) {
+                    console.error('返回列表按钮点击出错:', error);
+                    showError('操作失败: ' + error.message);
+                }
+            });
+
+            homeButton.addEventListener('click', () => {
+                try {
+                    currentCategory = null;
+                    currentPage = 1;
+                    searchTerm = '';
+                    searchInput.value = '';
+                    document.querySelector('input[name="search-type"][value="title"]').checked = true;
+                    searchType = 'title';
+                    
+                    articleDetail.classList.add('hidden');
+                    articleListContainer.classList.remove('hidden');
+                    
+                    showLoading();
+                    loadAllArticles(1).finally(() => hideLoading());
+                    updateNavActiveState(null);
+                    updateUrl();
+                } catch (error) {
+                    console.error('首页按钮点击出错:', error);
+                    showError('操作失败: ' + error.message);
+                    hideLoading();
+                }
+            });
+
+            searchButton.addEventListener('click', performSearch);
+
+            searchInput.addEventListener('keydown', (event) => {
+                try {
+                    if (event.key === 'Enter') {
+                        performSearch();
+                    }
+                } catch (error) {
+                    console.error('搜索框按键事件出错:', error);
+                }
+            });
+
+            searchTypeRadios.forEach(radio => {
+                radio.addEventListener('change', performSearch);
+            });
+
+            window.addEventListener('popstate', () => {
+                try {
+                    showLoading();
+                    handleUrlParams().finally(() => hideLoading());
+                } catch (error) {
+                    console.error('历史记录事件出错:', error);
+                    showError('页面刷新失败: ' + error.message);
+                    hideLoading();
+                }
+            });
+        } catch (error) {
+            console.error('绑定事件监听出错:', error);
+            showSystemError('页面交互初始化失败，请刷新页面', error);
+        }
+
+        // 初始化系统
+        init();
+    </script>
+</body>
+
+</html>
+</luhuicanvas-part></luhuicanvas>
+    
+
+
+### 主要修复说明
+
+针对搜索框下方内容和图片不显示的问题，本次修改重点做了以下优化：
+
+1. **强制内容显示机制**：
+   - 添加了 `.content-wrapper { display: block !important; }` 样式，确保主要内容
+   
+
+   
+抱歉，之前的回复内容不完整。以下是完整的说明：
+
+强制内容显示机制的完整说明：
+
+添加了 `.content-wrapper { display: block !important; }` 样式，确保主要内容区域无论在何种情况下都能显示，避免因JavaScript错误或样式冲突导致内容被意外隐藏。
+
+### 其他关键修复
+
+1. **增强的错误处理**：
+   - 添加全局错误捕获机制，捕获页面中任何未处理的错误
+   - 错误发生时显示友好提示，同时保留内容区域可见
+   - 提供错误详情和刷新选项，帮助用户恢复使用
+
+2. **内容区域占位符**：
+   - 在分类导航、统计信息和文章列表区域添加初始占位符
+   - 即使加载失败，用户也能看到基本的界面结构而非空白
+
+3. **分步加载与故障隔离**：
+   - 将分类导航、统计信息和文章列表的加载过程分离
+   - 某个部分加载失败不会影响其他部分的显示
+   - 失败时显示具体的错误信息而非整体空白
+
+4. **简化图片处理逻辑**：
+   - 简化图片路径解析逻辑，减少因复杂处理导致的显示问题
+   - 确保图片标签正确生成，避免因JavaScript错误导致图片不显示
+
+这些修复确保了即使系统某些部分出现问题，用户仍然能看到搜索框下方的内容结构，不会出现完全空白的情况。同时通过增强的错误提示，帮助定位具体问题所在。   

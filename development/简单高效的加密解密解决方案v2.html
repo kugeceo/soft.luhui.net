@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密解密工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1E293B',
+                        light: '#F8FAFC',
+                        accent: '#8B5CF6'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                },
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .glass-effect {
+                backdrop-filter: blur(10px);
+                background-color: rgba(255, 255, 255, 0.7);
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gradient-to-br from-light to-blue-50 min-h-screen text-dark">
+    <!-- 顶部导航 -->
+    <header class="sticky top-0 z-50 glass-effect border-b border-blue-100 shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-lock text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-primary">加密解密工具</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-all-300">
+                    <i class="fa fa-moon-o text-gray-600"></i>
+                </button>
+                <button class="hidden md:flex items-center space-x-1 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm hover:bg-primary/20 transition-all-300">
+                    <i class="fa fa-question-circle"></i>
+                    <span>帮助</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <!-- 介绍部分 -->
+        <section class="text-center mb-10 max-w-3xl mx-auto">
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 text-dark text-shadow">
+                简单高效的加密解密解决方案
+            </h2>
+            <p class="text-gray-600 mb-6 text-lg">
+                支持多种加密算法，保护您的敏感信息安全传输与存储
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Base64</span>
+                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">URL编码</span>
+                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Unicode</span>
+                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">ASCII</span>
+                <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">ROT13</span>
+            </div>
+        </section>
+
+        <!-- 主要功能区 -->
+        <section class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:shadow-2xl transition-all duration-300">
+                <!-- 操作类型选择 -->
+                <div class="flex border-b">
+                    <button id="encrypt-btn" class="flex-1 py-4 px-6 font-medium text-primary border-b-2 border-primary transition-all-300">
+                        <i class="fa fa-lock mr-2"></i>加密
+                    </button>
+                    <button id="decrypt-btn" class="flex-1 py-4 px-6 font-medium text-gray-500 hover:text-gray-700 transition-all-300">
+                        <i class="fa fa-unlock mr-2"></i>解密
+                    </button>
+                </div>
+
+                <!-- 算法选择 -->
+                <div class="p-6 border-b">
+                    <label class="block text-gray-700 mb-2 font-medium">选择算法:</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <button class="algorithm-btn active px-4 py-2 border border-primary bg-primary/5 text-primary rounded-lg text-sm hover:bg-primary/10 transition-all-300" data-algorithm="base64">
+                            Base64
+                        </button>
+                        <button class="algorithm-btn px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="url">
+                            URL编码
+                        </button>
+                        <button class="algorithm-btn px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="unicode">
+                            Unicode
+                        </button>
+                        <button class="algorithm-btn px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="ascii">
+                            ASCII
+                        </button>
+                        <button class="algorithm-btn px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="rot13">
+                            ROT13
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 输入输出区域 -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 输入区域 -->
+                        <div>
+                            <label for="input-text" class="block text-gray-700 mb-2 font-medium">
+                                <i class="fa fa-input mr-1"></i>输入内容:
+                            </label>
+                            <div class="relative">
+                                <textarea 
+                                    id="input-text" 
+                                    class="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300 resize-none"
+                                    placeholder="请输入要加密/解密的文本..."></textarea>
+                                <button id="clear-input" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-all-300">
+                                    <i class="fa fa-times-circle"></i>
+                                </button>
+                            </div>
+                            <div class="mt-2 text-right text-sm text-gray-500">
+                                <span id="input-length">0</span> 字符
+                            </div>
+                        </div>
+
+                        <!-- 输出区域 -->
+                        <div>
+                            <label for="output-text" class="block text-gray-700 mb-2 font-medium">
+                                <i class="fa fa-output mr-1"></i>结果:
+                            </label>
+                            <div class="relative">
+                                <textarea 
+                                    id="output-text" 
+                                    class="w-full h-48 p-4 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300 resize-none"
+                                    placeholder="结果将显示在这里..." readonly></textarea>
+                                <button id="copy-output" class="absolute top-3 right-3 text-gray-400 hover:text-primary transition-all-300">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="mt-2 text-right text-sm text-gray-500">
+                                <span id="output-length">0</span> 字符
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                        <button id="process-btn" class="px-8 py-3 bg-primary text-white rounded-lg font-medium shadow-md hover:bg-primary/90 hover:shadow-lg transform hover:-translate-y-0.5 transition-all-300 flex items-center">
+                            <i class="fa fa-exchange mr-2"></i>
+                            <span id="process-btn-text">执行加密</span>
+                        </button>
+                        <button id="swap-btn" class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all-300 flex items-center">
+                            <i class="fa fa-arrows-h mr-2"></i>
+                            <span>交换内容</span>
+                        </button>
+                        <button id="save-btn" class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all-300 flex items-center">
+                            <i class="fa fa-download mr-2"></i>
+                            <span>保存结果</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 算法说明 -->
+            <div class="mt-10 bg-white rounded-2xl shadow-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-primary">算法说明</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="algorithm-info active" id="base64-info">
+                        <h4 class="font-semibold text-lg mb-2">Base64</h4>
+                        <p class="text-gray-600">Base64是一种基于64个可打印字符来表示二进制数据的编码方式，常用于需要通过文本协议传输二进制数据的场景。它不是加密算法，而是一种编码方式。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="url-info">
+                        <h4 class="font-semibold text-lg mb-2">URL编码</h4>
+                        <p class="text-gray-600">URL编码将字符转换为可以在URL中安全传输的格式，通常使用百分号(%)加上两位十六进制数表示特殊字符，确保URL的正确性和安全性。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="unicode-info">
+                        <h4 class="font-semibold text-lg mb-2">Unicode</h4>
+                        <p class="text-gray-600">Unicode编码使用\u前缀加四位十六进制数表示字符，常用于在编程语言中表示特殊字符或非ASCII字符，确保字符在不同系统中的一致性。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="ascii-info">
+                        <h4 class="font-semibold text-lg mb-2">ASCII</h4>
+                        <p class="text-gray-600">ASCII编码将字符转换为对应的ASCII数值，每个字符用十进制数表示，常用于需要将文本转换为数字表示的场景。</p>
+                    </div>
+                    <div class="algorithm-info hidden md:col-span-2" id="rot13-info">
+                        <h4 class="font-semibold text-lg mb-2">ROT13</h4>
+                        <p class="text-gray-600">ROT13是一种简单的替换加密，将字母表中的每个字母替换为其后第13个字母，A替换为N，B替换为O，以此类推。它是自身的逆运算，加密和解密使用相同的算法。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-16 bg-dark text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <i class="fa fa-lock text-primary text-xl"></i>
+                        <h2 class="text-xl font-bold">加密解密工具</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm">保护您的信息安全</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-envelope text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
+                &copy; 2023 加密解密工具 | 保护您的信息安全
+            </div>
+        </div>
+    </footer>
+
+    <!-- 通知提示 -->
+    <div id="notification" class="fixed bottom-6 right-6 bg-dark text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all-300 flex items-center">
+        <i class="fa fa-check-circle mr-2 text-green-400"></i>
+        <span id="notification-text">操作成功</span>
+    </div>
+
+    <script>
+        // DOM元素
+        const encryptBtn = document.getElementById('encrypt-btn');
+        const decryptBtn = document.getElementById('decrypt-btn');
+        const algorithmBtns = document.querySelectorAll('.algorithm-btn');
+        const algorithmInfos = document.querySelectorAll('.algorithm-info');
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const processBtn = document.getElementById('process-btn');
+        const processBtnText = document.getElementById('process-btn-text');
+        const clearInputBtn = document.getElementById('clear-input');
+        const copyOutputBtn = document.getElementById('copy-output');
+        const swapBtn = document.getElementById('swap-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const inputLength = document.getElementById('input-length');
+        const outputLength = document.getElementById('output-length');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // 状态变量
+        let isEncryptMode = true;
+        let currentAlgorithm = 'base64';
+
+        // 初始化
+        inputText.addEventListener('input', updateInputLength);
+        outputText.addEventListener('input', updateOutputLength);
+        
+        // 切换加密/解密模式
+        encryptBtn.addEventListener('click', () => {
+            isEncryptMode = true;
+            encryptBtn.classList.add('text-primary', 'border-primary', 'border-b-2');
+            encryptBtn.classList.remove('text-gray-500');
+            decryptBtn.classList.remove('text-primary', 'border-primary', 'border-b-2');
+            decryptBtn.classList.add('text-gray-500');
+            processBtnText.textContent = '执行加密';
+        });
+
+        decryptBtn.addEventListener('click', () => {
+            isEncryptMode = false;
+            decryptBtn.classList.add('text-primary', 'border-primary', 'border-b-2');
+            decryptBtn.classList.remove('text-gray-500');
+            encryptBtn.classList.remove('text-primary', 'border-primary', 'border-b-2');
+            encryptBtn.classList.add('text-gray-500');
+            processBtnText.textContent = '执行解密';
+        });
+
+        // 切换算法
+        algorithmBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 更新按钮样式
+                algorithmBtns.forEach(b => {
+                    b.classList.remove('active', 'border-primary', 'bg-primary/5', 'text-primary');
+                    b.classList.add('border-gray-200', 'text-gray-700');
+                });
+                
+                btn.classList.add('active', 'border-primary', 'bg-primary/5', 'text-primary');
+                btn.classList.remove('border-gray-200', 'text-gray-700');
+                
+                // 更新当前算法
+                currentAlgorithm = btn.dataset.algorithm;
+                
+                // 显示对应算法说明
+                algorithmInfos.forEach(info => {
+                    info.classList.add('hidden');
+                    info.classList.remove('active');
+                });
+                
+                const infoElement = document.getElementById(`${currentAlgorithm}-info`);
+                infoElement.classList.remove('hidden');
+                infoElement.classList.add('active');
+            });
+        });
+
+        // 处理输入文本长度显示
+        function updateInputLength() {
+            inputLength.textContent = inputText.value.length;
+        }
+
+        function updateOutputLength() {
+            outputLength.textContent = outputText.value.length;
+        }
+
+        // 清空输入
+        clearInputBtn.addEventListener('click', () => {
+            inputText.value = '';
+            updateInputLength();
+            inputText.focus();
+        });
+
+        // 复制输出
+        copyOutputBtn.addEventListener('click', () => {
+            if (outputText.value) {
+                outputText.select();
+                document.execCommand('copy');
+                showNotification('已复制到剪贴板');
+            }
+        });
+
+        // 交换输入输出
+        swapBtn.addEventListener('click', () => {
+            const temp = inputText.value;
+            inputText.value = outputText.value;
+            outputText.value = temp;
+            updateInputLength();
+            updateOutputLength();
+        });
+
+        // 保存结果
+        saveBtn.addEventListener('click', () => {
+            if (outputText.value) {
+                const blob = new Blob([outputText.value], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${isEncryptMode ? 'encrypted' : 'decrypted'}-${currentAlgorithm}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showNotification('文件已保存');
+            }
+        });
+
+        // 显示通知
+        function showNotification(message) {
+            notificationText.textContent = message;
+            notification.classList.remove('translate-y-20', 'opacity-0');
+            notification.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-y-0', 'opacity-100');
+                notification.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+
+        // 执行加密/解密
+        processBtn.addEventListener('click', () => {
+            const input = inputText.value;
+            if (!input) return;
+            
+            try {
+                let result;
+                if (isEncryptMode) {
+                    result = encrypt(input, currentAlgorithm);
+                } else {
+                    result = decrypt(input, currentAlgorithm);
+                }
+                outputText.value = result;
+                updateOutputLength();
+                
+                // 添加动画效果
+                processBtn.classList.add('scale-95');
+                setTimeout(() => {
+                    processBtn.classList.remove('scale-95');
+                }, 150);
+                
+                showNotification(isEncryptMode ? '加密成功' : '解密成功');
+            } catch (error) {
+                showNotification(`操作失败: ${error.message}`);
+                console.error(error);
+            }
+        });
+
+        // 加密函数
+        function encrypt(text, algorithm) {
+            switch (algorithm) {
+                case 'base64':
+                    return btoa(unescape(encodeURIComponent(text)));
+                case 'url':
+                    return encodeURIComponent(text);
+                case 'unicode':
+                    return text.split('').map(char => '\\u' + ('000' + char.charCodeAt(0).toString(16)).slice(-4)).join('');
+                case 'ascii':
+                    return text.split('').map(char => char.charCodeAt(0)).join(' ');
+                case 'rot13':
+                    return text.replace(/[a-zA-Z]/g, char => {
+                        const code = char.charCodeAt(0);
+                        if (code >= 65 && code <= 90) {
+                            return String.fromCharCode(((code - 65 + 13) % 26) + 65);
+                        } else if (code >= 97 && code <= 122) {
+                            return String.fromCharCode(((code - 97 + 13) % 26) + 97);
+                        }
+                        return char;
+                    });
+                default:
+                    throw new Error('不支持的加密算法');
+            }
+        }
+
+        // 解密函数
+        function decrypt(text, algorithm) {
+            switch (algorithm) {
+                case 'base64':
+                    return decodeURIComponent(escape(atob(text)));
+                case 'url':
+                    return decodeURIComponent(text);
+                case 'unicode':
+                    return text.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
+                case 'ascii':
+                    return text.split(' ').map(code => String.fromCharCode(code)).join('');
+                case 'rot13':
+                    // ROT13 加密和解密是同一个操作
+                    return text.replace(/[a-zA-Z]/g, char => {
+                        const code = char.charCodeAt(0);
+                        if (code >= 65 && code <= 90) {
+                            return String.fromCharCode(((code - 65 + 13) % 26) + 65);
+                        } else if (code >= 97 && code <= 122) {
+                            return String.fromCharCode(((code - 97 + 13) % 26) + 97);
+                        }
+                        return char;
+                    });
+                default:
+                    throw new Error('不支持的解密算法');
+            }
+        }
+
+        // 主题切换
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('bg-gradient-to-br');
+            document.body.classList.toggle('from-light');
+            document.body.classList.toggle('to-blue-50');
+            document.body.classList.toggle('text-white');
+            document.body.classList.toggle('text-dark');
+            
+            const icon = themeToggle.querySelector('i');
+            if (icon.classList.contains('fa-moon-o')) {
+                icon.classList.remove('fa-moon-o');
+                icon.classList.add('fa-sun-o');
+            } else {
+                icon.classList.remove('fa-sun-o');
+                icon.classList.add('fa-moon-o');
+            }
+        });
+
+        // 示例数据 - 自动填充用户提供的Unicode文本
+        document.addEventListener('DOMContentLoaded', () => {
+            const exampleText = "\u81ea\u5b9a\u4e49\u6253\u5370\u7eb8\u751f\u6210\u5668\uff0c\u514d\u8d39\u5728\u7ebf\u521b\u5efa\u548c\u6253\u5370\u81ea\u5b9a\u4e49\u7eb8\u5f20\uff0c\u652f\u6301\u6a2a\u7ebf\u7eb8\u3001\u65b9\u683c\u7eb8\u3001\u70b9\u9635\u7eb8\u7b49\u3002 paperme.luhui.net \u89c6\u9891\u8f6c\u6362\u5b9e\u51b5\u7167\u7247(LIVP)\u5de5\u5177 livecapture.luhui.net SlimPic\u7626\u56fe \u56fe\u7247\u6279\u91cf\u538b\u7f29 slimpic.luhui.net";
+            inputText.value = exampleText;
+            updateInputLength();
+        });
+    </script>
+</body>
+</html>

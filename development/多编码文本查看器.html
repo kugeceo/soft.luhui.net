@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="支持多种编码格式的文本文件查看器，可解析ISO-8859-1等编码">
+    <title>多编码文本查看器</title>
+    <!-- 外部资源引入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/iconv-lite@0.6.3/dist/iconv-lite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.0.0/encoding.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .content-container {
+            min-height: calc(100vh - 160px);
+        }
+        
+        /* 滚动按钮样式 */
+        .scroll-btn {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        #to-top-btn {
+            bottom: 80px;
+            right: 20px;
+        }
+        
+        #to-bottom-btn {
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        .scroll-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-btn:hover {
+            background-color: #2563eb;
+            transform: scale(1.05);
+        }
+        
+        /* 文本内容样式 */
+        .text-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .text-content:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 加载动画 */
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 编码选择器样式 */
+        .encoding-selector {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='%234B5563'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- 快速返回顶部和底部按钮 -->
+    <button id="to-top-btn" class="scroll-btn" aria-label="返回顶部">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    <button id="to-bottom-btn" class="scroll-btn" aria-label="前往底部">
+        <i class="fas fa-chevron-down"></i>
+    </button>
+
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-center">
+                <i class="fa fa-file-text text-blue-600 mr-2"></i>多编码文本查看器
+            </h1>
+            <p class="text-center text-gray-600 mt-2">支持ISO-8859-1等多种编码格式的文本文件解析</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 content-container">
+        <section class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <div class="flex-grow">
+                    <label for="file-input" class="block text-sm font-medium text-gray-700 mb-2">选择文本文件</label>
+                    <input type="file" id="file-input" accept=".txt" class="block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-lg file:border-0
+                        file:text-sm file:font-medium
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100">
+                </div>
+                
+                <div class="w-full md:w-auto">
+                    <label for="encoding-select" class="block text-sm font-medium text-gray-700 mb-2">文件编码</label>
+                    <select id="encoding-select" class="encoding-selector block w-full md:w-56 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="auto">自动检测</option>
+                        <option value="utf8">UTF-8</option>
+                        <option value="gbk">GBK</option>
+                        <option value="gb2312">GB2312</option>
+                        <option value="gb18030">GB18030</option>
+                        <option value="iso-8859-1" selected>ISO-8859-1</option>
+                        <option value="iso-8859-2">ISO-8859-2</option>
+                        <option value="iso-8859-15">ISO-8859-15</option>
+                        <option value="windows-1252">Windows-1252</option>
+                        <option value="big5">Big5</option>
+                        <option value="shift-jis">Shift-JIS</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-4 flex gap-3">
+                <button id="load-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-file-import mr-2"></i>加载文件
+                </button>
+                
+                <button id="clear-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-trash mr-2"></i>清除内容
+                </button>
+                
+                <button id="download-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-download mr-2"></i>保存为UTF-8
+                </button>
+            </div>
+        </section>
+
+        <!-- 状态显示区域 -->
+        <section id="status-section" class="hidden mb-8">
+            <div id="loading-indicator" class="hidden flex flex-col items-center justify-center py-12 bg-white rounded-lg shadow-sm">
+                <div class="loader mb-4"></div>
+                <p class="text-gray-600">正在加载文件...</p>
+                <p id="encoding-detection" class="text-gray-500 text-sm mt-2">正在检测文件编码...</p>
+            </div>
+            
+            <div id="error-message" class="hidden bg-red-50 border border-red-200 p-4 rounded-lg">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle text-red-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">加载失败</h3>
+                        <div class="mt-2 text-sm text-red-700">
+                            <p id="error-details">无法加载或解析文件，请尝试其他编码格式。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="encoding-info" class="hidden bg-blue-50 border border-blue-200 p-4 rounded-lg mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">文件信息</h3>
+                        <div class="mt-2 text-sm text-blue-700">
+                            <p><span class="font-medium">文件名：</span><span id="file-name">-</span></p>
+                            <p><span class="font-medium">文件大小：</span><span id="file-size">-</span></p>
+                            <p><span class="font-medium">使用编码：</span><span id="used-encoding">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文本内容显示区域 -->
+        <section id="content-section" class="hidden">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-align-left text-blue-600 mr-2"></i>文件内容
+                </h2>
+                <div id="text-content" class="text-content p-4 bg-gray-50 border border-gray-200 min-h-[300px]"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>多编码文本查看器 &copy; 2023</p>
+            <p class="text-sm text-gray-400 mt-2">支持ISO-8859-1、UTF-8、GBK等多种编码格式解析</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM元素
+        const elements = {
+            fileInput: document.getElementById('file-input'),
+            encodingSelect: document.getElementById('encoding-select'),
+            loadBtn: document.getElementById('load-btn'),
+            clearBtn: document.getElementById('clear-btn'),
+            downloadBtn: document.getElementById('download-btn'),
+            toTopBtn: document.getElementById('to-top-btn'),
+            toBottomBtn: document.getElementById('to-bottom-btn'),
+            statusSection: document.getElementById('status-section'),
+            loadingIndicator: document.getElementById('loading-indicator'),
+            encodingDetection: document.getElementById('encoding-detection'),
+            errorMessage: document.getElementById('error-message'),
+            errorDetails: document.getElementById('error-details'),
+            encodingInfo: document.getElementById('encoding-info'),
+            fileName: document.getElementById('file-name'),
+            fileSize: document.getElementById('file-size'),
+            usedEncoding: document.getElementById('used-encoding'),
+            contentSection: document.getElementById('content-section'),
+            textContent: document.getElementById('text-content')
+        };
+
+        // 状态变量
+        let currentFile = null;
+        let currentContent = null;
+
+        // 初始化事件监听
+        function initEventListeners() {
+            // 文件选择事件
+            elements.fileInput.addEventListener('change', handleFileSelection);
+            
+            // 按钮事件
+            elements.loadBtn.addEventListener('click', loadFileContent);
+            elements.clearBtn.addEventListener('click', clearContent);
+            elements.downloadBtn.addEventListener('click', downloadAsUtf8);
+            
+            // 滚动事件 - 控制返回顶部/底部按钮显示
+            window.addEventListener('scroll', toggleScrollButtons);
+            
+            // 点击返回顶部
+            elements.toTopBtn.addEventListener('click', scrollToTop);
+            
+            // 点击前往底部
+            elements.toBottomBtn.addEventListener('click', scrollToBottom);
+        }
+
+        // 处理文件选择
+        function handleFileSelection(e) {
+            const file = e.target.files[0];
+            if (file) {
+                currentFile = file;
+                elements.loadBtn.disabled = false;
+                elements.clearBtn.disabled = false;
+                showStatusMessage(`已选择文件: ${file.name}`, false);
+            } else {
+                currentFile = null;
+                elements.loadBtn.disabled = true;
+            }
+        }
+
+        // 加载文件内容
+        function loadFileContent() {
+            if (!currentFile) return;
+            
+            showLoading(true);
+            elements.errorMessage.classList.add('hidden');
+            
+            const reader = new FileReader();
+            const selectedEncoding = elements.encodingSelect.value;
+            
+            // 读取文件为ArrayBuffer以便进行编码转换
+            reader.readAsArrayBuffer(currentFile);
+            
+            reader.onload = function(e) {
+                try {
+                    const arrayBuffer = e.target.result;
+                    const uint8Array = new Uint8Array(arrayBuffer);
+                    
+                    if (selectedEncoding === 'auto') {
+                        // 自动检测编码
+                        detectEncodingAndDecode(uint8Array);
+                    } else {
+                        // 使用指定编码解码
+                        decodeWithEncoding(uint8Array, selectedEncoding);
+                    }
+                } catch (error) {
+                    showError(`解析文件时出错: ${error.message}`);
+                    showLoading(false);
+                }
+            };
+            
+            reader.onerror = function() {
+                showError(`无法读取文件: ${reader.error.message}`);
+                showLoading(false);
+            };
+        }
+
+        // 检测编码并解码
+        function detectEncodingAndDecode(uint8Array) {
+            // 支持的编码列表，按优先级排序
+            const encodingsToTry = [
+                'utf8', 'gbk', 'gb2312', 'gb18030',
+                'iso-8859-1', 'windows-1252', 'big5',
+                'iso-8859-2', 'iso-8859-15', 'shift-jis'
+            ];
+            
+            let result = null;
+            let detectedEncoding = null;
+            
+            // 尝试不同编码进行解码
+            for (const encoding of encodingsToTry) {
+                try {
+                    updateDetectionStatus(`尝试编码: ${encoding}`);
+                    // 使用iconv-lite进行解码
+                    result = iconvLite.decode(uint8Array, encoding);
+                    
+                    // 简单验证解码结果（检查不可打印字符的比例）
+                    if (isValidText(result)) {
+                        detectedEncoding = encoding;
+                        break;
+                    }
+                } catch (e) {
+                    // 解码失败，尝试下一种编码
+                    continue;
+                }
+            }
+            
+            // 如果所有编码都失败，使用ISO-8859-1作为最后的备选
+            if (!result) {
+                try {
+                    updateDetectionStatus('所有编码尝试失败，使用ISO-8859-1作为备选');
+                    result = iconvLite.decode(uint8Array, 'iso-8859-1');
+                    detectedEncoding = 'iso-8859-1';
+                } catch (e) {
+                    showError('无法解析文件，尝试手动选择其他编码格式');
+                    showLoading(false);
+                    return;
+                }
+            }
+            
+            // 显示解码结果
+            displayContent(result, detectedEncoding);
+        }
+
+        // 使用指定编码解码
+        function decodeWithEncoding(uint8Array, encoding) {
+            try {
+                updateDetectionStatus(`使用指定编码: ${encoding}`);
+                const content = iconvLite.decode(uint8Array, encoding);
+                displayContent(content, encoding);
+            } catch (error) {
+                showError(`使用 ${encoding} 编码解析失败: ${error.message}`);
+                showLoading(false);
+            }
+        }
+
+        // 验证文本是否有效（简单检查不可打印字符比例）
+        function isValidText(text) {
+            if (!text || text.length === 0) return false;
+            
+            let nonPrintableCount = 0;
+            for (let i = 0; i < text.length; i++) {
+                const charCode = text.charCodeAt(i);
+                // 统计不可打印字符（控制字符等）
+                if (charCode < 32 && charCode !== 9 && charCode !== 10 && charCode !== 13) {
+                    nonPrintableCount++;
+                }
+            }
+            
+            // 不可打印字符比例低于10%视为有效
+            return (nonPrintableCount / text.length) < 0.1;
+        }
+
+        // 显示文件内容
+        function displayContent(content, encoding) {
+            currentContent = content;
+            
+            // 更新UI显示
+            elements.textContent.textContent = content;
+            elements.fileName.textContent = currentFile.name;
+            elements.fileSize.textContent = formatFileSize(currentFile.size);
+            elements.usedEncoding.textContent = encoding;
+            
+            // 显示内容区域和文件信息
+            elements.encodingInfo.classList.remove('hidden');
+            elements.contentSection.classList.remove('hidden');
+            
+            // 启用下载按钮
+            elements.downloadBtn.disabled = false;
+            
+            showLoading(false);
+        }
+
+        // 清除内容
+        function clearContent() {
+            elements.fileInput.value = '';
+            currentFile = null;
+            currentContent = null;
+            
+            elements.loadBtn.disabled = true;
+            elements.clearBtn.disabled = true;
+            elements.downloadBtn.disabled = true;
+            
+            elements.textContent.textContent = '';
+            elements.contentSection.classList.add('hidden');
+            elements.encodingInfo.classList.add('hidden');
+            elements.statusSection.classList.add('hidden');
+        }
+
+        // 下载为UTF-8编码的文件
+        function downloadAsUtf8() {
+            if (!currentContent || !currentFile) return;
+            
+            // 将内容转换为UTF-8编码
+            const blob = new Blob([currentContent], { type: 'text/plain; charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            // 创建下载链接
+            const a = document.createElement('a');
+            a.href = url;
+            
+            // 生成新文件名（保留原扩展名）
+            const originalName = currentFile.name;
+            const fileNameParts = originalName.split('.');
+            let newFileName;
+            
+            if (fileNameParts.length > 1) {
+                const ext = fileNameParts.pop();
+                newFileName = `${fileNameParts.join('.')}_utf8.${ext}`;
+            } else {
+                newFileName = `${originalName}_utf8.txt`;
+            }
+            
+            a.download = newFileName;
+            document.body.appendChild(a);
+            a.click();
+            
+            // 清理
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        // 显示/隐藏加载状态
+        function showLoading(show) {
+            elements.statusSection.classList.remove('hidden');
+            
+            if (show) {
+                elements.loadingIndicator.classList.remove('hidden');
+                elements.errorMessage.classList.add('hidden');
+                elements.encodingInfo.classList.add('hidden');
+                elements.contentSection.classList.add('hidden');
+            } else {
+                elements.loadingIndicator.classList.add('hidden');
+            }
+        }
+
+        // 更新编码检测状态
+        function updateDetectionStatus(message) {
+            elements.encodingDetection.textContent = message;
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            elements.errorDetails.textContent = message;
+            elements.errorMessage.classList.remove('hidden');
+            elements.loadingIndicator.classList.add('hidden');
+            elements.encodingInfo.classList.add('hidden');
+            elements.contentSection.classList.add('hidden');
+        }
+
+        // 显示状态消息
+        function showStatusMessage(message, isError = false) {
+            elements.statusSection.classList.remove('hidden');
+            elements.loadingIndicator.classList.add('hidden');
+            
+            if (isError) {
+                elements.errorDetails.textContent = message;
+                elements.errorMessage.classList.remove('hidden');
+            } else {
+                elements.errorMessage.classList.add('hidden');
+                // 可以在这里添加普通状态消息的显示逻辑
+            }
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 控制滚动按钮显示/隐藏
+        function toggleScrollButtons() {
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // 页面滚动超过半屏高度时显示顶部按钮
+            if (scrollPosition > windowHeight * 0.5) {
+                elements.toTopBtn.classList.add('visible');
+            } else {
+                elements.toTopBtn.classList.remove('visible');
+            }
+            
+            // 距离底部还有一屏高度时显示底部按钮
+            if (document.body.scrollHeight - scrollPosition > windowHeight * 1.5) {
+                elements.toBottomBtn.classList.add('visible');
+            } else {
+                elements.toBottomBtn.classList.remove('visible');
+            }
+        }
+
+        // 滚动到顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // 初始化应用
+        function initApp() {
+            initEventListeners();
+            showStatusMessage('请选择一个文本文件并加载', false);
+        }
+
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
+    

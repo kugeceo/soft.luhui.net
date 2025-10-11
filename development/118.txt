@@ -1,0 +1,126 @@
+写个 aipix.php 调用冠富一键智能离线抠图模型实现一键抠图
+
+
+根据提供的项目信息，该项目是一个基于Web的在线抠图工具（冠富一键智能抠图），主要通过前端页面实现功能，相关代码中并未直接展示后端PHP调用离线抠图模型的具体实现。不过可以推测其核心是基于机器视觉和图像分割技术（如Image matting），以下是一个基于PHP调用离线抠图模型的示例代码框架，供参考：
+
+```php
+<?php
+/**
+ * aipix.php - 离线抠图模型调用示例
+ * 说明：本示例基于项目可能使用的图像分割技术框架，模拟调用离线模型实现抠图功能
+ */
+
+class AIPixMatting {
+    private $modelPath; // 离线模型路径
+    private $tempDir;   // 临时文件目录
+
+    public function __construct($modelPath = './models/') {
+        $this->modelPath = rtrim($modelPath, '/') . '/';
+        $this->tempDir = sys_get_temp_dir() . '/aipix_matting/';
+        $this->initEnv();
+    }
+
+    /**
+     * 初始化环境
+     */
+    private function initEnv() {
+        if (!is_dir($this->tempDir)) {
+            mkdir($this->tempDir, 0755, true);
+        }
+        // 检查模型文件是否存在
+        if (!is_file($this->modelPath . 'model.bin') || !is_file($this->modelPath . 'config.json')) {
+            throw new Exception("离线模型文件缺失，请确保模型路径正确");
+        }
+    }
+
+    /**
+     * 处理抠图
+     * @param string $inputImage 输入图像路径
+     * @param string $outputImage 输出图像路径（透明背景）
+     * @return bool
+     */
+    public function matting($inputImage, $outputImage) {
+        // 验证输入图像
+        if (!is_file($inputImage)) {
+            throw new Exception("输入图像不存在: {$inputImage}");
+        }
+
+        // 模拟调用离线模型（实际项目中需替换为真实模型调用逻辑）
+        // 这里假设使用命令行工具调用模型，如基于Python的模型脚本
+        $tempOutput = $this->tempDir . uniqid() . '.png';
+        $pythonScript = __DIR__ . '/matting_model/run.py'; // 模型执行脚本
+
+        // 构建调用命令（示例）
+        $command = sprintf(
+            'python %s --model %s --input %s --output %s',
+            escapeshellarg($pythonScript),
+            escapeshellarg($this->modelPath),
+            escapeshellarg($inputImage),
+            escapeshellarg($tempOutput)
+        );
+
+        // 执行命令
+        exec($command, $output, $returnVar);
+        if ($returnVar !== 0) {
+            throw new Exception("模型处理失败: " . implode("\n", $output));
+        }
+
+        // 移动结果到输出路径
+        if (!rename($tempOutput, $outputImage)) {
+            throw new Exception("保存输出图像失败");
+        }
+
+        return true;
+    }
+
+    /**
+     * 清理临时文件
+     */
+    public function cleanTemp() {
+        if (is_dir($this->tempDir)) {
+            $files = glob($this->tempDir . '*');
+            foreach ($files as $file) {
+                is_file($file) && unlink($file);
+            }
+        }
+    }
+
+    /**
+     * 析构函数：自动清理临时文件
+     */
+    public function __destruct() {
+        $this->cleanTemp();
+    }
+}
+
+// 示例用法
+try {
+    // 初始化抠图实例（指定模型路径）
+    $matting = new AIPixMatting('./offline_models/');
+    
+    // 输入图像（可从上传表单获取）
+    $input = './input.jpg';
+    // 输出抠图结果（透明背景PNG）
+    $output = './output.png';
+    
+    // 执行抠图
+    $result = $matting->matting($input, $output);
+    
+    if ($result) {
+        echo "抠图成功，结果已保存至: {$output}";
+    }
+} catch (Exception $e) {
+    echo "错误: " . $e->getMessage();
+}
+?>
+```
+
+### 说明：
+1. 上述代码为框架示例，实际使用时需要根据项目中真实的离线模型（如基于TensorFlow、PyTorch的图像分割模型）进行适配。
+2. 项目中提到的`Object cutout`、`Image matting`等技术，通常需要结合深度学习模型实现，PHP作为后端主要负责调用模型处理脚本（如Python脚本）。
+3. 关键依赖：
+   - 离线模型文件（如`.bin`、`.pb`等格式）
+   - 模型执行环境（如Python及相关库：OpenCV、TensorFlow等）
+   - 图像处理工具（用于预处理和后处理图像）
+
+如果项目中已有具体的模型调用接口或脚本，可以替换上述代码中的`exec`命令部分，以适配实际的模型调用逻辑。

@@ -1,0 +1,108 @@
+提供一些常见文档格式的解析库
+
+
+以下是常见文档格式对应的主流解析库，涵盖多种编程语言（以 Python、Java、JavaScript 为主），适用于文档解析、内容提取、格式转换等场景：
+
+
+### **1. 文本类格式**
+#### **TXT（纯文本）**
+- **Python**：无需额外库，直接通过内置 `open()` 函数读取，支持指定编码（如 `utf-8`、`gbk`）。
+- **Java**：`java.io.FileReader`、`java.nio.file.Files` 可直接处理。
+- **JavaScript（Node.js）**：`fs` 模块（`fs.readFile`）原生支持。
+
+#### **RTF（富文本格式）**
+- **Python**：
+  - `rtfparse`：解析 RTF 格式，提取文本和样式。
+  - `pyth`：轻量级 RTF 文本提取工具。
+- **Java**：`Apache Tika`（支持 RTF 解析，需配合相关依赖）。
+
+#### **CSV（逗号分隔值）**
+- **Python**：
+  - 内置 `csv` 模块：处理标准 CSV 格式，支持自定义分隔符。
+  - `pandas`：更强大的表格处理，支持 CSV 读写、数据清洗。
+- **JavaScript**：`papaparse`（前端/Node.js 通用，支持大文件解析）。
+- **Java**：`OpenCSV`、`Apache Commons CSV`。
+
+
+### **2. 办公文档格式（微软 Office）**
+#### **DOC/DOCX（Word 文档）**
+- **Python**：
+  - `python-docx`：处理 DOCX 格式，读取文本、样式、表格等（不支持 DOC）。
+  - `antiword`：通过命令行工具解析 DOC 格式（需额外安装）。
+  - `textract`：封装多种工具，支持 DOC/DOCX 文本提取。
+- **Java**：
+  - `Apache POI`（`poi` 处理 DOC，`poi-ooxml` 处理 DOCX）。
+- **JavaScript（Node.js）**：`docx`（解析 DOCX 文本和结构）。
+
+#### **XLS/XLSX（Excel 表格）**
+- **Python**：
+  - `pandas`：支持 XLS/XLSX 读写，适合数据处理（依赖 `xlrd` 或 `openpyxl`）。
+  - `openpyxl`：专门处理 XLSX 格式，支持单元格样式、公式。
+  - `xlrd`：处理 XLS 格式（注意：新版本不支持 XLSX）。
+- **Java**：`Apache POI`（`poi` 处理 XLS，`poi-ooxml` 处理 XLSX）。
+- **JavaScript**：`xlsx`（SheetJS，前端/Node.js 通用，支持多种表格格式解析）。
+
+#### **PPT/PPTX（PowerPoint 演示文稿）**
+- **Python**：
+  - `python-pptx`：处理 PPTX 格式，提取文本、幻灯片结构（不支持 PPT）。
+  - `textract`：通过 `libreoffice` 转换提取 PPT 文本。
+- **Java**：`Apache POI`（`poi` 处理 PPT，`poi-ooxml` 处理 PPTX）。
+
+
+### **3. 电子书格式**
+#### **EPUB（电子出版物）**
+- **Python**：
+  - `epub`：解析 EPUB 结构，提取文本、章节、元数据。
+  - `ebooklib`：更全面的 EPUB 处理，支持读写和格式操作。
+- **Java**：`epublib`（解析 EPUB 内容，支持章节、资源提取）。
+- **JavaScript**：`epub.js`（前端专用，支持 EPUB 渲染和翻页）。
+
+#### **MOBI（亚马逊电子书）**
+- **Python**：`mobi`（解析 MOBI 格式，提取文本和元数据）。
+- **Java**：`MobiUnpack`（第三方工具，需集成调用）。
+
+
+### **4. 网页与标记语言**
+#### **HTML/HTM（网页格式）**
+- **Python**：
+  - `BeautifulSoup`：解析 HTML 结构，提取标签内文本、属性。
+  - `lxml`：高效 HTML/XML 解析，支持 XPath 查询。
+- **JavaScript**：
+  - 浏览器内置 `DOMParser`（前端解析 HTML 字符串）。
+  - `cheerio`（Node.js 版 jQuery，解析 HTML 并提取内容）。
+
+#### **Markdown（MD）**
+- **Python**：
+  - `markdown`：将 MD 转换为 HTML，支持扩展语法。
+  - `mistune`：快速 MD 解析器，可自定义渲染规则。
+- **JavaScript**：`marked`（前端/Node.js 通用，轻量 MD 解析）。
+
+
+### **5. 便携文档格式**
+#### **PDF（便携式文档格式）**
+- **Python**：
+  - `PyPDF2`/`PyPDF4`：读取 PDF 文本、合并/拆分文件（基础功能）。
+  - `pdfplumber`：更精准的文本提取，支持表格识别。
+  - `pdf2image`：将 PDF 转换为图片（依赖 `poppler`）。
+- **Java**：
+  - `Apache PDFBox`：全面的 PDF 处理，支持文本提取、加密解密。
+  - `iText`：功能强大，适合 PDF 生成和解析（注意开源协议）。
+- **JavaScript**：`pdf-parse`（Node.js 文本提取）、`pdf.js`（前端渲染与解析）。
+
+
+### **6. 其他格式**
+#### **XDOC（国产文档格式，如永中 Office）**
+- 解析库较少，可通过 `Apache POI` 扩展或调用永中 Office 官方 SDK 处理。
+- 部分场景下可先转换为 DOCX 再解析（需依赖第三方工具）。
+
+
+### **通用解析工具**
+- **Apache Tika**（Java）：支持 100+ 格式解析，通过统一接口提取文本和元数据，适合跨格式场景。
+- **textract**（Python）：封装多种工具，支持 DOC、PDF、EPUB 等格式，适合快速文本提取（依赖系统工具如 `pdftotext`）。
+
+
+选择解析库时，需注意：  
+1. 格式兼容性（如是否支持旧版格式，如 DOC/XLS）；  
+2. 功能需求（纯文本提取 vs 样式/结构解析）；  
+3. 性能（大文件处理需考虑内存占用，如流式解析）；  
+4. 编程语言适配性。

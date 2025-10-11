@@ -1,0 +1,82 @@
+iconv-lite 编码表详解
+
+
+
+
+
+
+
+
+
+鲁虺/撰稿
+
+iconv-lite 编码表详解iconv-lite 是一个轻量级的 Node.js 字符编码转换库，它基于纯 JavaScript 实现，支持多种单字节、多字节和 Unicode 编码，而无需依赖系统级别的 iconv 库。它可以用于在不同编码之间转换字符串，例如从 GBK 转换为 UTF-8。库的核心功能是通过 iconv.encode() 和 iconv.decode() 方法实现转换，支持流式处理和 BOM（字节顺序标记）检测。iconv-lite 的编码支持列表非常全面，覆盖了 Node.js 原生编码、Unicode 扩展、各种单字节代码页（如 Windows、ISO、IBM 等）和多字节编码（如日文、中文、韩文）。下面按官方分类详解每个类别的编码，包括别名、适用场景、历史背景和潜在限制。列表基于官方文档提取。 注意：所有编码均支持小写/大写变体（如 utf8 和 UTF8），并且库会自动处理常见别名。1. Node.js 原生编码 (Node.js Native Encodings)这些是 Node.js 内置支持的编码，iconv-lite 直接兼容，无需额外实现。适用于基本字符串操作。utf8：标准 Unicode UTF-8 编码，最常用，支持所有 Unicode 字符。别名：UTF-8。场景：Web 开发、JSON 处理。限制：无。
+cesu8：兼容 CESU-8（兼容 UTF-8 的变体），用于某些旧系统如 Java。场景：遗留 Java 应用集成。
+ucs2 / utf16le：16 位 Unicode 编码，小端序（LE）。别名：ucs-2、UTF-16LE。场景：Windows 文件系统。限制：不支持 surrogates（代理对）完整处理。
+ascii：7 位 ASCII 编码，只支持基本拉丁字符。场景：简单文本过滤。
+binary：二进制模式，将字符串视为字节数组。别名：latin1。场景：非文本数据处理。
+base64：Base64 编码，用于数据传输。场景：邮件附件、API 数据。
+hex：十六进制编码。场景：调试字节级数据。
+
+2. Unicode 扩展编码 (Unicode)这些是 Unicode 的变体，支持 BOM（字节顺序标记）以自动检测字节序。适用于国际化应用。UTF7：7 位安全的 UTF-7，用于纯文本协议如 IMAP。别名：UTF-7。场景：邮件系统。限制：不推荐日常使用，效率低。
+UTF7-IMAP：IMAP 专用的 UTF-7 变体。场景：电子邮件客户端。
+UTF-16BE：16 位 Unicode，大端序（BE）。场景：某些亚洲系统文件。
+UTF-16 (with BOM)：带 BOM 的 UTF-16，自动检测字节序。场景：跨平台文件交换。
+UCS-4/UTF-32 (with BOM)：32 位 Unicode，带 BOM。别名：UTF-32。场景：高性能计算。限制：文件体积大。
+UTF-32LE：32 位小端序。场景：.NET 环境。
+UTF-32BE：32 位大端序。场景：旧 Unix 系统。
+
+3. 单字节编码 (Single-byte)这些编码每个字符占用 1 字节，主要用于西方语言和遗留系统。iconv-lite 支持所有常见代码页及其别名（如 cpXXX、winXXX）。Windows 代码页 (Windows codepages)：1250-1258（覆盖中欧、西欧等），874（泰文）。别名：cpXXX、winXXX、windowsXXX（XXX 为数字，如 cp1252）。
+解释：微软 Windows 系统默认编码家族，支持拉丁扩展字符。场景：Windows 软件本地化。限制：不支持 CJK（中日韩）字符。
+
+ISO 代码页 (ISO codepages)：ISO-8859-1 到 ISO-8859-16。解释：国际标准化组织定义的 8 位编码，覆盖西欧到希腊语。场景：HTML 文档、旧 Web 页面。限制：每个变体仅支持特定语言，如 ISO-8859-1 为西欧。
+
+IBM 代码页 (IBM codepages)：437（美国）、720（阿拉伯）、737（希腊）、775（波罗的海）、808（阿拉伯）、850（西欧多国）、852（中欧）、855-858（西里尔）、860（葡萄牙）、861（冰岛）、862（希伯来）、863（加拿大法语）、864（阿拉伯）、865（北欧）、866（俄语）、869（现代希腊）、922（塞尔维亚）、1046（巴西葡萄牙）、1124（乌克兰）、1125（白俄罗斯）、1129（乌克兰变体）、1133（塞尔维亚）、1161（非洲拉丁）、1162（非洲拉丁扩展）、1163（非洲拉丁扩展 2）。别名：cpXXX、ibmXXX。
+解释：IBM PC/DOS 时代的代码页，支持多语言变体。场景：DOS 游戏、遗留主frame 系统。限制：区域特定，不兼容现代 Unicode。
+
+Mac 代码页 (Mac codepages)：maccroatian（克罗地亚）、maccyrillic（西里尔）、macgreek（希腊）、maciceland（冰岛）、macroman（罗马）、macromania（罗马尼亚）、macthai（泰文）、macturkish（土耳其）、macukraine（乌克兰）、maccenteuro（中欧）、macintosh（经典 Mac 罗马）。解释：苹果经典 Mac 系统编码，支持欧洲语言。场景：旧 Mac 文档。限制：已过时，现代 macOS 用 UTF-8。
+
+KOI8 代码页 (KOI8 codepages)：koi8-r（俄语）、koi8-u（乌克兰）、koi8-ru（俄语扩展）、koi8-t（塔吉克）。解释：苏联时代 8 位编码，专为西里尔字母设计。场景：俄语/乌克兰文本处理。限制：不支持拉丁字符。
+
+杂项编码 (Miscellaneous)：armscii8（亚美尼亚）、rk1048（俄语 KOI 变体）、tcvn（越南）、georgianacademy（格鲁吉亚学术）、georgianps（格鲁吉亚 PS）、pt154（俄语/哈萨克）、viscii（越南）、iso646cn（中国 GB 646）、iso646jp（日本）、hproman8（HP 罗马）、tis620（泰文）。解释：特定区域或厂商的遗留编码。场景：区域化文件转换。限制：覆盖范围窄。
+
+4. 多字节编码 (Multi-byte)这些编码字符长度可变（1-4 字节），主要用于亚洲语言，支持 CJK 字符。iconv-lite 的实现高效，但某些边缘案例可能需手动处理。日文 (Japanese)：Shift_JIS（常见日文）、Windows-31j（Windows 日文）、Windows932（扩展 Shift_JIS）、EUC-JP（Unix 日文）。解释：Shift_JIS 是微软标准，EUC-JP 是 Unix 标准。场景：日文网页、PDF。限制：Shift_JIS 有半宽字符问题。
+
+中文 (Chinese)：GB2312（简体基础）、GBK（GB2312 扩展）、GB18030（完整 Unicode 映射）、Windows936（Windows GBK）、EUC-CN（Unix 简体）。解释：GB 系列是中国国家标准，GB18030 支持所有 Unicode。场景：大陆软件、电子书。限制：GBK 不完整覆盖生僻字。
+
+韩文 (Korean)：KS_C_5601（韩标基础）、Windows949（Windows 韩文扩展）、EUC-KR（Unix 韩文）。解释：KS_C_5601 是韩国标准，Windows949 添加了更多字符。场景：韩文文档、K-pop 媒体。限制：旧版不支持现代 Hangul 合成。
+
+台湾/香港 (Taiwan/Hong Kong)：Big5（繁体传统）、Big5-HKSCS（香港扩展）、Windows950（Windows Big5）。解释：Big5 是台湾标准，HKSCS 添加香港特定字符。场景：繁体中文网站、台湾文件。限制：不支持简体字。
+
+附加说明别名系统：iconv-lite 使用灵活的别名匹配，例如 win1252 等同于 cp1252。可以通过 iconv-lite.encodings 获取完整别名列表。
+限制与版本：所有编码在 v0.4+ 版本稳定支持，但多字节编码在流式转换中可能有缓冲需求。库不处理无效字节（默认替换为 ?），可自定义错误处理。 对于动态获取列表，可在 Node.js 中运行 require('iconv-lite').getEncodingNames()。
+使用建议：优先使用 UTF-8 作为目标编码，以避免兼容问题。如果处理遗留文件，先检测 BOM 或使用 iconv-lite.detect()。
+
+此详解基于 iconv-lite 官方 Wiki。
+
+
+
+
+
+
+
+## 捐助打赏作者
+
+手机如何扫码：
+
+![打赏作者](http://flash.luhui.net/images/zhifu.png)
+
+① 保存上面二维码图片　② 打开微信、支付宝、手机qq、“扫一扫”　③ 点击右下脚图标　④ 选择刚才保存的图片
+
+感谢每一位捐赠者，我一直在坚持不懈地努力和创新，不断精心打磨产品，并坚持完全免费，我走过的每一步、开发的每一个功能，离不开那些默默支持我的热心用户，
+大家的每一份捐赠和建议，都是我做的更好、走的更远最大的支持和动力！感谢大家，感谢有你，与你相遇好幸运！
+
+您的捐赠将会用于：
+
+①  支付服务器、域名费用。
+②  开发更丰富的功能，设计更友好的用户界面。
+③  撰写发布更多文章，保证作者的官网一直免费为大家提供服务。
+
+
+
+

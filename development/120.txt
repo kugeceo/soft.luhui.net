@@ -1,0 +1,115 @@
+优化鲁虺日历网站的显示速度
+
+
+要优化鲁虺日历网站的显示速度，可从资源加载、DOM操作、代码效率等多方面入手，结合现有代码结构具体优化方案如下：
+
+
+### 一、资源加载优化
+1. **合并与压缩静态资源**  
+   - 合并多个JS/CSS文件，减少HTTP请求。例如将`js/`目录下的`common.js`、`index.js`等合并为`bundle.js`，`css/`目录下的`index.css`、`module.css`等合并为`bundle.css`。  
+   - 压缩文件体积：使用工具（如Terser压缩JS，CleanCSS压缩CSS）处理，替换未压缩的库（如`jquery.artDialog.source.js`替换为压缩版`jquery.artDialog.min.js`）。
+
+2. **图片优化**  
+   - 压缩图片资源：对`日历截图_20200807073105.jpg`等图片使用工具（如Squoosh）压缩，转换为WebP格式（保留兼容性降级方案）。  
+   - 优化精灵图：CSS中多次引用的背景图（如`../img/index.png`）已使用精灵图，可检查是否有冗余图标并精简，减少图片体积。
+
+3. **缓存策略配置**  
+   在`web.config`中添加静态资源缓存规则，减少重复请求：  
+   ```xml
+   <configuration>
+     <system.webServer>
+       <staticContent>
+         <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" />
+       </staticContent>
+     </system.webServer>
+   </configuration>
+   ```
+   配合文件指纹（如`bundle.abc123.css`）确保文件更新时缓存失效。
+
+
+### 二、DOM操作优化
+1. **减少频繁DOM操作**  
+   原`index.js`中`showDayAgenda`函数循环操作DOM，每次`append`会触发重绘，优化为批量处理：  
+   ```javascript
+   // 优化前
+   function showDayAgenda(){
+     if(eventDataList!=null){
+       $("#mainCal .agenda").remove();
+       for(var d in eventDataList){
+         var md = d.substr(4,4);
+         $("#mainCal a.block_content[data="+md+"]").append('<div title="事件数" class="agenda">'+eventDataList[d].count+'</div>');
+       }
+     }
+   }
+
+   // 优化后：使用文档片段批量插入
+   function showDayAgenda(){
+     if(!eventDataList) return;
+     $("#mainCal .agenda").remove();
+     const fragment = document.createDocumentFragment(); // 文档片段减少重绘
+     for(var d in eventDataList){
+       var md = d.substr(4,4);
+       var $target = $(`#mainCal a.block_content[data=${md}]`);
+       if($target.length){
+         var $agenda = $(`<div title="事件数" class="agenda">${eventDataList[d].count}</div>`);
+         fragment.appendChild($agenda[0]); // 先添加到片段
+         $target.append($agenda); // 实际项目中可直接批量构建HTML字符串
+       }
+     }
+   }
+   ```
+
+
+### 三、代码效率优化
+1. **替换`eval`提升性能与安全性**  
+   `module.js`中使用`eval`解析JSON（如`eval("(" + data.con.content + ")")`），`eval`性能差且有安全风险，替换为`JSON.parse`：  
+   ```javascript
+   // 优化前
+   var ret = eval("(" + data.con.content + ")");
+   // 优化后
+   var ret = JSON.parse(data.con.content); // 确保content是合法JSON字符串
+   ```
+
+2. **减少冗余CSS选择器**  
+   清理CSS中复杂嵌套和未使用的样式，例如`css/module.css`中重复的媒体查询和嵌套选择器，简化为：  
+   ```css
+   /* 优化前复杂选择器 */
+   @media screen and (-webkit-min-device-pixel-ratio: 0){ 
+     .blankarrow-down .arrow_dk {
+       width: 15px;
+       height: 15px;
+       -webkit-transform: rotate(45deg);
+       clip: rect(-3px 15px 15px -3px);
+       border: 1px solid #C8C8C8;
+       box-shadow: 0 0 5px #C8C8C8;
+       left: -2px;
+       top: -11px;
+       background-color:#FFF;
+     }
+   }
+
+   /* 优化后：保留必要样式，移除冗余属性 */
+   @media (-webkit-min-device-pixel-ratio: 0){ 
+     .blankarrow-down .arrow_dk {
+       width: 15px;
+       height: 15px;
+       -webkit-transform: rotate(45deg);
+       border: 1px solid #C8C8C8;
+       background: #FFF;
+     }
+   }
+   ```
+
+
+### 四、渲染性能优化
+1. **延迟加载非首屏资源**  
+   对非首屏的JS（如`jquery.uploadify-3.1.min.js`）和图片使用`async`或`defer`，例如：  
+   ```html
+   <script src="js/jquery.uploadify-3.1.min.js" defer></script>
+   ```
+
+2. **内联首屏关键CSS**  
+   将`index.css`中首屏必要样式（如日历框架、头部样式）内联到`index.html`的`<style>`标签，减少CSS阻塞渲染。
+
+
+通过以上优化，可显著减少资源加载时间、降低DOM操作开销，提升页面显示速度和用户体验。

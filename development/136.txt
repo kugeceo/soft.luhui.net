@@ -1,0 +1,35 @@
+鲁虺抠图宝一键智能去除背景rmbg2.0cuttypic1.0.0更新
+
+
+https://huggingface.co/briaai/RMBG-2.0 编写一个用JavaScript html调用.wasm模型一键抠图网页，支持拖拽图片到窗口批量抠图，有预览显示，可二次编辑，支持透明背景PNG格式导出，满足各种专业需求，批量下载，所有操作都在本地浏览器上完成
+
+
+
+我将为您创建一个专业级的本地图片抠图网页应用，基于RMBG-2.0模型的WebAssembly版本实现。这个应用将支持拖拽批量上传、实时预览、二次编辑和批量导出透明背景图片，所有操作均在浏览器本地完成。
+
+
+http://cuttypic.luhui.net/rmbg2.0cuttypic1.0.0.html
+    
+
+        canvas
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

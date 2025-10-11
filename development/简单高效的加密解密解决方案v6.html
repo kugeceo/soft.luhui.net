@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密解密工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 引入加密算法库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.2.1/jsencrypt.min.js"></script>
+    
+    <!-- Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1E293B',
+                        light: '#F8FAFC',
+                        accent: '#8B5CF6'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                },
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .glass-effect {
+                backdrop-filter: blur(10px);
+                background-color: rgba(255, 255, 255, 0.7);
+            }
+            .glass-effect-dark {
+                backdrop-filter: blur(10px);
+                background-color: rgba(30, 41, 59, 0.7);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gradient-to-br from-light to-blue-50 min-h-screen text-dark transition-all-300">
+    <!-- 顶部导航 -->
+    <header class="sticky top-0 z-50 glass-effect border-b border-blue-100 shadow-sm transition-all-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-lock text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-primary">加密解密工具</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-all-300">
+                    <i class="fa fa-moon-o text-gray-600"></i>
+                </button>
+                <button id="help-btn" class="flex items-center space-x-1 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm hover:bg-primary/20 transition-all-300">
+                    <i class="fa fa-question-circle"></i>
+                    <span class="hidden md:inline">帮助</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <!-- 介绍部分 -->
+        <section class="text-center mb-10 max-w-3xl mx-auto">
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 text-dark text-shadow transition-all-300">
+                全方位加密解密解决方案
+            </h2>
+            <p class="text-gray-600 mb-6 text-lg transition-all-300">
+                支持超过20种加密算法与编码格式，满足各种场景下的数据安全需求
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm transition-all-300">基础编码</span>
+                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm transition-all-300">哈希算法</span>
+                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm transition-all-300">对称加密</span>
+                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm transition-all-300">非对称加密</span>
+                <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm transition-all-300">古典密码</span>
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm transition-all-300">特殊编码</span>
+            </div>
+        </section>
+
+        <!-- 主要功能区 -->
+        <section class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:shadow-2xl transition-all duration-300">
+                <!-- 操作类型选择 -->
+                <div class="flex border-b">
+                    <button id="encrypt-btn" class="flex-1 py-4 px-6 font-medium text-primary border-b-2 border-primary transition-all-300">
+                        <i class="fa fa-lock mr-2"></i>加密
+                    </button>
+                    <button id="decrypt-btn" class="flex-1 py-4 px-6 font-medium text-gray-500 hover:text-gray-700 transition-all-300">
+                        <i class="fa fa-unlock mr-2"></i>解密
+                    </button>
+                </div>
+
+                <!-- 算法选择 -->
+                <div class="p-6 border-b overflow-x-auto scrollbar-hide">
+                    <label class="block text-gray-700 mb-2 font-medium transition-all-300">选择算法:</label>
+                    <div class="flex gap-3 min-w-max">
+                        <!-- 基础编码 -->
+                        <div class="bg-gray-50 p-2 rounded-lg">
+                            <div class="text-xs text-gray-500 mb-2 ml-1">基础编码</div>
+                            <div class="flex gap-2">
+                                <button class="algorithm-btn active px-3 py-2 border border-primary bg-primary/5 text-primary rounded-lg text-sm hover:bg-primary/10 transition-all-300" data-algorithm="base64">
+                                    Base64
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="url">
+                                    URL编码
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="unicode">
+                                    Unicode
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="ascii">
+                                    ASCII
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="html">
+                                    HTML实体
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="hex">
+                                    十六进制
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="quoted-printable">
+                                    Quoted-Printable
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="uuencode">
+                                    UUEncode
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 古典密码 -->
+                        <div class="bg-gray-50 p-2 rounded-lg">
+                            <div class="text-xs text-gray-500 mb-2 ml-1">古典密码</div>
+                            <div class="flex gap-2">
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="rot13">
+                                    ROT13
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="caesar">
+                                    凯撒密码
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="affine">
+                                    仿射密码
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="vigenere">
+                                    维吉尼亚
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="railfence">
+                                    栅栏密码
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="bacon">
+                                    培根密码
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="morse">
+                                    摩尔斯电码
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 哈希算法 -->
+                        <div class="bg-gray-50 p-2 rounded-lg">
+                            <div class="text-xs text-gray-500 mb-2 ml-1">哈希算法</div>
+                            <div class="flex gap-2">
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="md5">
+                                    MD5
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="sha1">
+                                    SHA-1
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="sha256">
+                                    SHA-256
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="sha512">
+                                    SHA-512
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="hmac">
+                                    HMAC
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 对称加密 -->
+                        <div class="bg-gray-50 p-2 rounded-lg">
+                            <div class="text-xs text-gray-500 mb-2 ml-1">对称加密</div>
+                            <div class="flex gap-2">
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="aes">
+                                    AES
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="des">
+                                    DES
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="rc4">
+                                    RC4
+                                </button>
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="blowfish">
+                                    Blowfish
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 非对称加密 -->
+                        <div class="bg-gray-50 p-2 rounded-lg">
+                            <div class="text-xs text-gray-500 mb-2 ml-1">非对称加密</div>
+                            <div class="flex gap-2">
+                                <button class="algorithm-btn px-3 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition-all-300" data-algorithm="rsa">
+                                    RSA (示例)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 密钥/参数输入区 (某些算法需要) -->
+                <div id="params-section" class="p-6 border-b hidden transition-all-300">
+                    <div id="single-param" class="block">
+                        <label id="param-label" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                            密钥:
+                        </label>
+                        <div class="relative">
+                            <input id="param-input" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300" placeholder="请输入密钥或参数...">
+                            <button id="toggle-visibility" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-all-300">
+                                <i class="fa fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="dual-params" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label id="param1-label" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                                    参数 A:
+                                </label>
+                                <input id="param1-input" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300" placeholder="请输入参数A...">
+                            </div>
+                            <div>
+                                <label id="param2-label" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                                    参数 B:
+                                </label>
+                                <input id="param2-input" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300" placeholder="请输入参数B...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="rsa-params" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label id="public-key-label" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                                    公钥 (加密用):
+                                </label>
+                                <textarea id="public-key" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300 h-24" placeholder="请输入RSA公钥..."></textarea>
+                                <button id="generate-rsa-keys" class="mt-2 text-sm text-primary hover:text-primary/80 transition-all-300">
+                                    <i class="fa fa-refresh mr-1"></i>生成示例密钥对
+                                </button>
+                            </div>
+                            <div>
+                                <label id="private-key-label" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                                    私钥 (解密用):
+                                </label>
+                                <textarea id="private-key" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300 h-24" placeholder="请输入RSA私钥..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p id="param-hint" class="mt-2 text-sm text-gray-500 transition-all-300">
+                        请输入必要的密钥或参数
+                    </p>
+                </div>
+
+                <!-- 输入输出区域 -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 输入区域 -->
+                        <div>
+                            <label for="input-text" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                                <i class="fa fa-input mr-1"></i>输入内容:
+                            </label>
+                            <div class="relative">
+                                <textarea id="input-text" class="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300 resize-none" placeholder="请输入要加密/解密的文本..."></textarea>
+                                <button id="clear-input" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-all-300">
+                                    <i class="fa fa-times-circle"></i>
+                                </button>
+                            </div>
+                            <div class="mt-2 text-right text-sm text-gray-500 transition-all-300">
+                                <span id="input-length">0</span> 字符
+                            </div>
+                        </div>
+
+                        <!-- 输出区域 -->
+                        <div>
+                            <label for="output-text" class="block text-gray-700 mb-2 font-medium transition-all-300">
+                                <i class="fa fa-output mr-1"></i>结果:
+                            </label>
+                            <div class="relative">
+                                <textarea id="output-text" class="w-full h-48 p-4 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all-300 resize-none" placeholder="结果将显示在这里..." readonly=""></textarea>
+                                <button id="copy-output" class="absolute top-3 right-3 text-gray-400 hover:text-primary transition-all-300">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="mt-2 text-right text-sm text-gray-500 transition-all-300">
+                                <span id="output-length">0</span> 字符
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="mt-6 flex flex-wrap gap-4 justify-center">
+                        <button id="process-btn" class="px-8 py-3 bg-primary text-white rounded-lg font-medium shadow-md hover:bg-primary/90 hover:shadow-lg transform hover:-translate-y-0.5 transition-all-300 flex items-center">
+                            <i class="fa fa-exchange mr-2"></i>
+                            <span id="process-btn-text">执行加密</span>
+                        </button>
+                        <button id="swap-btn" class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all-300 flex items-center">
+                            <i class="fa fa-arrows-h mr-2"></i>
+                            <span>交换内容</span>
+                        </button>
+                        <button id="save-btn" class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all-300 flex items-center">
+                            <i class="fa fa-download mr-2"></i>
+                            <span>保存结果</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 算法说明 -->
+            <div class="mt-10 bg-white rounded-2xl shadow-lg p-6 transition-all-300">
+                <h3 class="text-xl font-bold mb-4 text-primary transition-all-300">算法说明</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="algorithm-info active" id="base64-info">
+                        <h4 class="font-semibold text-lg mb-2">Base64</h4>
+                        <p class="text-gray-600 transition-all-300">Base64是一种基于64个可打印字符来表示二进制数据的编码方式，常用于需要通过文本协议传输二进制数据的场景。它不是加密算法，而是一种编码方式。</p>
+                    </div>
+                    <!-- 其他算法说明保持不变，新增以下说明 -->
+                    <div class="algorithm-info hidden" id="quoted-printable-info">
+                        <h4 class="font-semibold text-lg mb-2">Quoted-Printable</h4>
+                        <p class="text-gray-600 transition-all-300">Quoted-Printable是一种将8位字符编码为7位ASCII字符的编码方式，常用于电子邮件中传输非ASCII字符，编码后的文本由可打印ASCII字符组成。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="uuencode-info">
+                        <h4 class="font-semibold text-lg mb-2">UUEncode</h4>
+                        <p class="text-gray-600 transition-all-300">UUEncode是一种将二进制数据编码为ASCII字符的方法，最初用于在USENET上传输二进制文件，通过将每6位二进制数据转换为一个可打印字符实现编码。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="railfence-info">
+                        <h4 class="font-semibold text-lg mb-2">栅栏密码</h4>
+                        <p class="text-gray-600 transition-all-300">栅栏密码是一种置换密码，通过将明文按一定行数排列成栅栏状，再按行读取得到密文。例如，2行栅栏会将文本交替排列到两行，然后按行拼接。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="bacon-info">
+                        <h4 class="font-semibold text-lg mb-2">培根密码</h4>
+                        <p class="text-gray-600 transition-all-300">培根密码是一种替换密码，使用两种不同的字符（通常是A和B）来代表二进制数0和1，每个字母被编码为5位二进制数，可用于在普通文本中隐藏秘密信息。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="blowfish-info">
+                        <h4 class="font-semibold text-lg mb-2">Blowfish</h4>
+                        <p class="text-gray-600 transition-all-300">Blowfish是一种对称密钥块加密算法，支持32位至448位长度的密钥，具有较高的加密速度和安全性，广泛应用于各种加密场景。</p>
+                    </div>
+                    <div class="algorithm-info hidden" id="rsa-info">
+                        <h4 class="font-semibold text-lg mb-2">RSA (示例)</h4>
+                        <p class="text-gray-600 transition-all-300">RSA是一种非对称加密算法，使用公钥加密、私钥解密，本工具提供简化示例。实际应用中需使用更长密钥长度（建议2048位以上）以确保安全性。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-16 bg-dark text-white py-10 transition-all-300">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <i class="fa fa-lock text-primary text-xl"></i>
+                        <h2 class="text-xl font-bold">加密解密工具</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm">保护您的信息安全</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all-300">
+                        <i class="fa fa-envelope text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
+                © 2023 加密解密工具 | 保护您的信息安全
+            </div>
+        </div>
+    </footer>
+
+    <!-- 通知提示 -->
+    <div id="notification" class="fixed bottom-6 right-6 bg-dark text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all-300 flex items-center">
+        <i class="fa fa-check-circle mr-2 text-green-400"></i>
+        <span id="notification-text">操作成功</span>
+    </div>
+
+    <!-- 帮助模态框 -->
+    <div id="help-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all-300">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4 transform scale-95 transition-all-300">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-primary">使用帮助</h3>
+                    <button id="close-help" class="text-gray-500 hover:text-gray-700 transition-all-300">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <!-- 帮助内容保持不变，增加新算法说明 -->
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3">新增算法说明</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <strong>栅栏密码</strong>：通过设置行数将文本排列成栅栏状，加密时按行读取。解密需要知道正确的行数。
+                        </div>
+                        <div>
+                            <strong>培根密码</strong>：使用A和B（或其他两种符号）表示二进制，每个字母编码为5位，可用于文本隐写。
+                        </div>
+                        <div>
+                            <strong>RSA非对称加密</strong>：使用公钥加密、私钥解密，本工具提供演示用密钥对，实际应用需使用更长密钥。
+                        </div>
+                        <div>
+                            <strong>特殊编码</strong>：包括Quoted-Printable（邮件编码）和UUEncode（二进制转文本）。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM元素
+        const encryptBtn = document.getElementById('encrypt-btn');
+        const decryptBtn = document.getElementById('decrypt-btn');
+        const algorithmBtns = document.querySelectorAll('.algorithm-btn');
+        const algorithmInfos = document.querySelectorAll('.algorithm-info');
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const processBtn = document.getElementById('process-btn');
+        const processBtnText = document.getElementById('process-btn-text');
+        const clearInputBtn = document.getElementById('clear-input');
+        const copyOutputBtn = document.getElementById('copy-output');
+        const swapBtn = document.getElementById('swap-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const inputLength = document.getElementById('input-length');
+        const outputLength = document.getElementById('output-length');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        const themeToggle = document.getElementById('theme-toggle');
+        const helpBtn = document.getElementById('help-btn');
+        const helpModal = document.getElementById('help-modal');
+        const closeHelp = document.getElementById('close-help');
+        const header = document.querySelector('header');
+        const mainCards = document.querySelectorAll('.bg-white, .bg-dark');
+        const paramsSection = document.getElementById('params-section');
+        const singleParam = document.getElementById('single-param');
+        const dualParams = document.getElementById('dual-params');
+        const rsaParams = document.getElementById('rsa-params');
+        const paramLabel = document.getElementById('param-label');
+        const paramInput = document.getElementById('param-input');
+        const param1Label = document.getElementById('param1-label');
+        const param1Input = document.getElementById('param1-input');
+        const param2Label = document.getElementById('param2-label');
+        const param2Input = document.getElementById('param2-input');
+        const publicKey = document.getElementById('public-key');
+        const privateKey = document.getElementById('private-key');
+        const generateRsaKeys = document.getElementById('generate-rsa-keys');
+        const paramHint = document.getElementById('param-hint');
+        const toggleVisibility = document.getElementById('toggle-visibility');
+
+        // 全局变量
+        const morseCodeMap = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+            'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+            'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+            '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--',
+            '?': '..--..', "'": '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', '&': '.-...',
+            ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-', '_': '..--.-', '"': '.-..-.',
+            '$': '...-..-', '@': '.--.-.', ' ': '/'
+        };
+        
+        // 培根密码映射表
+        const baconMap = {
+            'A': 'AAAAA', 'B': 'AAAAB', 'C': 'AAABA', 'D': 'AAABB', 'E': 'AABAA',
+            'F': 'AABAB', 'G': 'AABBA', 'H': 'AABBB', 'I': 'ABAAA', 'J': 'ABAAB',
+            'K': 'ABABA', 'L': 'ABABB', 'M': 'ABBAA', 'N': 'ABBAB', 'O': 'ABBBA',
+            'P': 'ABBBB', 'Q': 'BAAAA', 'R': 'BAAAB', 'S': 'BAABA', 'T': 'BAABB',
+            'U': 'BABAA', 'V': 'BABAB', 'W': 'BABBA', 'X': 'BABBB', 'Y': 'BBAAA', 'Z': 'BAAAB'
+        };
+        
+        // 状态变量
+        let isEncryptMode = true;
+        let currentAlgorithm = 'base64';
+        let isDarkMode = false;
+        let isParamVisible = false;
+        let rsaEncryptor = new JSEncrypt();
+        let rsaDecryptor = new JSEncrypt();
+
+        // 初始化事件监听
+        inputText.addEventListener('input', updateInputLength);
+        outputText.addEventListener('input', updateOutputLength);
+        helpBtn.addEventListener('click', openHelpModal);
+        closeHelp.addEventListener('click', closeHelpModal);
+        toggleVisibility.addEventListener('click', toggleParamVisibility);
+        generateRsaKeys.addEventListener('click', generateRSAKeyPair);
+        
+        // 点击模态框外部关闭
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) {
+                closeHelpModal();
+            }
+        });
+        
+        // 打开帮助模态框
+        function openHelpModal() {
+            helpModal.classList.remove('opacity-0', 'pointer-events-none');
+            helpModal.querySelector('div').classList.remove('scale-95');
+            helpModal.querySelector('div').classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 关闭帮助模态框
+        function closeHelpModal() {
+            helpModal.classList.add('opacity-0', 'pointer-events-none');
+            helpModal.querySelector('div').classList.remove('scale-100');
+            helpModal.querySelector('div').classList.add('scale-95');
+            document.body.style.overflow = '';
+        }
+
+        // 切换密钥显示/隐藏
+        function toggleParamVisibility() {
+            isParamVisible = !isParamVisible;
+            const icon = toggleVisibility.querySelector('i');
+            
+            if (isParamVisible) {
+                paramInput.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                paramInput.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // 切换加密/解密模式
+        encryptBtn.addEventListener('click', () => {
+            isEncryptMode = true;
+            encryptBtn.classList.add('text-primary', 'border-primary', 'border-b-2');
+            encryptBtn.classList.remove('text-gray-500');
+            decryptBtn.classList.remove('text-primary', 'border-primary', 'border-b-2');
+            decryptBtn.classList.add('text-gray-500');
+            processBtnText.textContent = '执行加密';
+            updateAlgorithmAvailability();
+        });
+
+        decryptBtn.addEventListener('click', () => {
+            isEncryptMode = false;
+            decryptBtn.classList.add('text-primary', 'border-primary', 'border-b-2');
+            decryptBtn.classList.remove('text-gray-500');
+            encryptBtn.classList.remove('text-primary', 'border-primary', 'border-b-2');
+            encryptBtn.classList.add('text-gray-500');
+            processBtnText.textContent = '执行解密';
+            updateAlgorithmAvailability();
+        });
+
+        // 生成RSA密钥对
+        function generateRSAKeyPair() {
+            // 生成1024位密钥对（演示用，实际应使用2048位以上）
+            const keySize = 1024;
+            const crypt = new JSEncrypt({default_key_size: keySize});
+            crypt.getKey();
+            
+            const publicKeyStr = crypt.getPublicKey();
+            const privateKeyStr = crypt.getPrivateKey();
+            
+            publicKey.value = publicKeyStr;
+            privateKey.value = privateKeyStr;
+            
+            // 更新加密器和解密器
+            rsaEncryptor.setPublicKey(publicKeyStr);
+            rsaDecryptor.setPrivateKey(privateKeyStr);
+            
+            showNotification('RSA密钥对生成成功');
+        }
+
+        // 计算最大公约数
+        function gcd(a, b) {
+            while (b) {
+                [a, b] = [b, a % b];
+            }
+            return a;
+        }
+
+        // 计算模逆
+        function modInverse(a, m) {
+            if (gcd(a, m) !== 1) {
+                return null;
+            }
+            
+            let m0 = m;
+            let y = 0, x = 1;
+            
+            if (m === 1)
+                return 0;
+            
+            while (a > 1) {
+                let q = Math.floor(a / m);
+                let t = m;
+                
+                m = a % m;
+                a = t;
+                t = y;
+                
+                y = x - q * y;
+                x = t;
+            }
+            
+            if (x < 0)
+                x += m0;
+            
+            return x;
+        }
+
+        // 更新算法可用性
+        function updateAlgorithmAvailability() {
+            const hashAlgorithms = ['md5', 'sha1', 'sha256', 'sha512', 'hmac'];
+            
+            if (isEncryptMode) {
+                algorithmBtns.forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+                processBtn.disabled = false;
+                processBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                algorithmBtns.forEach(btn => {
+                    if (hashAlgorithms.includes(btn.dataset.algorithm)) {
+                        btn.disabled = true;
+                        btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+                
+                if (hashAlgorithms.includes(currentAlgorithm)) {
+                    processBtn.disabled = true;
+                    processBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    processBtn.disabled = false;
+                    processBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        // 切换算法
+        algorithmBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!isEncryptMode && ['md5', 'sha1', 'sha256', 'sha512', 'hmac'].includes(btn.dataset.algorithm)) {
+                    showNotification('哈希算法不支持解密操作');
+                    return;
+                }
+                
+                algorithmBtns.forEach(b => {
+                    b.classList.remove('active', 'border-primary', 'bg-primary/5', 'text-primary');
+                    b.classList.add('border-gray-200', 'text-gray-700');
+                });
+                
+                btn.classList.add('active', 'border-primary', 'bg-primary/5', 'text-primary');
+                btn.classList.remove('border-gray-200', 'text-gray-700');
+                
+                currentAlgorithm = btn.dataset.algorithm;
+                updateParamsSection();
+                
+                algorithmInfos.forEach(info => {
+                    info.classList.add('hidden');
+                    info.classList.remove('active');
+                });
+                
+                const infoElement = document.getElementById(`${currentAlgorithm}-info`);
+                if (infoElement) {
+                    infoElement.classList.remove('hidden');
+                    infoElement.classList.add('active');
+                }
+                
+                updateAlgorithmAvailability();
+            });
+        });
+
+        // 更新参数输入区显示
+        function updateParamsSection() {
+            paramsSection.classList.add('hidden');
+            singleParam.classList.add('hidden');
+            dualParams.classList.add('hidden');
+            rsaParams.classList.add('hidden');
+            paramInput.value = '';
+            param1Input.value = '';
+            param2Input.value = '';
+            
+            // 需要单个参数的算法
+            const singleParamAlgorithms = {
+                'aes': {
+                    label: '密钥:',
+                    placeholder: '请输入AES密钥（至少8位）',
+                    hint: 'AES加密需要密钥，加密和解密必须使用相同的密钥',
+                    type: 'password'
+                },
+                'des': {
+                    label: '密钥:',
+                    placeholder: '请输入DES密钥（8位）',
+                    hint: 'DES加密需要8位密钥，加密和解密必须使用相同的密钥',
+                    type: 'password'
+                },
+                'rc4': {
+                    label: '密钥:',
+                    placeholder: '请输入RC4密钥',
+                    hint: 'RC4加密需要密钥，长度没有严格限制，加密和解密必须使用相同的密钥',
+                    type: 'password'
+                },
+                'blowfish': {
+                    label: '密钥:',
+                    placeholder: '请输入Blowfish密钥（32-448位）',
+                    hint: 'Blowfish加密需要32-448位的密钥，加密和解密必须使用相同的密钥',
+                    type: 'password'
+                },
+                'caesar': {
+                    label: '偏移量:',
+                    placeholder: '请输入偏移量（默认3）',
+                    hint: '凯撒密码的偏移量，整数，通常为3',
+                    type: 'text',
+                    defaultValue: '3'
+                },
+                'vigenere': {
+                    label: '密钥词:',
+                    placeholder: '请输入密钥词（仅字母）',
+                    hint: '维吉尼亚密码的密钥词，由字母组成，决定每一位的偏移量',
+                    type: 'text'
+                },
+                'railfence': {
+                    label: '行数:',
+                    placeholder: '请输入栅栏行数（默认2）',
+                    hint: '栅栏密码的行数，决定文本排列方式',
+                    type: 'text',
+                    defaultValue: '2'
+                },
+                'bacon': {
+                    label: '替换字符:',
+                    placeholder: '请输入两个替换字符（如AB）',
+                    hint: '培根密码使用的两个替换字符，默认为AB',
+                    type: 'text',
+                    defaultValue: 'AB'
+                },
+                'hmac': {
+                    label: '密钥:',
+                    placeholder: '请输入HMAC密钥',
+                    hint: 'HMAC需要密钥来生成消息认证码',
+                    type: 'password'
+                }
+            };
+            
+            // 需要两个参数的算法
+            const dualParamAlgorithms = {
+                'affine': {
+                    label1: '参数 A:',
+                    placeholder1: '请输入参数A（1-25的质数）',
+                    label2: '参数 B:',
+                    placeholder2: '请输入参数B（0-25）',
+                    hint: '仿射密码的两个参数，A必须与26互质（如3、5、7、9等）'
+                }
+            };
+            
+            // RSA算法参数
+            if (currentAlgorithm === 'rsa') {
+                paramsSection.classList.remove('hidden');
+                rsaParams.classList.remove('hidden');
+                paramHint.textContent = 'RSA使用公钥加密，私钥解密。可点击生成示例密钥对。';
+                
+                // 如果没有密钥对，生成一个
+                if (!publicKey.value || !privateKey.value) {
+                    generateRSAKeyPair();
+                }
+            }
+            // 显示单个参数区域
+            else if (singleParamAlgorithms[currentAlgorithm]) {
+                const config = singleParamAlgorithms[currentAlgorithm];
+                paramsSection.classList.remove('hidden');
+                singleParam.classList.remove('hidden');
+                
+                paramLabel.textContent = config.label;
+                paramInput.placeholder = config.placeholder;
+                paramHint.textContent = config.hint;
+                paramInput.type = config.type || 'text';
+                
+                if (config.defaultValue) {
+                    paramInput.value = config.defaultValue;
+                }
+                
+                isParamVisible = config.type !== 'password';
+                const icon = toggleVisibility.querySelector('i');
+                if (isParamVisible) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            }
+            // 显示两个参数区域
+            else if (dualParamAlgorithms[currentAlgorithm]) {
+                const config = dualParamAlgorithms[currentAlgorithm];
+                paramsSection.classList.remove('hidden');
+                dualParams.classList.remove('hidden');
+                
+                param1Label.textContent = config.label1;
+                param1Input.placeholder = config.placeholder1;
+                param2Label.textContent = config.label2;
+                param2Input.placeholder = config.placeholder2;
+                paramHint.textContent = config.hint;
+            }
+        }
+
+        // 更新输入输出长度显示
+        function updateInputLength() {
+            inputLength.textContent = inputText.value.length;
+        }
+
+        function updateOutputLength() {
+            outputLength.textContent = outputText.value.length;
+        }
+
+        // 清空输入
+        clearInputBtn.addEventListener('click', () => {
+            inputText.value = '';
+            updateInputLength();
+            inputText.focus();
+        });
+
+        // 复制输出
+        copyOutputBtn.addEventListener('click', () => {
+            if (outputText.value) {
+                outputText.select();
+                document.execCommand('copy');
+                showNotification('已复制到剪贴板');
+            }
+        });
+
+        // 交换输入输出
+        swapBtn.addEventListener('click', () => {
+            const temp = inputText.value;
+            inputText.value = outputText.value;
+            outputText.value = temp;
+            updateInputLength();
+            updateOutputLength();
+        });
+
+        // 保存结果
+        saveBtn.addEventListener('click', () => {
+            if (outputText.value) {
+                const blob = new Blob([outputText.value], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${isEncryptMode ? 'encrypted' : 'decrypted'}-${currentAlgorithm}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showNotification('文件已保存');
+            }
+        });
+
+        // 显示通知
+        function showNotification(message) {
+            notificationText.textContent = message;
+            notification.classList.remove('translate-y-20', 'opacity-0');
+            notification.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-y-0', 'opacity-100');
+                notification.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+
+        // 执行加密/解密
+        processBtn.addEventListener('click', () => {
+            const input = inputText.value;
+            if (!input) return;
+            
+            try {
+                // 参数验证
+                if (['aes', 'des', 'rc4', 'blowfish', 'caesar', 'vigenere', 'railfence', 'bacon', 'hmac'].includes(currentAlgorithm) && !paramInput.value) {
+                    showNotification('请输入必要的参数或密钥');
+                    paramInput.focus();
+                    return;
+                }
+                
+                if (currentAlgorithm === 'affine' && (!param1Input.value || !param2Input.value)) {
+                    showNotification('请输入两个必要的参数');
+                    param1Input.focus();
+                    return;
+                }
+                
+                if (currentAlgorithm === 'rsa') {
+                    if (isEncryptMode && !publicKey.value) {
+                        showNotification('请输入RSA公钥');
+                        publicKey.focus();
+                        return;
+                    }
+                    if (!isEncryptMode && !privateKey.value) {
+                        showNotification('请输入RSA私钥');
+                        privateKey.focus();
+                        return;
+                    }
+                }
+                
+                // 特定算法验证
+                if (currentAlgorithm === 'aes' && paramInput.value.length < 8) {
+                    showNotification('AES密钥长度至少为8位');
+                    return;
+                }
+                
+                if (currentAlgorithm === 'des' && paramInput.value.length !== 8) {
+                    showNotification('DES密钥长度必须为8位');
+                    return;
+                }
+                
+                if (['caesar', 'railfence'].includes(currentAlgorithm)) {
+                    const num = parseInt(paramInput.value);
+                    if (isNaN(num) || num < 1) {
+                        showNotification('请输入有效的正整数');
+                        return;
+                    }
+                }
+                
+                if (currentAlgorithm === 'bacon' && paramInput.value.length !== 2) {
+                    showNotification('请输入两个不同的字符作为替换字符');
+                    return;
+                }
+                
+                let result;
+                if (isEncryptMode) {
+                    result = encrypt(input, currentAlgorithm);
+                } else {
+                    result = decrypt(input, currentAlgorithm);
+                }
+                outputText.value = result;
+                updateOutputLength();
+                
+                processBtn.classList.add('scale-95');
+                setTimeout(() => {
+                    processBtn.classList.remove('scale-95');
+                }, 150);
+                
+                showNotification(isEncryptMode ? '加密成功' : '解密成功');
+            } catch (error) {
+                showNotification(`操作失败: ${error.message}`);
+                console.error(error);
+            }
+        });
+
+        // 加密函数 - 新增算法实现
+        function encrypt(text, algorithm) {
+            switch (algorithm) {
+                // 已有算法保持不变，新增以下算法
+                case 'quoted-printable':
+                    return quotedPrintableEncode(text);
+                case 'uuencode':
+                    return uuencode(text);
+                case 'railfence': {
+                    const rows = parseInt(paramInput.value) || 2;
+                    return railfenceEncrypt(text, rows);
+                }
+                case 'bacon': {
+                    const [a, b] = paramInput.value.split('');
+                    return baconEncrypt(text, a || 'A', b || 'B');
+                }
+                case 'blowfish': {
+                    const key = CryptoJS.enc.Utf8.parse(paramInput.value);
+                    const encrypted = CryptoJS.Blowfish.encrypt(text, key, {
+                        mode: CryptoJS.mode.ECB,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+                    return encrypted.toString();
+                }
+                case 'rsa': {
+                    rsaEncryptor.setPublicKey(publicKey.value);
+                    const encrypted = rsaEncryptor.encrypt(text);
+                    if (!encrypted) {
+                        throw new Error('RSA加密失败，请检查公钥格式');
+                    }
+                    return encrypted;
+                }
+                // 其他已有算法...
+                default:
+                    // 调用原有加密逻辑
+                    if (window.originalEncrypt) {
+                        return window.originalEncrypt(text, algorithm);
+                    }
+                    throw new Error('不支持的加密算法');
+            }
+        }
+
+        // 解密函数 - 新增算法实现
+        function decrypt(text, algorithm) {
+            switch (algorithm) {
+                // 已有算法保持不变，新增以下算法
+                case 'quoted-printable':
+                    return quotedPrintableDecode(text);
+                case 'uuencode':
+                    return uudecode(text);
+                case 'railfence': {
+                    const rows = parseInt(paramInput.value) || 2;
+                    return railfenceDecrypt(text, rows);
+                }
+                case 'bacon': {
+                    const [a, b] = paramInput.value.split('');
+                    return baconDecrypt(text, a || 'A', b || 'B');
+                }
+                case 'blowfish': {
+                    const key = CryptoJS.enc.Utf8.parse(paramInput.value);
+                    const decrypted = CryptoJS.Blowfish.decrypt(text, key, {
+                        mode: CryptoJS.mode.ECB,
+                        padding: CryptoJS.pad.Pkcs7
+                    });
+                    return decrypted.toString(CryptoJS.enc.Utf8);
+                }
+                case 'rsa': {
+                    rsaDecryptor.setPrivateKey(privateKey.value);
+                    const decrypted = rsaDecryptor.decrypt(text);
+                    if (!decrypted) {
+                        throw new Error('RSA解密失败，请检查私钥或密文');
+                    }
+                    return decrypted;
+                }
+                // 其他已有算法...
+                default:
+                    // 调用原有解密逻辑
+                    if (window.originalDecrypt) {
+                        return window.originalDecrypt(text, algorithm);
+                    }
+                    throw new Error('不支持的解密算法');
+            }
+        }
+
+        // 保存原有加密解密函数，用于兼容
+        window.originalEncrypt = encrypt;
+        window.originalDecrypt = decrypt;
+
+        // 新增算法实现
+        function quotedPrintableEncode(str) {
+            return str.replace(/[\x00-\x1F\x7F-\xFF]/g, function(c) {
+                const hex = c.charCodeAt(0).toString(16).toUpperCase();
+                return hex.length === 1 ? `=0${hex}` : `=${hex}`;
+            }).replace(/.{76}(?=.)/g, '$&\r\n');
+        }
+
+        function quotedPrintableDecode(str) {
+            return str.replace(/=\r?\n/g, '').replace(/=([0-9A-F]{2})/gi, function(m, hex) {
+                return String.fromCharCode(parseInt(hex, 16));
+            });
+        }
+
+        function uuencode(str) {
+            let result = 'begin 644 dummy\n';
+            const bytes = new TextEncoder().encode(str);
+            
+            for (let i = 0; i < bytes.length; i += 3) {
+                const group = [bytes[i], bytes[i+1] || 0, bytes[i+2] || 0];
+                const chunk = 
+                    String.fromCharCode(32 + (group[0] >> 2)) +
+                    String.fromCharCode(32 + (((group[0] & 3) << 4) | (group[1] >> 4))) +
+                    String.fromCharCode(32 + (((group[1] & 15) << 2) | (group[2] >> 6))) +
+                    String.fromCharCode(32 + (group[2] & 63));
+                result += chunk;
+                
+                if ((i + 3) % 45 === 0) result += '\n';
+            }
+            
+            result += '\n`\nend\n';
+            return result;
+        }
+
+        function uudecode(str) {
+            const lines = str.split('\n').filter(line => !line.startsWith('begin') && line !== 'end' && line.trim() !== '');
+            let data = lines.join('').replace(/`$/, '');
+            let result = [];
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const chars = [data[i], data[i+1], data[i+2], data[i+3]];
+                const bytes = chars.map(c => c ? c.charCodeAt(0) - 32 : 0);
+                
+                result.push((bytes[0] << 2) | (bytes[1] >> 4));
+                if (bytes[2] !== 64) result.push(((bytes[1] & 15) << 4) | (bytes[2] >> 2));
+                if (bytes[3] !== 64) result.push(((bytes[2] & 3) << 6) | bytes[3]);
+            }
+            
+            return new TextDecoder().decode(new Uint8Array(result));
+        }
+
+        function railfenceEncrypt(text, rows) {
+            if (rows === 1) return text;
+            
+            const rails = Array(rows).fill('');
+            let currentRail = 0;
+            let direction = 1; // 1: down, -1: up
+            
+            for (const char of text) {
+                rails[currentRail] += char;
+                currentRail += direction;
+                
+                if (currentRail === 0 || currentRail === rows - 1) {
+                    direction *= -1;
+                }
+            }
+            
+            return rails.join('');
+        }
+
+        function railfenceDecrypt(ciphertext, rows) {
+            if (rows === 1) return ciphertext;
+            
+            // 计算每个轨道的字符数
+            const lengths = Array(rows).fill(0);
+            let currentRail = 0;
+            let direction = 1;
+            
+            for (let i = 0; i < ciphertext.length; i++) {
+                lengths[currentRail]++;
+                currentRail += direction;
+                if (currentRail === 0 || currentRail === rows - 1) {
+                    direction *= -1;
+                }
+            }
+            
+            // 分割密文到各个轨道
+            const rails = [];
+            let index = 0;
+            for (let i = 0; i < rows; i++) {
+                rails.push(ciphertext.substr(index, lengths[i]));
+                index += lengths[i];
+            }
+            
+            // 重建明文
+            const pointers = Array(rows).fill(0);
+            let result = '';
+            currentRail = 0;
+            direction = 1;
+            
+            for (let i = 0; i < ciphertext.length; i++) {
+                result += rails[currentRail][pointers[currentRail]++];
+                currentRail += direction;
+                if (currentRail === 0 || currentRail === rows - 1) {
+                    direction *= -1;
+                }
+            }
+            
+            return result;
+        }
+
+        function baconEncrypt(text, a, b) {
+            return text.toUpperCase().split('').map(char => {
+                if (char === ' ') return ' ';
+                if (baconMap[char]) {
+                    return baconMap[char].replace(/A/g, a).replace(/B/g, b);
+                }
+                return char;
+            }).join('');
+        }
+
+        function baconDecrypt(text, a, b) {
+            // 创建反向映射
+            const reverseMap = {};
+            for (const [char, code] of Object.entries(baconMap)) {
+                reverseMap[code] = char;
+            }
+            
+            // 替换用户定义的字符为A和B
+            const normalized = text.replace(new RegExp(a, 'g'), 'A').replace(new RegExp(b, 'g'), 'B');
+            let result = '';
+            let currentCode = '';
+            
+            for (const char of normalized) {
+                if (char === ' ') {
+                    if (currentCode) {
+                        result += reverseMap[currentCode] || currentCode;
+                        currentCode = '';
+                    }
+                    result += ' ';
+                } else if (char === 'A' || char === 'B') {
+                    currentCode += char;
+                    if (currentCode.length === 5) {
+                        result += reverseMap[currentCode] || currentCode;
+                        currentCode = '';
+                    }
+                } else {
+                    // 非培根密码字符直接添加
+                    if (currentCode) {
+                        result += reverseMap[currentCode] || currentCode;
+                        currentCode = '';
+                    }
+                    result += char;
+                }
+            }
+            
+            // 处理剩余的代码
+            if (currentCode) {
+                result += reverseMap[currentCode] || currentCode;
+            }
+            
+            return result;
+        }
+
+        // 主题切换
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            const icon = themeToggle.querySelector('i');
+            
+            document.body.classList.toggle('bg-gradient-to-br');
+            document.body.classList.toggle('from-light');
+            document.body.classList.toggle('to-blue-50');
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('text-white');
+            document.body.classList.toggle('text-dark');
+            
+            header.classList.toggle('glass-effect');
+            header.classList.toggle('glass-effect-dark');
+            header.classList.toggle('border-blue-100');
+            header.classList.toggle('border-gray-700');
+            
+            mainCards.forEach(card => {
+                card.classList.toggle('bg-white');
+                card.classList.toggle('bg-gray-800');
+            });
+            
+            document.querySelectorAll('.border-gray-200').forEach(el => {
+                el.classList.toggle('border-gray-200');
+                el.classList.toggle('border-gray-700');
+            });
+            
+            document.querySelectorAll('.bg-gray-50').forEach(el => {
+                el.classList.toggle('bg-gray-50');
+                el.classList.toggle('bg-gray-700');
+            });
+            
+            notification.classList.toggle('bg-dark');
+            notification.classList.toggle('bg-gray-800');
+            
+            if (isDarkMode) {
+                icon.classList.remove('fa-moon-o', 'text-gray-600');
+                icon.classList.add('fa-sun-o', 'text-yellow-400');
+            } else {
+                icon.classList.remove('fa-sun-o', 'text-yellow-400');
+                icon.classList.add('fa-moon-o', 'text-gray-600');
+            }
+            
+            const helpContent = helpModal.querySelector('.bg-white');
+            if (helpContent) {
+                helpContent.classList.toggle('bg-white');
+                helpContent.classList.toggle('bg-gray-800');
+                helpContent.querySelectorAll('p, li').forEach(el => {
+                    el.classList.toggle('text-gray-600');
+                    el.classList.toggle('text-gray-300');
+                });
+                helpContent.querySelectorAll('.bg-gray-50').forEach(el => {
+                    el.classList.toggle('bg-gray-50');
+                    el.classList.toggle('bg-gray-700');
+                });
+            }
+            
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            const exampleText = "这是一个加密解密工具的示例文本，支持多种加密算法。";
+            inputText.value = exampleText;
+            updateInputLength();
+            updateParamsSection();
+            
+            // 加载主题偏好
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode === 'true') {
+                themeToggle.click();
+            }
+        });
+    </script>
+</body>
+</html>
+    

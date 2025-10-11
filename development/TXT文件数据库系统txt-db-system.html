@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="基于TXT文件的数据库系统，支持多种编码格式">
+    <title>TXT文件数据库系统</title>
+    <!-- 外部资源引入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/iconv-lite@0.6.3/dist/iconv-lite.min.js"></script>
+    
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .content-container {
+            min-height: calc(100vh - 160px);
+        }
+        
+        /* 表格样式 */
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .data-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f1f5f9;
+        }
+        
+        /* 滚动按钮样式 */
+        .scroll-btn {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        #to-top-btn {
+            bottom: 80px;
+            right: 20px;
+        }
+        
+        #to-bottom-btn {
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        .scroll-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-btn:hover {
+            background-color: #2563eb;
+            transform: scale(1.05);
+        }
+        
+        /* 加载动画 */
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 编码选择器样式 */
+        .encoding-selector {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='%234B5563'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1em;
+        }
+        
+        /* 数据视图样式 */
+        .data-view {
+            max-height: 600px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        
+        .data-view::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .data-view::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .data-view::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .data-view::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- 快速返回顶部和底部按钮 -->
+    <button id="to-top-btn" class="scroll-btn" aria-label="返回顶部">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    <button id="to-bottom-btn" class="scroll-btn" aria-label="前往底部">
+        <i class="fas fa-chevron-down"></i>
+    </button>
+
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-center">
+                <i class="fa fa-database text-blue-600 mr-2"></i>TXT文件数据库系统
+            </h1>
+            <p class="text-center text-gray-600 mt-2">使用TXT文件作为数据库，支持多种编码格式解析</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 content-container">
+        <!-- 数据库配置区域 -->
+        <section class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-cogs text-blue-600 mr-2"></i>数据库配置
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2">
+                    <label for="db-file" class="block text-sm font-medium text-gray-700 mb-2">选择TXT数据库文件</label>
+                    <input type="file" id="db-file" accept=".txt" class="block w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-lg file:border-0
+                        file:text-sm file:font-medium
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100">
+                    <p class="mt-1 text-sm text-gray-500">支持CSV格式的TXT文件，字段用逗号分隔，第一行为表头</p>
+                </div>
+                
+                <div>
+                    <label for="file-encoding" class="block text-sm font-medium text-gray-700 mb-2">文件编码格式</label>
+                    <select id="file-encoding" class="encoding-selector block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="auto">自动检测编码</option>
+                        <option value="utf8">UTF-8</option>
+                        <option value="gbk">GBK</option>
+                        <option value="gb2312">GB2312</option>
+                        <option value="gb18030">GB18030</option>
+                        <option value="iso-8859-1">ISO-8859-1</option>
+                        <option value="iso-8859-2">ISO-8859-2</option>
+                        <option value="iso-8859-15">ISO-8859-15</option>
+                        <option value="windows-1252">Windows-1252</option>
+                        <option value="big5">Big5</option>
+                        <option value="shift-jis">Shift-JIS</option>
+                    </select>
+                    
+                    <div class="mt-4">
+                        <label for="delimiter" class="block text-sm font-medium text-gray-700 mb-2">字段分隔符</label>
+                        <input type="text" id="delimiter" value="," class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" maxlength="1">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex gap-4">
+                <button id="load-db-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-file-import mr-2"></i>加载数据库
+                </button>
+                
+                <button id="save-db-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-save mr-2"></i>保存数据库
+                </button>
+                
+                <button id="clear-db-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-trash mr-2"></i>清空数据
+                </button>
+                
+                <button id="export-utf8-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-download mr-2"></i>导出为UTF-8
+                </button>
+            </div>
+        </section>
+
+        <!-- 数据操作区域 -->
+        <section class="bg-white rounded-lg shadow-sm p-6 mb-8 hidden" id="data-operation-section">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fas fa-table text-blue-600 mr-2"></i>数据操作
+            </h2>
+            
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="flex-grow relative">
+                    <input type="text" id="search-data" placeholder="搜索数据..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button id="add-record-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <i class="fas fa-plus mr-2"></i>添加记录
+                    </button>
+                    
+                    <button id="delete-selected-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-trash mr-2"></i>删除选中
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 状态显示区域 -->
+            <div id="status-section" class="mb-4">
+                <div id="loading-indicator" class="hidden flex items-center justify-center py-8">
+                    <div class="loader mr-4"></div>
+                    <p class="text-gray-600">正在处理数据...</p>
+                </div>
+                
+                <div id="error-message" class="hidden bg-red-50 border border-red-200 p-4 rounded-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">操作失败</h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <p id="error-details">处理数据时发生错误</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="success-message" class="hidden bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-green-800">操作成功</h3>
+                            <div class="mt-2 text-sm text-green-700">
+                                <p id="success-details">数据处理完成</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 数据统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">总记录数</p>
+                    <p id="total-records" class="text-2xl font-bold text-blue-600">0</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">字段数量</p>
+                    <p id="total-fields" class="text-2xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">文件编码</p>
+                    <p id="current-encoding" class="text-lg font-bold text-purple-600">-</p>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">文件大小</p>
+                    <p id="file-size" class="text-lg font-bold text-amber-600">-</p>
+                </div>
+            </div>
+            
+            <!-- 数据展示区域 -->
+            <div class="data-view border border-gray-200 rounded-lg overflow-hidden">
+                <table class="data-table w-full">
+                    <thead id="table-header">
+                        <tr>
+                            <th class="w-12"><input type="checkbox" id="select-all"></th>
+                            <th>加载数据以显示表头</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="2" class="text-center py-8 text-gray-500">
+                                请加载TXT数据库文件以显示数据
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- 添加/编辑记录模态框 -->
+    <div id="record-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <h3 id="modal-title" class="text-xl font-semibold">添加新记录</h3>
+                <button id="close-modal" class="absolute top-6 right-6 text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="record-form">
+                    <div id="form-fields" class="space-y-4">
+                        <!-- 表单字段将动态生成 -->
+                    </div>
+                    <div class="mt-6 flex justify-end gap-3">
+                        <button type="button" id="cancel-modal" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            取消
+                        </button>
+                        <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            保存
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>TXT文件数据库系统 &copy; 2023</p>
+            <p class="text-sm text-gray-400 mt-2">支持ISO-8859-1、UTF-8、GBK等多种编码格式解析</p>
+        </div>
+    </footer>
+
+    <script>
+        // 全局状态管理
+        const state = {
+            dbFile: null,
+            encoding: 'auto',
+            delimiter: ',',
+            headers: [],
+            records: [],
+            filteredRecords: [],
+            currentRecordIndex: -1, // 用于编辑模式
+            selectedRecords: new Set()
+        };
+
+        // DOM元素引用
+        const elements = {
+            // 滚动按钮
+            toTopBtn: document.getElementById('to-top-btn'),
+            toBottomBtn: document.getElementById('to-bottom-btn'),
+            
+            // 数据库配置
+            dbFileInput: document.getElementById('db-file'),
+            fileEncodingSelect: document.getElementById('file-encoding'),
+            delimiterInput: document.getElementById('delimiter'),
+            loadDbBtn: document.getElementById('load-db-btn'),
+            saveDbBtn: document.getElementById('save-db-btn'),
+            clearDbBtn: document.getElementById('clear-db-btn'),
+            exportUtf8Btn: document.getElementById('export-utf8-btn'),
+            
+            // 数据操作区域
+            dataOperationSection: document.getElementById('data-operation-section'),
+            searchDataInput: document.getElementById('search-data'),
+            addRecordBtn: document.getElementById('add-record-btn'),
+            deleteSelectedBtn: document.getElementById('delete-selected-btn'),
+            selectAllCheckbox: document.getElementById('select-all'),
+            
+            // 表格元素
+            tableHeader: document.getElementById('table-header'),
+            tableBody: document.getElementById('table-body'),
+            
+            // 统计信息
+            totalRecords: document.getElementById('total-records'),
+            totalFields: document.getElementById('total-fields'),
+            currentEncoding: document.getElementById('current-encoding'),
+            fileSize: document.getElementById('file-size'),
+            
+            // 状态消息
+            statusSection: document.getElementById('status-section'),
+            loadingIndicator: document.getElementById('loading-indicator'),
+            errorMessage: document.getElementById('error-message'),
+            errorDetails: document.getElementById('error-details'),
+            successMessage: document.getElementById('success-message'),
+            
+            // 模态框
+            recordModal: document.getElementById('record-modal'),
+            modalTitle: document.getElementById('modal-title'),
+            closeModalBtn: document.getElementById('close-modal'),
+            cancelModalBtn: document.getElementById('cancel-modal'),
+            recordForm: document.getElementById('record-form'),
+            formFields: document.getElementById('form-fields')
+        };
+
+        // 初始化事件监听
+        function initEventListeners() {
+            // 文件选择事件
+            elements.dbFileInput.addEventListener('change', handleFileSelection);
+            
+            // 编码和分隔符变更事件
+            elements.fileEncodingSelect.addEventListener('change', (e) => {
+                state.encoding = e.target.value;
+            });
+            
+            elements.delimiterInput.addEventListener('change', (e) => {
+                state.delimiter = e.target.value || ',';
+                e.target.value = state.delimiter;
+            });
+            
+            // 按钮事件
+            elements.loadDbBtn.addEventListener('click', loadDatabase);
+            elements.saveDbBtn.addEventListener('click', saveDatabase);
+            elements.clearDbBtn.addEventListener('click', clearDatabase);
+            elements.exportUtf8Btn.addEventListener('click', exportAsUtf8);
+            
+            // 数据操作事件
+            elements.addRecordBtn.addEventListener('click', () => openRecordModal());
+            elements.deleteSelectedBtn.addEventListener('click', deleteSelectedRecords);
+            elements.searchDataInput.addEventListener('input', filterRecords);
+            elements.selectAllCheckbox.addEventListener('change', handleSelectAll);
+            
+            // 模态框事件
+            elements.closeModalBtn.addEventListener('click', closeRecordModal);
+            elements.cancelModalBtn.addEventListener('click', closeRecordModal);
+            elements.recordForm.addEventListener('submit', handleFormSubmit);
+            
+            // 滚动事件 - 控制返回顶部/底部按钮显示
+            window.addEventListener('scroll', toggleScrollButtons);
+            
+            // 点击返回顶部
+            elements.toTopBtn.addEventListener('click', scrollToTop);
+            
+            // 点击前往底部
+            elements.toBottomBtn.addEventListener('click', scrollToBottom);
+        }
+
+        // 处理文件选择
+        function handleFileSelection(e) {
+            const file = e.target.files[0];
+            if (file) {
+                state.dbFile = file;
+                elements.loadDbBtn.disabled = false;
+                elements.clearDbBtn.disabled = false;
+                
+                // 显示文件大小
+                elements.fileSize.textContent = formatFileSize(file.size);
+            } else {
+                state.dbFile = null;
+                elements.loadDbBtn.disabled = true;
+                if (state.records.length === 0) {
+                    elements.clearDbBtn.disabled = true;
+                }
+            }
+        }
+
+        // 加载数据库文件
+        function loadDatabase() {
+            if (!state.dbFile) return;
+            
+            showLoading(true);
+            hideMessages();
+            
+            const reader = new FileReader();
+            const selectedEncoding = state.encoding;
+            
+            // 读取文件为ArrayBuffer以便进行编码转换
+            reader.readAsArrayBuffer(state.dbFile);
+            
+            reader.onload = function(e) {
+                try {
+                    const arrayBuffer = e.target.result;
+                    const uint8Array = new Uint8Array(arrayBuffer);
+                    
+                    if (selectedEncoding === 'auto') {
+                        // 自动检测编码
+                        detectEncodingAndParse(uint8Array);
+                    } else {
+                        // 使用指定编码解析
+                        parseWithEncoding(uint8Array, selectedEncoding);
+                    }
+                } catch (error) {
+                    showError(`解析文件时出错: ${error.message}`);
+                    showLoading(false);
+                }
+            };
+            
+            reader.onerror = function() {
+                showError(`无法读取文件: ${reader.error.message}`);
+                showLoading(false);
+            };
+        }
+
+        // 检测编码并解析
+        function detectEncodingAndParse(uint8Array) {
+            // 支持的编码列表，按优先级排序
+            const encodingsToTry = [
+                'utf8', 'gbk', 'gb2312', 'gb18030',
+                'iso-8859-1', 'windows-1252', 'big5',
+                'iso-8859-2', 'iso-8859-15', 'shift-jis'
+            ];
+            
+            let content = null;
+            let detectedEncoding = null;
+            
+            // 尝试不同编码进行解码
+            for (const encoding of encodingsToTry) {
+                try {
+                    // 使用iconv-lite进行解码
+                    content = iconvLite.decode(uint8Array, encoding);
+                    
+                    // 简单验证解码结果
+                    if (isValidText(content)) {
+                        detectedEncoding = encoding;
+                        break;
+                    }
+                } catch (e) {
+                    // 解码失败，尝试下一种编码
+                    continue;
+                }
+            }
+            
+            // 如果所有编码都失败，使用ISO-8859-1作为最后的备选
+            if (!content) {
+                try {
+                    content = iconvLite.decode(uint8Array, 'iso-8859-1');
+                    detectedEncoding = 'iso-8859-1';
+                } catch (e) {
+                    showError('无法解析文件，尝试手动选择其他编码格式');
+                    showLoading(false);
+                    return;
+                }
+            }
+            
+            // 解析内容并显示
+            parseContent(content, detectedEncoding);
+        }
+
+        // 使用指定编码解析
+        function parseWithEncoding(uint8Array, encoding) {
+            try {
+                const content = iconvLite.decode(uint8Array, encoding);
+                parseContent(content, encoding);
+            } catch (error) {
+                showError(`使用 ${encoding} 编码解析失败: ${error.message}`);
+                showLoading(false);
+            }
+        }
+
+        // 验证文本是否有效
+        function isValidText(text) {
+            if (!text || text.length === 0) return false;
+            
+            let nonPrintableCount = 0;
+            for (let i = 0; i < text.length; i++) {
+                const charCode = text.charCodeAt(i);
+                // 统计不可打印字符（控制字符等）
+                if (charCode < 32 && charCode !== 9 && charCode !== 10 && charCode !== 13) {
+                    nonPrintableCount++;
+                }
+            }
+            
+            // 不可打印字符比例低于10%视为有效
+            return (nonPrintableCount / text.length) < 0.1;
+        }
+
+        // 解析文件内容
+        function parseContent(content, encoding) {
+            try {
+                // 按行分割内容
+                const lines = content.split(/\r?\n/).filter(line => line.trim() !== '');
+                
+                if (lines.length === 0) {
+                    showError('文件为空或不包含有效数据');
+                    showLoading(false);
+                    return;
+                }
+                
+                // 提取表头（第一行）
+                state.headers = lines[0].split(state.delimiter).map(header => header.trim());
+                
+                // 提取记录
+                state.records = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const fields = lines[i].split(state.delimiter);
+                    const record = {};
+                    
+                    state.headers.forEach((header, index) => {
+                        record[header] = fields[index] !== undefined ? fields[index].trim() : '';
+                    });
+                    
+                    state.records.push(record);
+                }
+                
+                // 更新状态
+                state.filteredRecords = [...state.records];
+                state.encoding = encoding;
+                
+                // 更新UI
+                updateTable();
+                updateStatistics();
+                
+                // 显示数据操作区域
+                elements.dataOperationSection.classList.remove('hidden');
+                
+                // 启用相关按钮
+                elements.saveDbBtn.disabled = false;
+                elements.exportUtf8Btn.disabled = false;
+                
+                showSuccess('数据库加载成功');
+                showLoading(false);
+            } catch (error) {
+                showError(`解析内容时出错: ${error.message}`);
+                showLoading(false);
+            }
+        }
+
+        // 更新表格显示
+        function updateTable() {
+            // 更新表头
+            elements.tableHeader.innerHTML = `
+                <tr>
+                    <th class="w-12"><input type="checkbox" id="select-all"></th>
+                    ${state.headers.map(header => `<th>${header}</th>`).join('')}
+                    <th class="w-24">操作</th>
+                </tr>
+            `;
+            
+            // 重新绑定全选事件
+            document.getElementById('select-all').addEventListener('change', handleSelectAll);
+            
+            // 更新表体
+            if (state.filteredRecords.length === 0) {
+                elements.tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="${state.headers.length + 2}" class="text-center py-8 text-gray-500">
+                            没有找到匹配的记录
+                        </td>
+                    </tr>
+                `;
+            } else {
+                elements.tableBody.innerHTML = state.filteredRecords.map((record, index) => {
+                    // 找到原始索引，用于编辑和删除
+                    const originalIndex = state.records.indexOf(record);
+                    
+                    return `
+                        <tr>
+                            <td><input type="checkbox" class="record-select" data-index="${originalIndex}"></td>
+                            ${state.headers.map(header => `<td>${escapeHtml(record[header] || '')}</td>`).join('')}
+                            <td>
+                                <div class="flex space-x-2">
+                                    <button class="edit-record text-blue-600 hover:text-blue-800" data-index="${originalIndex}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-record text-red-600 hover:text-red-800" data-index="${originalIndex}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // 绑定行操作事件
+                document.querySelectorAll('.edit-record').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.currentTarget.dataset.index);
+                        openRecordModal(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-record').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.currentTarget.dataset.index);
+                        deleteRecord(index);
+                    });
+                });
+                
+                // 绑定选择框事件
+                document.querySelectorAll('.record-select').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        const index = parseInt(e.currentTarget.dataset.index);
+                        if (e.currentTarget.checked) {
+                            state.selectedRecords.add(index);
+                        } else {
+                            state.selectedRecords.delete(index);
+                        }
+                        updateDeleteButtonState();
+                    });
+                });
+            }
+        }
+
+        // 更新统计信息
+        function updateStatistics() {
+            elements.totalRecords.textContent = state.records.length;
+            elements.totalFields.textContent = state.headers.length;
+            elements.currentEncoding.textContent = state.encoding;
+            
+            if (state.dbFile) {
+                elements.fileSize.textContent = formatFileSize(state.dbFile.size);
+            }
+        }
+
+        // 保存数据库
+        function saveDatabase() {
+            if (state.records.length === 0 || state.headers.length === 0) {
+                showError('没有数据可保存');
+                return;
+            }
+            
+            showLoading(true);
+            hideMessages();
+            
+            try {
+                // 构建文件内容
+                let content = state.headers.join(state.delimiter) + '\n';
+                
+                state.records.forEach(record => {
+                    const fields = state.headers.map(header => record[header] || '');
+                    content += fields.join(state.delimiter) + '\n';
+                });
+                
+                // 转换为原始编码
+                const buffer = iconvLite.encode(content, state.encoding);
+                const blob = new Blob([buffer], { type: 'text/plain' });
+                
+                // 创建下载链接
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = state.dbFile ? state.dbFile.name : 'database.txt';
+                document.body.appendChild(a);
+                a.click();
+                
+                // 清理
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showSuccess('数据库保存成功');
+                    showLoading(false);
+                }, 100);
+            } catch (error) {
+                showError(`保存数据库失败: ${error.message}`);
+                showLoading(false);
+            }
+        }
+
+        // 导出为UTF-8编码
+        function exportAsUtf8() {
+            if (state.records.length === 0 || state.headers.length === 0) {
+                showError('没有数据可导出');
+                return;
+            }
+            
+            showLoading(true);
+            hideMessages();
+            
+            try {
+                // 构建文件内容
+                let content = state.headers.join(state.delimiter) + '\n';
+                
+                state.records.forEach(record => {
+                    const fields = state.headers.map(header => record[header] || '');
+                    content += fields.join(state.delimiter) + '\n';
+                });
+                
+                // 创建UTF-8编码的Blob
+                const blob = new Blob([content], { type: 'text/plain; charset=utf-8' });
+                
+                // 创建下载链接
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                
+                // 生成文件名
+                let fileName = 'database_utf8.txt';
+                if (state.dbFile) {
+                    const nameParts = state.dbFile.name.split('.');
+                    if (nameParts.length > 1) {
+                        nameParts.pop();
+                        fileName = nameParts.join('.') + '_utf8.txt';
+                    }
+                }
+                
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                
+                // 清理
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showSuccess('已导出为UTF-8编码文件');
+                    showLoading(false);
+                }, 100);
+            } catch (error) {
+                showError(`导出文件失败: ${error.message}`);
+                showLoading(false);
+            }
+        }
+
+        // 清空数据库
+        function clearDatabase() {
+            if (confirm('确定要清空所有数据吗？此操作不可恢复。')) {
+                state.records = [];
+                state.filteredRecords = [];
+                state.selectedRecords.clear();
+                
+                updateTable();
+                updateStatistics();
+                updateDeleteButtonState();
+                
+                elements.saveDbBtn.disabled = true;
+                elements.exportUtf8Btn.disabled = true;
+                
+                showSuccess('数据已清空');
+            }
+        }
+
+        // 过滤记录
+        function filterRecords(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                state.filteredRecords = [...state.records];
+            } else {
+                state.filteredRecords = state.records.filter(record => {
+                    // 检查所有字段是否包含搜索词
+                    return Object.values(record).some(value => 
+                        value.toLowerCase().includes(searchTerm)
+                    );
+                });
+            }
+            
+            updateTable();
+        }
+
+        // 打开记录模态框（添加或编辑）
+        function openRecordModal(index = -1) {
+            // 重置表单
+            elements.formFields.innerHTML = '';
+            
+            // 设置模态框标题
+            if (index === -1) {
+                // 添加模式
+                elements.modalTitle.textContent = '添加新记录';
+                state.currentRecordIndex = -1;
+                
+                // 创建空表单字段
+                state.headers.forEach(header => {
+                    elements.formFields.innerHTML += `
+                        <div>
+                            <label for="field-${header}" class="block text-sm font-medium text-gray-700 mb-1">${header}</label>
+                            <input type="text" id="field-${header}" name="${header}" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    `;
+                });
+            } else {
+                // 编辑模式
+                elements.modalTitle.textContent = '编辑记录';
+                state.currentRecordIndex = index;
+                const record = state.records[index];
+                
+                // 填充表单字段
+                state.headers.forEach(header => {
+                    elements.formFields.innerHTML += `
+                        <div>
+                            <label for="field-${header}" class="block text-sm font-medium text-gray-700 mb-1">${header}</label>
+                            <input type="text" id="field-${header}" name="${header}" value="${escapeHtml(record[header] || '')}" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    `;
+                });
+            }
+            
+            // 显示模态框
+            elements.recordModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭记录模态框
+        function closeRecordModal() {
+            elements.recordModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            state.currentRecordIndex = -1;
+        }
+
+        // 处理表单提交
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // 收集表单数据
+            const formData = new FormData(elements.recordForm);
+            const newRecord = {};
+            
+            state.headers.forEach(header => {
+                newRecord[header] = formData.get(header) || '';
+            });
+            
+            // 添加或更新记录
+            if (state.currentRecordIndex === -1) {
+                // 添加新记录
+                state.records.push(newRecord);
+                showSuccess('记录添加成功');
+            } else {
+                // 更新现有记录
+                state.records[state.currentRecordIndex] = newRecord;
+                showSuccess('记录更新成功');
+            }
+            
+            // 更新过滤后的记录和表格
+            state.filteredRecords = [...state.records];
+            updateTable();
+            updateStatistics();
+            
+            // 启用保存按钮
+            elements.saveDbBtn.disabled = false;
+            elements.exportUtf8Btn.disabled = false;
+            
+            // 关闭模态框
+            closeRecordModal();
+        }
+
+        // 删除选中的记录
+        function deleteSelectedRecords() {
+            if (state.selectedRecords.size === 0) {
+                showError('请先选择要删除的记录');
+                return;
+            }
+            
+            if (confirm(`确定要删除选中的 ${state.selectedRecords.size} 条记录吗？`)) {
+                // 从大索引开始删除，避免索引偏移问题
+                const indexes = Array.from(state.selectedRecords).sort((a, b) => b - a);
+                
+                indexes.forEach(index => {
+                    state.records.splice(index, 1);
+                });
+                
+                // 清空选择集
+                state.selectedRecords.clear();
+                
+                // 更新UI
+                state.filteredRecords = [...state.records];
+                updateTable();
+                updateStatistics();
+                updateDeleteButtonState();
+                
+                showSuccess(`已删除 ${indexes.length} 条记录`);
+            }
+        }
+
+        // 删除单条记录
+        function deleteRecord(index) {
+            if (confirm('确定要删除这条记录吗？')) {
+                state.records.splice(index, 1);
+                
+                // 更新UI
+                state.filteredRecords = [...state.records];
+                updateTable();
+                updateStatistics();
+                
+                showSuccess('记录已删除');
+            }
+        }
+
+        // 处理全选
+        function handleSelectAll(e) {
+            const isChecked = e.target.checked;
+            state.selectedRecords.clear();
+            
+            if (isChecked) {
+                // 选中所有记录
+                state.filteredRecords.forEach((_, index) => {
+                    const originalIndex = state.records.indexOf(_);
+                    state.selectedRecords.add(originalIndex);
+                });
+            }
+            
+            // 更新UI上的复选框
+            document.querySelectorAll('.record-select').forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+            
+            updateDeleteButtonState();
+        }
+
+        // 更新删除按钮状态
+        function updateDeleteButtonState() {
+            elements.deleteSelectedBtn.disabled = state.selectedRecords.size === 0;
+        }
+
+        // 显示加载状态
+        function showLoading(show) {
+            if (show) {
+                elements.loadingIndicator.classList.remove('hidden');
+            } else {
+                elements.loadingIndicator.classList.add('hidden');
+            }
+        }
+
+        // 显示错误消息
+        function showError(message) {
+            elements.errorDetails.textContent = message;
+            elements.errorMessage.classList.remove('hidden');
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                elements.errorMessage.classList.add('hidden');
+            }, 5000);
+        }
+
+        // 显示成功消息
+        function showSuccess(message) {
+            elements.successDetails.textContent = message;
+            elements.successMessage.classList.remove('hidden');
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                elements.successMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        // 隐藏所有消息
+        function hideMessages() {
+            elements.errorMessage.classList.add('hidden');
+            elements.successMessage.classList.add('hidden');
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // HTML转义
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 控制滚动按钮显示/隐藏
+        function toggleScrollButtons() {
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            // 页面滚动超过半屏高度时显示顶部按钮
+            if (scrollPosition > windowHeight * 0.5) {
+                elements.toTopBtn.classList.add('visible');
+            } else {
+                elements.toTopBtn.classList.remove('visible');
+            }
+            
+            // 距离底部还有一屏高度时显示底部按钮
+            if (document.body.scrollHeight - scrollPosition > windowHeight * 1.5) {
+                elements.toBottomBtn.classList.add('visible');
+            } else {
+                elements.toBottomBtn.classList.remove('visible');
+            }
+        }
+
+        // 滚动到顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // 初始化应用
+        function initApp() {
+            initEventListeners();
+        }
+
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
+    

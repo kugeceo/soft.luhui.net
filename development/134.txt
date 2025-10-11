@@ -1,0 +1,50 @@
+鲁虺抠图宝一键智能去除背景cuttypic1.0.7更新
+
+根据这个目录里的模型资源写个html离线一键抠图，可以批量抠图，可以二次修改，保存为png透明文件，可以批量下载。https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.3/dist/
+ 
+ ort-wasm-simd-threaded.jsep.mjs	43.44 KB
+ ort-wasm-simd-threaded.jsep.wasm	20.6 MB
+ transformers.js	2.1 MB
+ transformers.js.map	2.01 MB
+ transformers.min.js	852.36 KB
+ transformers.min.js.map	2.53 MB
+ transformers.node.cjs	1.53 MB
+ transformers.node.cjs.map	1.47 MB
+ transformers.node.min.cjs	402.71 KB
+ transformers.node.min.cjs.map	1.67 MB
+ transformers.node.min.mjs	444.27 KB
+ transformers.node.min.mjs.map	1.67 MB
+ transformers.node.mjs	1.65 MB
+ transformers.node.mjs.map	1.47 MB
+ transformers.web.js	1.65 MB
+ transformers.web.js.map	1.47 MB
+ transformers.web.min.js	443.92 KB
+ transformers.web.min.js.map	1.67 MB
+ 
+我将为您创建一个基于Transformers.js的离线一键抠图工具，支持批量处理、二次编辑和批量下载功能。这个工具将使用您提供的CDN资源来实现AI抠图功能。
+
+
+
+这个离线一键抠图工具具有以下特点和功能：
+
+1. **核心功能**：
+   - 支持批量上传图片（拖放或选择文件）
+   - 一键批量抠图，也可单独处理单张图片
+   - 提供二次编辑功能，包括画笔修复和橡皮擦工具
+   - 支持将处理后的图片保存为透明背景的PNG格式
+   - 支持单张下载和批量下载处理结果
+
+2. **技术实现**：
+   - 使用了您指定的Transformers.js库（https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.3/dist/transformers.min.js）
+   - 基于Xenova/clipseg-rd64-refined模型进行图像分割
+   - 所有处理均在浏览器本地完成，保护用户隐私
+   - 使用Canvas进行图像编辑和处理
+
+3. **用户体验**：
+   - 响应式设计，适配各种屏幕尺寸
+   - 直观的进度指示，显示处理状态
+   - 操作反馈提示（Toast消息）
+   - 详细的帮助说明
+
+使用方法很简单：上传图片，点击抠图按钮，处理完成后可以编辑或直接下载。所有操作都在浏览器中进行，无需服务器支持，真正实现离线使用。
+
