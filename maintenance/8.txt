@@ -1,0 +1,14 @@
+删除Docker Desktop在Windows文件资源管理器中显示的WSL相关图标
+
+docker-desktop-data (\\wsl.localhost) 删除桌面图标
+
+你所说的“docker-desktop-data (\\wsl.localhost)”桌面图标可能是指Docker Desktop安装后在文件资源管理器中显示的WSL相关图标。如果是在Windows系统中想要删除该图标，可以参考以下方法：
+1. 进入系统设置 -> 应用 -> 可选功能 -> 更多Windows功能。
+2. 找到“适用于Linux的Windows子系统”，取消勾选。
+3. 点击“确定”，等待操作完成后，重启系统，此时文件资源管理器中的相关图标应该会被移除。
+
+如果你指的是Docker Desktop应用程序的桌面快捷方式图标，直接右键点击该图标，选择“删除”即可。
+
+
+
+

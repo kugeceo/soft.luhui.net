@@ -1,0 +1,70 @@
+电脑蓝屏原因及解决方法
+
+
+
+
+
+
+
+
+鲁虺/撰稿
+
+
+Your device ran into a problem and needs to restart. We're just collecting some error info, and then you can restart.
+0% complete
+
+For more information about this issue and possible fixes, visit https:/www.windows.com/stopcode
+
+If you call a support person, give them this inic Stop code:0xc000021a
+
+
+
+
+这是Windows系统出现蓝屏错误（Blue Screen of Death，简称BSOD） 的情况，屏幕上英文信息翻译过来是：
+- “Your device ran into a problem and needs to restart.”：你的设备遇到问题，需要重启。
+- “We're just collecting some error info, and then you can restart.”：我们正在收集一些错误信息，然后你就可以重启了。
+- “0% complete” ：完成 0% 
+- “For more information about this issue and possible fixes, visit https://www.windows.com/stopcode”：有关此问题和可能的解决方法的更多信息，请访问 https://www.windows.com/stopcode
+- “If you call a support person, give them this info. Stop code: 0xc000021a”：如果你致电支持人员，请向他们提供此信息。停止代码：0xc000021a 
+
+其中停止代码**0xc000021a** 通常表示系统进程或子系统出现严重错误，导致系统无法正常运行 。常见原因和解决方法如下：
+### 软件冲突
+- **原因**：新安装的软件或驱动程序与系统不兼容，或者某些软件在后台运行时引发冲突。比如新安装的杀毒软件、显卡驱动等与系统存在兼容性问题。
+- **解决方法**：重启电脑，在开机时不断按F8键（不同品牌电脑进入安全模式的按键可能不同，如联想部分机型是F12、惠普部分机型是Esc等 ），进入安全模式。在安全模式下，卸载最近安装的软件或驱动程序，然后正常重启电脑。
+### 系统文件损坏
+- **原因**：病毒或恶意软件攻击、突然断电、磁盘错误等原因，都可能导致系统文件损坏，进而引发蓝屏错误。
+- **解决方法**：使用Windows安装介质（如安装光盘或U盘启动盘）启动电脑，进入Windows安装界面后，选择“修复你的电脑”选项，然后按照提示进行系统文件修复操作，比如使用“自动修复”功能或者通过命令提示符运行`sfc /scannow` 命令扫描并修复受损的系统文件。
+### 硬件故障
+- **原因**：内存故障（比如内存条损坏、接触不良）、硬盘出现坏道等硬件问题，也会造成这种蓝屏现象。
+- **解决方法**：关闭电脑电源，打开机箱，将内存条拔出，用橡皮擦轻轻擦拭金手指部分，然后重新插回内存插槽。如果有多条内存条，可以尝试只插一条内存条进行测试。对于硬盘问题，可以使用硬盘检测工具（如Windows自带的磁盘检查工具，在命令提示符中运行`chkdsk /f` 命令；或者第三方工具如HD Tune等 ）检查硬盘是否有坏道，并尝试修复。
+
+如果上述方法都不能解决问题，可能需要重新安装Windows系统来彻底解决蓝屏故障。在重新安装系统前，记得备份重要数据。 
+
+
+
+
+
+
+
+
+
+
+## 捐助打赏作者
+
+手机如何扫码：
+
+![打赏作者](http://flash.luhui.net/images/zhifu.png)
+
+① 保存上面二维码图片　② 打开微信、支付宝、手机qq、“扫一扫”　③ 点击右下脚图标　④ 选择刚才保存的图片
+
+感谢每一位捐赠者，我一直在坚持不懈地努力和创新，不断精心打磨产品，并坚持完全免费，我走过的每一步、开发的每一个功能，离不开那些默默支持我的热心用户，
+大家的每一份捐赠和建议，都是我做的更好、走的更远最大的支持和动力！感谢大家，感谢有你，与你相遇好幸运！
+
+您的捐赠将会用于：
+
+①  支付服务器、域名费用。
+②  开发更丰富的功能，设计更友好的用户界面。
+③  撰写发布更多文章，保证作者的官网一直免费为大家提供服务。
+
+
+

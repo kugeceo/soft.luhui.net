@@ -1,532 +1,474 @@
-<html lang="zh-CN"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="鲁虺应用软件资源搜索导航提拱海量免费软件系统安全下载,软件是一系列按照特定顺序组织的电脑数据和指令,是各种移动或非移动智能电子设备中的非有形部分。电脑或移动设备中的有形部分称为硬件,由电脑或手机或其它物联网设备的外壳及各零件及电路所组成。电脑或手机或其它物联网设备软件需有硬件才能运作,反之亦然,软件和硬件都无法在不互相配合的情形下进行实际的运作。 一般来说,计算机软件划分为编程语言、系统软件、应用软件和介于这两者之间的中间件。">
-<meta name="keywords" content="鲁虺, 鲁虺系统软件,Windows电脑操作系统,鲁虺应用软件资源导航,鲁虺软件搜索导航,Mac OS鲁虺软件链接,App Store鲁虺软件下载,luhuiAPP应用,PC、Mac®、Android™、iOS、iPhone、iPad 和iPod touch、优秀开源软件、实用App Store搜索Flash, 历史博物馆, Flash资讯, Flash教程, Flash资源">
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
-<!-- 引入编码转换库 -->
-<script src="https://cdn.jsdelivr.net/npm/iconv-lite@0.6.3/dist/iconv-lite.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.0.0/encoding.min.js"></script>
-<title>鲁虺应用软件资源网 http://soft.luhui.net 鲁虺软件资源搜索引擎群,快速找到免费商业软件、PC、Mac®、Android™、iOS、优秀开源软件、实用App Store、有趣、绿色的软件,APP应用,手机应用,系统软件搜索下载,免费海量软件高速下载,全球最好网真互动式种源文化传播交流索引平台 lǔ 鲁 huǐ 虺 wén 文 huà 化 wǎng 网</title>
-<style>
-/* 基础样式 */
-body {
-font-family: 'Segoe UI', system-ui, sans-serif;
-background-color: #f8fafc;
-transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* 黑白模式样式 */
-body.dark-mode {
-background-color: #121212;
-color: #e0e0e0;
-}
-
-body.dark-mode .bg-white {
-background-color: #1e1e1e;
-}
-
-body.dark-mode .text-gray-800,
-body.dark-mode .text-gray-900 {
-color: #e0e0e0;
-}
-
-body.dark-mode .text-gray-700 {
-color: #d0d0d0;
-}
-
-body.dark-mode .text-gray-600,
-body.dark-mode .text-gray-500 {
-color: #b0b0b0;
-}
-
-body.dark-mode .bg-gray-900 {
-background-color: #0a0a0a;
-}
-
-body.dark-mode .bg-gray-200 {
-background-color: #333333;
-}
-
-body.dark-mode .bg-gray-200:hover {
-background-color: #444444;
-}
-
-body.dark-mode .bg-blue-50 {
-background-color: #1a2b4a;
-}
-
-body.dark-mode .bg-green-50 {
-background-color: #1a4a2b;
-}
-
-body.dark-mode .bg-purple-50 {
-background-color: #3a1a4a;
-}
-
-body.dark-mode .bg-amber-50 {
-background-color: #4a3a1a;
-}
-
-body.dark-mode .border-gray-300,
-body.dark-mode .border-gray-200 {
-border-color: #444444;
-}
-
-body.dark-mode .image-fallback {
-background-color: #2d2d2d;
-border-color: #555555;
-color: #b0b0b0;
-}
-
-/* 内容区域样式 */
-.content-container {
-min-height: calc(100vh - 120px);
-}
-
-/* 文章卡片样式 */
-.article-card {
-transition: all 0.3s ease;
-}
-.article-card:hover {
-transform: translateY(-3px);
-}
-
-/* Markdown内容样式 */
-.markdown-content {
-line-height: 1.8;
-}
-.markdown-content img {
-max-width: 100%;
-height: auto;
-margin: 1.5rem auto;
-border-radius: 6px;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-body.dark-mode .markdown-content img {
-filter: grayscale(100%);
-}
-
-.markdown-content a {
-color: #2563eb;
-text-decoration: underline;
-}
-
-body.dark-mode .markdown-content a {
-color: #8ab4f8;
-}
-
-.markdown-content a:hover {
-color: #1d4ed8;
-}
-
-body.dark-mode .markdown-content a:hover {
-color: #a8c7fa;
-}
-
-.markdown-content h1, 
-.markdown-content h2, 
-.markdown-content h3 {
-font-weight: 700;
-margin-top: 1.5rem;
-margin-bottom: 1rem;
-color: #1e293b;
-}
-
-body.dark-mode .markdown-content h1,
-body.dark-mode .markdown-content h2,
-body.dark-mode .markdown-content h3 {
-color: #ffffff;
-}
-
-.markdown-content p {
-margin-bottom: 1rem;
-}
-.markdown-content ul, 
-.markdown-content ol {
-margin-left: 1.5rem;
-margin-bottom: 1rem;
-}
-.markdown-content ul {
-list-style-type: disc;
-}
-.markdown-content ol {
-list-style-type: decimal;
-}
-.markdown-content blockquote {
-border-left: 4px solid #94a3b8;
-padding-left: 1rem;
-margin: 1rem 0;
-color: #64748b;
-}
-
-body.dark-mode .markdown-content blockquote {
-border-left-color: #666666;
-color: #999999;
-}
-
-.markdown-content pre {
-background-color: #1e293b;
-color: #f8fafc;
-padding: 1rem;
-border-radius: 6px;
-overflow-x: auto;
-margin: 1rem 0;
-}
-
-/* 加载动画 */
-.loader {
-width: 40px;
-height: 40px;
-border: 4px solid rgba(37, 99, 235, 0.2);
-border-radius: 50%;
-border-top-color: #2563eb;
-animation: spin 1s ease-in-out infinite;
-}
-
-body.dark-mode .loader {
-border-color: rgba(150, 150, 150, 0.2);
-border-top-color: #aaaaaa;
-}
-
-@keyframes spin {
-to { transform: rotate(360deg); }
-}
-
-/* 导航样式 */
-.nav-link {
-position: relative;
-}
-.nav-link.active::after {
-content: '';
-position: absolute;
-bottom: -2px;
-left: 0;
-width: 100%;
-height: 2px;
-background-color: #2563eb;
-}
-
-body.dark-mode .nav-link.active::after {
-background-color: #8ab4f8;
-}
-
-/* 图片加载失败样式 */
-.image-fallback {
-background-color: #f1f5f9;
-border: 1px dashed #94a3b8;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-padding: 2rem;
-color: #64748b;
-}
-
-/* 搜索历史样式 */
-.search-history-container {
-position: relative;
-}
-
-.search-history-dropdown {
-position: absolute;
-top: 100%;
-left: 0;
-right: 0;
-z-index: 100;
-background-color: white;
-border: 1px solid #e2e8f0;
-border-radius: 0 0 0.5rem 0.5rem;
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-max-height: 0;
-overflow: hidden;
-transition: max-height 0.3s ease-out;
-}
-
-body.dark-mode .search-history-dropdown {
-background-color: #1e1e1e;
-border-color: #444444;
-}
-
-.search-history-dropdown.active {
-max-height: 300px;
-overflow-y: auto;
-}
-
-.history-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 0.75rem 1rem;
-border-bottom: 1px solid #e2e8f0;
-font-size: 0.875rem;
-}
-
-body.dark-mode .history-header {
-border-bottom-color: #444444;
-}
-
-.history-title {
-font-weight: 500;
-color: #64748b;
-}
-
-.clear-history {
-color: #2563eb;
-cursor: pointer;
-font-size: 0.75rem;
-}
-
-body.dark-mode .clear-history {
-color: #8ab4f8;
-}
-
-.clear-history:hover {
-color: #1d4ed8;
-text-decoration: underline;
-}
-
-.history-list {
-list-style: none;
-margin: 0;
-padding: 0;
-}
-
-.history-item {
-padding: 0.75rem 1rem;
-border-bottom: 1px solid #f1f5f9;
-cursor: pointer;
-transition: background-color 0.2s ease;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-body.dark-mode .history-item {
-border-bottom-color: #333333;
-}
-
-.history-item:hover {
-background-color: #f8fafc;
-}
-
-body.dark-mode .history-item:hover {
-background-color: #2d2d2d;
-}
-
-.history-item:last-child {
-border-bottom: none;
-}
-
-.history-text {
-color: #334155;
-}
-
-body.dark-mode .history-text {
-color: #e0e0e0;
-}
-
-.history-time {
-font-size: 0.75rem;
-color: #94a3b8;
-margin-left: 0.5rem;
-}
-
-.remove-history {
-color: #94a3b8;
-cursor: pointer;
-padding: 0.25rem;
-opacity: 0;
-transition: opacity 0.2s ease;
-}
-
-body.dark-mode .remove-history {
-color: #777777;
-}
-
-body.dark-mode .remove-history:hover {
-color: #ff6b6b;
-}
-
-.history-item:hover .remove-history {
-opacity: 1;
-}
-
-.remove-history:hover {
-color: #ef4444;
-}
-
-.no-history {
-padding: 1rem;
-text-align: center;
-color: #94a3b8;
-font-size: 0.875rem;
-}
-
-/* 黑白模式切换按钮 */
-.theme-toggle {
-background: none;
-border: none;
-cursor: pointer;
-color: inherit;
-display: flex;
-align-items: center;
-justify-content: center;
-width: 40px;
-height: 40px;
-border-radius: 50%;
-transition: background-color 0.2s ease;
-}
-
-.theme-toggle:hover {
-background-color: rgba(0, 0, 0, 0.1);
-}
-
-body.dark-mode .theme-toggle:hover {
-background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* 内容加载失败提示 */
-.content-error {
-background-color: #fff3cd;
-border-left: 4px solid #ffc107;
-padding: 1rem;
-margin: 1rem 0;
-border-radius: 4px;
-color: #856404;
-}
-
-body.dark-mode .content-error {
-background-color: #3d3511;
-border-left-color: #d4a72c;
-color: #e0c568;
-}
-
-/* 备用渲染样式 */
-.plain-text-content {
-white-space: pre-wrap;
-line-height: 1.8;
-word-wrap: break-word;
-}
-
-/* 加载marked.js提示 */
-.marked-loading-indicator {
-position: fixed;
-bottom: 20px;
-right: 20px;
-background-color: rgba(37, 99, 235, 0.9);
-color: white;
-padding: 8px 12px;
-border-radius: 4px;
-font-size: 0.875rem;
-display: flex;
-align-items: center;
-z-index: 1000;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.marked-loading-indicator .mini-loader {
-width: 16px;
-height: 16px;
-border: 2px solid rgba(255, 255, 255, 0.3);
-border-radius: 50%;
-border-top-color: white;
-animation: spin 1s ease-in-out infinite;
-margin-right: 8px;
-}
-</style>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="鲁虺应用软件资源搜索导航提拱海量免费软件系统安全下载,软件是一系列按照特定顺序组织的电脑数据和指令,是各种移动或非移动智能电子设备中的非有形部分。电脑或移动设备中的有形部分称为硬件,由电脑或手机或其它物联网设备的外壳及各零件及电路所组成。电脑或手机或其它物联网设备软件需有硬件才能运作,反之亦然,软件和硬件都无法在不互相配合的情形下进行实际的运作。 一般来说,计算机软件划分为编程语言、系统软件、应用软件和介于这两者之间的中间件。">
+    <meta name="keywords" content="鲁虺, 鲁虺系统软件,Windows电脑操作系统,鲁虺应用软件资源导航,鲁虺软件搜索导航,Mac OS鲁虺软件链接,App Store鲁虺软件下载,luhuiAPP应用,PC、Mac®、Android™、iOS、iPhone、iPad 和iPod touch、优秀开源软件、实用App Store搜索Flash, 历史博物馆, Flash资讯, Flash教程, Flash资源">
+    <!-- 外部资源引入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <!-- 定义iconv-lite空对象作为占位符，确保即使没有该库也能正常运行 -->
+    <script>
+        window.iconvLite = window.iconvLite || {};
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.0.0/encoding.min.js"></script>
+    <!-- 动态标题 -->
+    <title id="page-title">鲁虺应用软件资源网 http://soft.luhui.net 鲁虺软件资源搜索引擎群,快速找到免费商业软件、PC、Mac®、Android™、iOS、优秀开源软件、实用App Store、有趣、绿色的软件,APP应用,手机应用,系统软件搜索下载,免费海量软件高速下载,全球最好网真互动式种源文化传播交流索引平台 lǔ 鲁 huǐ 虺 wén 文 huà 化 wǎng 网</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: #f8fafc;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* 黑白模式样式 */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .bg-white { background-color: #1e1e1e; }
+        body.dark-mode .text-gray-800,
+        body.dark-mode .text-gray-900 { color: #e0e0e0; }
+        body.dark-mode .text-gray-700 { color: #d0d0d0; }
+        body.dark-mode .text-gray-600,
+        body.dark-mode .text-gray-500 { color: #b0b0b0; }
+        body.dark-mode .bg-gray-900 { background-color: #0a0a0a; }
+        body.dark-mode .bg-gray-200 { background-color: #333333; }
+        body.dark-mode .bg-gray-200:hover { background-color: #444444; }
+        body.dark-mode .bg-purple-50 { background-color: #1a2b4a; }
+        body.dark-mode .bg-green-50 { background-color: #1a4a2b; }
+        body.dark-mode .bg-purple-50 { background-color: #3a1a4a; }
+        body.dark-mode .bg-amber-50 { background-color: #4a3a1a; }
+        body.dark-mode .border-gray-300,
+        body.dark-mode .border-gray-200 { border-color: #444444; }
+        body.dark-mode .image-fallback {
+            background-color: #2d2d2d;
+            border-color: #555555;
+            color: #b0b0b0;
+        }
+        /* 内容区域样式 */
+        .content-container { min-height: calc(100vh - 120px); }
+        /* 文章卡片样式 */
+        .article-card { transition: all 0.3s ease; }
+        .article-card:hover { transform: translateY(-3px); }
+        /* Markdown内容样式 */
+        .markdown-content { line-height: 1.8; }
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 1.5rem auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .markdown-content img { filter: grayscale(100%); }
+        .markdown-content a { color: #2563eb; text-decoration: underline; }
+        body.dark-mode .markdown-content a { color: #8ab4f8; }
+        .markdown-content a:hover { color: #1d4ed8; }
+        body.dark-mode .markdown-content a:hover { color: #a8c7fa; }
+        .markdown-content h1, 
+        .markdown-content h2, 
+        .markdown-content h3 {
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        body.dark-mode .markdown-content h1,
+        body.dark-mode .markdown-content h2,
+        body.dark-mode .markdown-content h3 { color: #ffffff; }
+        .markdown-content p { margin-bottom: 1rem; }
+        .markdown-content ul, 
+        .markdown-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .markdown-content ul { list-style-type: disc; }
+        .markdown-content ol { list-style-type: decimal; }
+        .markdown-content blockquote {
+            border-left: 4px solid #94a3b8;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #64748b;
+        }
+        body.dark-mode .markdown-content blockquote {
+            border-left-color: #666666;
+            color: #999999;
+        }
+        .markdown-content pre {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        /* 加载动画 */
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(37, 99, 235, 0.2);
+            border-radius: 50%;
+            border-top-color: #2563eb;
+            animation: spin 1s ease-in-out infinite;
+        }
+        body.dark-mode .loader {
+            border-color: rgba(150, 150, 150, 0.2);
+            border-top-color: #aaaaaa;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* 加载区域动画 */
+        .loading-animation {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        /* 错误消息动画 */
+        .error-animation {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* 淡出动画 */
+        .fade-out {
+            animation: fadeOut 0.3s ease-in;
+            animation-fill-mode: forwards;
+        }
+        
+        /* 动画关键帧 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        /* 导航样式 */
+        .nav-link { position: relative; }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #2563eb;
+        }
+        body.dark-mode .nav-link.active::after { background-color: #8ab4f8; }
+        /* 图片加载失败样式 */
+        .image-fallback {
+            background-color: #f1f5f9;
+            border: 1px dashed #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 2rem;
+            color: #64748b;
+        }
+        /* 搜索历史样式 */
+        .search-history-container { position: relative; }
+        .search-history-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0 0 0.5rem 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        body.dark-mode .search-history-dropdown {
+            background-color: #1e1e1e;
+            border-color: #444444;
+        }
+        .search-history-dropdown.active {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+        }
+        body.dark-mode .history-header { border-bottom-color: #444444; }
+        .history-title { font-weight: 500; color: #64748b; }
+        .clear-history {
+            color: #2563eb;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        body.dark-mode .clear-history { color: #8ab4f8; }
+        .clear-history:hover { color: #1d4ed8; text-decoration: underline; }
+        .history-list { list-style: none; margin: 0; padding: 0; }
+        .history-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        body.dark-mode .history-item { border-bottom-color: #333333; }
+        .history-item:hover { background-color: #f8fafc; }
+        body.dark-mode .history-item:hover { background-color: #2d2d2d; }
+        .history-item:last-child { border-bottom: none; }
+        .history-text { color: #334155; }
+        body.dark-mode .history-text { color: #e0e0e0; }
+        .history-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-left: 0.5rem;
+        }
+        .remove-history {
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        body.dark-mode .remove-history { color: #777777; }
+        body.dark-mode .remove-history:hover { color: #ff6b6b; }
+        .history-item:hover .remove-history { opacity: 1; }
+        .remove-history:hover { color: #ef4444; }
+        .no-history {
+            padding: 1rem;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        /* 黑白模式切换按钮 */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+        .theme-toggle:hover { background-color: rgba(0, 0, 0, 0.1); }
+        body.dark-mode .theme-toggle:hover { background-color: rgba(255, 255, 255, 0.1); }
+        /* 内容加载失败提示 */
+        .content-error {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+        body.dark-mode .content-error {
+            background-color: #3d3511;
+            border-left-color: #d4a72c;
+            color: #e0c568;
+        }
+        /* 备用渲染样式 */
+        .plain-text-content {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            word-wrap: break-word;
+        }
+        /* 加载marked.js提示 */
+        .marked-loading-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(37, 99, 235, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .marked-loading-indicator .mini-loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+        /* 搜索链接容器样式 */
+        #search-link-container {
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f1f5f9;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        body.dark-mode #search-link-container {
+            background-color: #2d2d2d;
+            border-color: #444444;
+        }
+        body.dark-mode #search-link-container a {
+            color: #8ab4f8;
+        }
+        body.dark-mode #search-link-container a:hover {
+            color: #a8c7fa;
+        }
+		
+/* 滚动控制按钮样式 */
+#scroll-controls button {
+    transition: all 0.3s ease;
+}
+
+#scroll-controls button:hover {
+    transform: scale(1.1);
+}
+
+#scroll-controls button.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.dark-mode #scroll-controls button {
+    background-color: #3b82f6;
+}
+
+body.dark-mode #scroll-controls button:hover {
+    background-color: #2563eb;
+}
+
+
+    </style>
 </head>
 <body class="text-gray-800">
-<!-- 顶部导航栏 -->
-<header class="bg-white shadow-sm sticky top-0 z-50">
-<div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-<div class="mb-4 md:mb-0">
-<h1 class="text-2xl md:text-3xl font-bold text-gray-900">
-<i class="fa fa-people-arrows text-blue-600 mr-2"></i>鲁虺软件资源网
-</h1>
-<p class="text-gray-500 text-sm">软件源码数据，驱动人类文明不断向前！</p>
-</div>
-<div class="flex items-center space-x-6">
-<nav class="flex space-x-6">
-<a href="/" class="nav-link active text-blue-600 hover:text-blue-800 transition">
-<i class="fas fa-home mr-1"></i>首页
-</a>
-<a href="software.html" class="nav-link text-gray-600 hover:text-blue-600 transition">
-<i class="fa fa-desktop mr-1"></i>软件
-</a>
-<a href="gallery.html" class="nav-link text-gray-600 hover:text-blue-600 transition">
-<i class="fa fa-mobile-alt mr-1"></i>应用
-</a>
-<a href="more.html" class="nav-link text-gray-600 hover:text-blue-600 transition">
-<i class="fa fa-satellite mr-1"></i>工具
-</a>
-<a href="about.html" class="nav-link text-gray-600 hover:text-blue-600 transition">
-<i class="fa fa-address-card mr-1"></i>关于
-</a>
-</nav>
-<!-- 黑白模式切换按钮 -->
-<button id="theme-toggle" class="theme-toggle" aria-label="切换黑白模式">
-<i class="fas fa-moon text-gray-600"></i>
-</button>
-</div>
-</div>
-</header>
 
-<!-- 主内容区 -->
-<main class="container mx-auto px-4 py-8 content-container">
-<!-- 搜索区域 -->
-<section class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-<div class="flex flex-col md:flex-row gap-4">
-<div class="flex-grow search-history-container">
-<div class="flex flex-wrap gap-4 mb-3">
-<label class="inline-flex items-center cursor-pointer">
-<input type="radio" name="search-type" value="title" class="form-radio text-blue-600" checked="">
-<span class="ml-2 text-gray-700">标题搜索</span>
-</label>
-<label class="inline-flex items-center cursor-pointer">
-<input type="radio" name="search-type" value="content" class="form-radio text-blue-600">
-<span class="ml-2 text-gray-700">内容搜索</span>
-</label>
-<label class="inline-flex items-center cursor-pointer">
-<input type="radio" name="search-type" value="both" class="form-radio text-blue-600">
-<span class="ml-2 text-gray-700">标题和内容</span>
-</label>
-</div>
-<div class="flex gap-2">
-<input type="text" id="search-input" placeholder="输入关键词搜索..." class="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-<button id="search-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition flex items-center">
-<i class="fas fa-search mr-2"></i>搜索
-</button>
-<button id="reset-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition">
-<i class="fas fa-sync-alt"></i>
-</button>
+
+<!-- 在页脚上方添加按钮 -->
+<div id="scroll-controls" class="fixed right-6 bottom-6 flex flex-col gap-3 z-40">
+    <button id="back-to-top-btn" class="bg-purple-600 hover:bg-purple-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 invisible">
+        <i class="fas fa-angle-double-up text-xl"></i>
+    </button>
+    <button id="back-to-bottom-btn" class="bg-purple-600 hover:bg-purple-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 invisible">
+        <i class="fas fa-angle-double-down text-xl"></i>
+    </button>
 </div>
 
-<!-- 搜索历史下拉框 -->
-<div id="search-history" class="search-history-dropdown">
-<div class="history-header">
-<span class="history-title">搜索历史</span>
-<span id="clear-history" class="clear-history">清除全部</span>
-</div>
-<ul id="history-list" class="history-list">
-<!-- 历史记录将在这里动态生成 -->
-</ul>
-<div id="no-history" class="no-history hidden">
-暂无搜索历史
-</div>
-</div>
-</div>
-</div>
-</section>
 
-<!-- 分类导航 -->
-<section class="mb-8 overflow-x-auto">
-<div class="flex space-x-2 md:space-x-4 min-w-max pb-2">
-<button class="category-btn active px-4 py-2 bg-blue-600 text-white rounded-lg transition" data-category="all">
-全部内容
-</button>
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+                    <i class="fa fa-people-arrows text-purple-600 mr-2"></i>鲁虺软件资源网
+                </h1>
+                <p class="text-gray-500 text-sm">软件源码数据，驱动人类文明不断向前！</p>
+            </div>
+            <div class="flex items-center space-x-6">
+                <nav class="flex space-x-6">
+                    <a href="/" class="nav-link active text-purple-600 hover:text-purple-800 transition">
+                        <i class="fas fa-home mr-1"></i>首页
+                    </a>
+                    <a href="software.html" class="nav-link text-gray-600 hover:text-purple-600 transition">
+                        <i class="fa fa-desktop mr-1"></i>软件
+                    </a>
+                    <a href="gallery.html" class="nav-link text-gray-600 hover:text-purple-600 transition">
+                        <i class="fa fa-mobile-alt mr-1"></i>应用
+                    </a>
+                    <a href="more.html" class="nav-link text-gray-600 hover:text-purple-600 transition">
+                        <i class="fa fa-satellite mr-1"></i>工具
+                    </a>
+                    <a href="about.html" class="nav-link text-gray-600 hover:text-purple-600 transition">
+                        <i class="fa fa-address-card mr-1"></i>关于
+                    </a>
+                </nav>
+                <!-- 黑白模式切换按钮 -->
+                <button id="theme-toggle" class="theme-toggle" aria-label="切换黑白模式">
+                    <i class="fas fa-moon text-gray-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 content-container">
+        <!-- 搜索区域 -->
+        <section class="mb-8 bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-grow search-history-container">
+                    <div class="flex flex-wrap gap-4 mb-3">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="search-type" value="title" class="form-radio text-purple-600" checked>
+                            <span class="ml-2 text-gray-700">标题搜索</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="search-type" value="content" class="form-radio text-purple-600">
+                            <span class="ml-2 text-gray-700">内容搜索</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="search-type" value="both" class="form-radio text-purple-600">
+                            <span class="ml-2 text-gray-700">标题和内容</span>
+                        </label>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="search-input" placeholder="输入关键词搜索..." class="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
+                        <button id="search-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition flex items-center">
+                            <i class="fas fa-search mr-2"></i>搜索
+                        </button>
+                        <button id="reset-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <!-- 搜索历史下拉框 -->
+                    <div id="search-history" class="search-history-dropdown">
+                        <div class="history-header">
+                            <span class="history-title">搜索历史</span>
+                            <span id="clear-history" class="clear-history">清除全部</span>
+                        </div>
+                        <ul id="history-list" class="history-list"></ul>
+                        <div id="no-history" class="no-history hidden">暂无搜索历史</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类导航 -->
+        <section class="mb-8 overflow-x-auto">
+            <div class="flex space-x-2 md:space-x-4 min-w-max pb-2">
+                <button class="category-btn active px-4 py-2 bg-purple-600 text-white rounded-lg transition" data-category="all">全部内容</button>
 <button class="category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition" data-category="luhuidesign">
 鲁虺设计
 </button>
@@ -559,238 +501,273 @@ margin-right: 8px;
 <button class="category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition" data-category="resource">
 资源分享
 </button>
-</div>
-</section>
+            </div>
+        </section>
 
-<!-- 统计信息 -->
-<section id="stats-section" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
-<h2 class="text-xl font-semibold mb-4 text-gray-800">
-<i class="fas fa-chart-pie text-blue-600 mr-2"></i>内容统计
-</h2>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-<div class="bg-blue-50 p-4 rounded-lg">
-<p class="text-sm text-gray-500 mb-1">总文章数</p>
-<p id="total-articles" class="text-2xl font-bold text-blue-600">0</p>
-</div>
-<div class="bg-green-50 p-4 rounded-lg">
-<p class="text-sm text-gray-500 mb-1">资讯文章</p>
-<p id="news-articles" class="text-2xl font-bold text-green-600">0</p>
-</div>
-<div class="bg-purple-50 p-4 rounded-lg">
-<p class="text-sm text-gray-500 mb-1">教程文章</p>
-<p id="tutorial-articles" class="text-2xl font-bold text-purple-600">0</p>
-</div>
-<div class="bg-amber-50 p-4 rounded-lg">
-<p class="text-sm text-gray-500 mb-1">资源文章</p>
-<p id="resource-articles" class="text-2xl font-bold text-amber-600">0</p>
-</div>
-</div>
-</section>
+        <!-- 统计信息 -->
+        <section id="stats-section" class="mb-8 bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">
+                <i class="fas fa-chart-pie text-purple-600 mr-2"></i>内容统计
+            </h2>
 
-<!-- 加载状态 -->
-<section id="loading-section" class="mb-8 hidden">
-<div class="flex flex-col items-center justify-center py-12 bg-white rounded-lg shadow-sm">
-<div class="loader mb-4"></div>
-<p class="text-gray-600">正在加载内容，请稍候...</p>
-<p id="loading-detail" class="text-gray-500 text-sm mt-2">准备加载文章数据</p>
-</div>
-</section>
-
-<!-- 错误信息 -->
-<section id="error-section" class="mb-8 hidden">
-<div class="bg-red-50 border border-red-200 p-6 rounded-lg">
-<div class="flex items-start">
-<i class="fas fa-exclamation-circle text-red-500 text-xl mt-0.5 mr-3"></i>
-<div>
-<h3 class="font-medium text-red-800 mb-1">加载失败</h3>
-<p id="error-message" class="text-red-700">无法加载内容，请稍后重试</p>
-<button id="retry-btn" class="mt-3 text-sm text-red-600 hover:text-red-800 font-medium">
-<i class="fas fa-redo-alt mr-1"></i>重试
-</button>
-</div>
-</div>
-</div>
-</section>
-
-<!-- 文章列表 -->
-<section id="articles-section">
-<div class="flex justify-between items-center mb-4">
-<h2 class="text-xl font-semibold text-gray-800">
-<i class="fas fa-list-alt text-blue-600 mr-2"></i>文章列表
-</h2>
-<div class="text-sm text-gray-500">
-找到 <span id="articles-count">0</span> 篇文章
-</div>
-</div>
-
-<div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-<!-- 空状态 -->
-<div id="empty-state" class="hidden py-16 text-center bg-white rounded-lg shadow-sm">
-<i class="fas fa-file-search text-gray-300 text-5xl mb-4"></i>
-<h3 class="text-lg font-medium text-gray-700 mb-2">未找到相关文章</h3>
-<p class="text-gray-500 max-w-md mx-auto">尝试使用不同的搜索词或浏览其他分类</p>
-<button id="empty-reset-btn" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
-查看全部文章
-</button>
-</div>
-
-<!-- 分页控件 -->
-<div id="pagination" class="mt-8 flex justify-center items-center gap-2 flex-wrap">
-<button id="prev-page" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
-<i class="fas fa-chevron-left mr-1"></i>上一页
-</button>
-<div id="page-numbers" class="flex gap-1">
-<!-- 页码将在这里动态生成 -->
-</div>
-<button id="next-page" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
-下一页<i class="fas fa-chevron-right ml-1"></i>
-</button>
-</div>
-</section>
-
-<!-- 文章详情 -->
-<section id="article-detail">
-<button id="back-to-list" class="mb-6 inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition">
-<i class="fas fa-arrow-left mr-2"></i>返回列表
-</button>
-
-<!-- 详情加载状态 -->
-<div id="detail-loading" class="hidden bg-white rounded-lg shadow-sm overflow-hidden mb-6 p-8">
-<div class="flex flex-col items-center justify-center py-12">
-<div class="loader mb-4"></div>
-<p class="text-gray-600">正在加载文章内容，请稍候...</p>
-</div>
-</div>
-
-<article id="detail-content-container" class="bg-white rounded-lg shadow-sm overflow-hidden mb-6 hidden">
-<div class="p-6 md:p-8">
-<div class="mb-4 flex items-center text-sm text-gray-500">
-<span class="inline-flex items-center mr-4">
-<i class="fas fa-folder-open mr-1"></i>
-<span id="detail-category"></span>
-</span>
-<span class="inline-flex items-center">
-<i class="fas fa-file-code mr-1"></i>
-<span id="detail-id"></span>
-</span>
-</div>
-
-<h1 id="detail-title" class="text-2xl md:text-3xl font-bold text-gray-900 mb-6"></h1>
-
-<!-- 内容渲染容器 -->
-<div id="detail-content-container-inner">
-<!-- 这里会动态添加内容 -->
-</div>
-
-<!-- 渲染错误提示容器 -->
-<div id="render-error-container" class="hidden mt-4">
-<div class="bg-amber-50 border-l-4 border-amber-400 p-4">
-<div class="flex">
-<div class="flex-shrink-0">
-<i class="fas fa-exclamation-triangle text-amber-500"></i>
-</div>
-<div class="ml-3">
-<p class="text-sm text-amber-700">
-Markdown渲染失败，已自动切换为纯文本显示。
-</p>
-<div class="mt-2 text-sm">
-<button id="retry-render-btn" class="text-amber-600 hover:text-amber-800">
-<i class="fas fa-redo-alt mr-1"></i>重试渲染
-</button>
-<button id="use-basic-renderer-btn" class="text-amber-600 hover:text-amber-800 ml-3">
-<i class="fas fa-pencil-alt mr-1"></i>使用基础渲染器
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</article>
-
-<!-- 详情错误状态 -->
-<div id="detail-error" class="hidden bg-white rounded-lg shadow-sm overflow-hidden mb-6 p-8">
-<div class="bg-red-50 border border-red-200 p-6 rounded-lg">
-<div class="flex items-start">
-<i class="fas fa-exclamation-circle text-red-500 text-xl mt-0.5 mr-3"></i>
-<div>
-<h3 class="font-medium text-red-800 mb-1">加载文章失败</h3>
-<p id="detail-error-message" class="text-red-700">无法加载文章内容，请稍后重试</p>
-<button id="detail-retry-btn" class="mt-3 text-sm text-red-600 hover:text-red-800 font-medium">
-<i class="fas fa-redo-alt mr-1"></i>重试
-</button>
-<button id="show-plaintext-btn" class="mt-3 text-sm text-red-600 hover:text-red-800 font-medium ml-3">
-<i class="fas fa-file-alt mr-1"></i>查看纯文本
-</button>
-</div>
-</div>
-</div>
-</div>
-
-<div class="flex justify-between">
-<button id="prev-article" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
-<i class="fas fa-chevron-left mr-2"></i>上一篇
-</button>
-<button id="next-article" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
-下一篇<i class="fas fa-chevron-right ml-2"></i>
-</button>
-</div>
-</section>
-</main>
-
-<!-- 页脚 -->
-<footer class="bg-gray-900 text-gray-300 py-8">
-<div class="container mx-auto px-4">
-<div class="flex flex-col md:flex-row justify-between items-center">
-<div class="mb-4 md:mb-0">
-<h3 class="text-xl font-bold text-white mb-2">鲁虺软件源码数据资源网</h3>
-<p class="text-sm">匯源碼數據星河，赋能智能智造无限可能！</p>
-</div>
-<div class="flex space-x-4">
-<a href="http://luhui.net/cn/mail/" class="text-gray-400 hover:text-white transition">
-<i class="fas fa-envelope"></i>
 </a>
-<a href="topic.html" class="text-gray-400 hover:text-white transition">
-<i class="fas fa-globe"></i>
+<a href="http://web.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-link mr-1"></i>网站推荐
 </a>
-<a href="http://luhui.net/cn/soft/" class="text-gray-400 hover:text-white transition">
-<i class="fas fa-archive"></i>
+<a href="http://search.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-search mr-1"></i>搜索
 </a>
-</div>
-</div>
-<div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">
-<p>鲁虺文化网-致力于数字文化遗产的保存与传播</p>
-</div>
-			
-			
-<div class="footer-inner">
-<p align="center"> Copyright&nbsp;  &#169; 2004-01-11&nbsp;<a href="http://luhui.net" title="鲁虺文化网" target="_top">luhui.net</a>&nbsp;all rights reserved.</p>	
-<div id="back-to-top-btn" style="display:none;"><i class="fas fa-angle-double-up" style="font-size: 25px;"></i>
-</div>
-		
-		
-		
-		
-</div>
-</footer>
+<a href="http://zhongyi.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-medkit mr-1"></i>中医
+</a>
+<a href="http://piano.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-music mr-1"></i>抚琴
+</a>
+<a href="http://qi.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-keyboard mr-1"></i>棋迷
+</a>
+<a href="http://book.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-book mr-1"></i>书库
+</a>
+<a href="http://images.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-image mr-1"></i>画图
+</a>
+<a href="http://game.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-gamepad mr-1"></i>游玩
+</a>
+<a href="http://law.luhui.net" class="nav-link text-gray-600 hover:text-purple-600 transition">
+<i class="fa fa-balance-scale mr-1"></i>法律
+</a>
 
-<!-- marked.js加载指示器 -->
-<div id="marked-loading-indicator" class="marked-loading-indicator hidden">
-<div class="mini-loader"></div>
-<span>正在加载内容渲染组件...</span>
-</div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">总文章数</p>
+                    <p id="total-articles" class="text-2xl font-bold text-purple-600">0</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">资讯文章</p>
+                    <p id="news-articles" class="text-2xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">教程文章</p>
+                    <p id="tutorial-articles" class="text-2xl font-bold text-purple-600">0</p>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-500 mb-1">资源文章</p>
+                    <p id="resource-articles" class="text-2xl font-bold text-amber-600">0</p>
+                </div>
+            </div>
+        </section>
 
-<script>
-// 配置与状态管理
-const config = {
-baseUrl: '', // 基础URL，根据实际部署情况修改
-imageBasePath: '/luhuitxtcms/', // 图片基础路径
-itemsPerPage: 12, // 每页显示文章数量
-maxDetectionAttempts: 100, // 最大检测文章ID尝试次数
-timeout: 15000, // 超时时间(ms)
-maxSearchHistory: 10, // 最大搜索历史记录数量
-categories: {
+        <!-- 加载状态 -->
+        <section id="loading-section" class="mb-8 hidden">
+            <div class="flex flex-col items-center justify-center py-12 bg-white rounded-lg shadow-sm">
+                <div class="loader mb-4"></div>
+                <p class="text-gray-600">正在加载内容，请稍候...</p>
+                <p id="loading-detail" class="text-gray-500 text-sm mt-2">准备加载文章数据</p>
+            </div>
+        </section>
+
+        <!-- 错误信息 -->
+        <section id="error-section" class="mb-8 hidden">
+            <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                <div class="flex items-start">
+                    <i class="fas fa-exclamation-circle text-red-500 text-xl mt-0.5 mr-3"></i>
+                    <div>
+                        <h3 class="font-medium text-red-800 mb-1">加载失败</h3>
+                        <p id="error-message" class="text-red-700">无法加载内容，请稍后重试</p>
+                        <button id="retry-btn" class="mt-3 text-sm text-red-600 hover:text-red-800 font-medium">
+                            <i class="fas fa-redo-alt mr-1"></i>重试
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文章列表 -->
+        <section id="articles-section">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">
+                    <i class="fas fa-list-alt text-purple-600 mr-2"></i>文章列表
+                </h2>
+                <div class="text-sm text-gray-500">
+                    找到 <span id="articles-count">0</span> 篇文章
+                </div>
+            </div>
+            <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            
+            <!-- 空状态 -->
+            <div id="empty-state" class="hidden py-16 text-center bg-white rounded-lg shadow-sm">
+                <i class="fas fa-file-search text-gray-300 text-5xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-700 mb-2">未找到相关文章</h3>
+                <p class="text-gray-500 max-w-md mx-auto">尝试使用不同的搜索词或浏览其他分类</p>
+                <button id="empty-reset-btn" class="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition">
+                    查看全部文章
+                </button>
+            </div>
+
+            <!-- 分页控件 -->
+            <div id="pagination" class="mt-8 flex justify-center items-center gap-2 flex-wrap">
+                <button id="prev-page" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-chevron-left mr-1"></i>上一页
+                </button>
+                <div id="page-numbers" class="flex gap-1"></div>
+                <button id="next-page" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    下一页<i class="fas fa-chevron-right ml-1"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 文章详情 -->
+        <section id="article-detail">
+            <button id="back-to-list" class="mb-6 inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition">
+                <i class="fas fa-arrow-left mr-2"></i>返回列表
+            </button>
+
+            <!-- 详情加载状态 -->
+            <div id="detail-loading" class="hidden bg-white rounded-lg shadow-sm overflow-hidden mb-6 p-8">
+                <div class="flex flex-col items-center justify-center py-12">
+                    <div class="loader mb-4"></div>
+                    <p class="text-gray-600">正在加载文章内容，请稍候...</p>
+                </div>
+            </div>
+
+            <!-- 详情内容容器 -->
+            <article id="detail-content-container" class="bg-white rounded-lg shadow-sm overflow-hidden mb-6 hidden">
+                <div class="p-6 md:p-8">
+                    <div class="mb-4 flex items-center text-sm text-gray-500">
+                        <span class="inline-flex items-center mr-4">
+                            <i class="fas fa-folder-open mr-1"></i>
+                            <span id="detail-category"></span>
+                        </span>
+                        <span class="inline-flex items-center">
+                            <i class="fas fa-file-code mr-1"></i>
+                            <span id="detail-id"></span>
+                        </span>
+                    </div>
+                    <h1 id="detail-title" class="text-2xl md:text-3xl font-bold text-gray-900 mb-6"></h1>
+
+                    <!-- 搜索看看链接（基于当前文章标题） -->
+                    <div id="search-link-container">
+                        搜索看看 <a id="article-search-link" href="" target="_blank" class="text-purple-600 hover:underline"></a>
+                    </div>
+
+                    <!-- 内容渲染容器 -->
+                    <div id="detail-content-container-inner" class="markdown-content"></div>
+
+                    <!-- 渲染错误提示 -->
+                    <div id="render-error-container" class="hidden mt-4">
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-triangle text-amber-500"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-amber-700">Markdown渲染失败，已自动切换为纯文本显示。</p>
+                                    <div class="mt-2 text-sm">
+                                        <button id="retry-render-btn" class="text-amber-600 hover:text-amber-800">
+                                            <i class="fas fa-redo-alt mr-1"></i>重试渲染
+                                        </button>
+                                        <button id="use-basic-renderer-btn" class="text-amber-600 hover:text-amber-800 ml-3">
+                                            <i class="fas fa-pencil-alt mr-1"></i>使用基础渲染器
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 详情错误状态 -->
+            <div id="detail-error" class="hidden bg-white rounded-lg shadow-sm overflow-hidden mb-6 p-8">
+                <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 text-xl mt-0.5 mr-3"></i>
+                        <div>
+                            <h3 class="font-medium text-red-800 mb-1">加载文章失败</h3>
+                            <p id="detail-error-message" class="text-red-700">无法加载文章内容，请稍后重试</p>
+                            <button id="detail-retry-btn" class="mt-3 text-sm text-red-600 hover:text-red-800 font-medium">
+                                <i class="fas fa-redo-alt mr-1"></i>重试
+                            </button>
+                            <button id="show-plaintext-btn" class="mt-3 text-sm text-red-600 hover:text-red-800 font-medium ml-3">
+                                <i class="fas fa-file-alt mr-1"></i>查看纯文本
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 上下篇导航 -->
+            <div class="flex justify-between">
+                <button id="prev-article" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-chevron-left mr-2"></i>上一篇
+                </button>
+                <button id="next-article" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    下一篇<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-gray-300 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold text-white mb-2">鲁虺软件源码数据资源测评网</h3>
+                    <p class="text-sm">匯源碼數據星河，赋能智能智造无限可能！</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="/?q=关于我们" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-address-card mr-1"> 关于我们</i>
+                    </a>
+                    <a href="/?q=商务合作" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-handshake mr-1"> 商务合作</i>
+                    </a>
+                    <a href="/?q=支付服务" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-yen-sign mr-1"> 支付服务</i>
+                    </a>
+                    <a href="/?q=版权声明" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-copy mr-1"> 版权声明</i>
+                    </a>
+                    <a href="/?q=隐私保护" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-eye-low-vision mr-1"> 隐私保护</i>
+                    </a>
+                    <a href="/?q=意见反馈" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-comment-dots mr-1"> 意见反馈</i>
+                    </a>
+                    <a href="/?q=联系方式" class="text-gray-400 hover:text-white transition">
+                        <i class="fa fa-id-card-clip mr-1"> 联系方式</i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">
+                <p>驾驭网络，共创神奇，答疑解惑，苟富勿忘，富民强国，助我发展！</p>
+            </div>
+            <div class="footer-inner mt-6">
+                <p align="center"> Copyright &copy; 2004-01-11&nbsp;<a href="http://luhui.net" title="鲁虺文化网" target="_top">luhui.net</a>&nbsp;all rights reserved.</p>	
+                <div id="back-to-top-btn" style="display:none;"><i class="fas fa-angle-double-up" style="font-size: 25px;"></i></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- marked.js加载指示器 -->
+    <div id="marked-loading-indicator" class="marked-loading-indicator hidden">
+        <div class="mini-loader"></div>
+        <span>正在加载内容渲染组件...</span>
+    </div>
+
+    <script>
+        // 配置与状态管理
+        const config = {
+            baseUrl: '',
+            imageBasePath: '/luhuitxtcms/',
+            itemsPerPage: 12,
+            maxDetectionAttempts: 500, // 增加最大检测尝试次数，从100提高到500
+            timeout: 15000,
+            maxSearchHistory: 10,
+            categories: {
 'development': '软件开发',
 'Codetesting': '源码测试',
 'softnews': '产业观察',
@@ -802,1443 +779,2154 @@ categories: {
 'tool': '在线工具',
 'luhuidesign': '鲁虺设计',
 'hardware': '硬件智能'
-},
-// 支持的文本编码列表
-supportedEncodings: ['utf8', 'gbk', 'gb2312', 'big5', 'euc-kr', 'shift-jis'],
-// Marked.js 备用CDN地址列表
-markedCdnUrls: [
-'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
-'https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js',
-'https://unpkg.com/marked@4.0.2/marked.min.js'
-]
-};
+            },
+            supportedEncodings: ['utf8','big5','gb2312','gbk','gb18030','iso-8859-1','iso-8859-2','euc-kr','shift-jis'], // 调整编码顺序，将GB2312移到GBK之前优先尝试
+            markedCdnUrls: [
+                'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js',
+                'https://unpkg.com/marked@4.0.2/marked.min.js'
+            ]
+        };
 
-// 状态管理
-const state = {
-currentCategory: 'all',
-currentPage: 1,
-searchTerm: '',
-searchType: 'title',
-totalArticles: 0,
-totalPages: 0,
-allArticles: [],
-filteredArticles: [],
-articleCache: new Map(),
-categoryCounts: {},
-searchHistory: [], // 搜索历史记录
-darkMode: false, // 黑白模式状态
-markedRenderer: null, // 存储marked渲染器实例
-markedLoaded: false, // 标记marked.js是否加载完成
-usingFallbackRenderer: false, // 是否使用备用渲染器
-currentArticle: null // 当前显示的文章
-};
+        // 模拟文章数据，用于立即显示
+        const mockArticles = [
+            { id: "1", category: "journalism", title: "2024年数字媒体发展趋势分析", content: "随着人工智能技术的不断进步，数字媒体领域正在经历前所未有的变革。本文将深入分析未来一年数字媒体发展的几大趋势..." },
+            { id: "2", category: "onlinemedia", title: "社交媒体算法变革对内容创作的影响", content: "近期各大社交媒体平台纷纷调整推荐算法，这对内容创作者而言既是挑战也是机遇。本文将探讨这些变化带来的具体影响..." },
+            { id: "3", category: "tvstation", title: "传统电视台的数字化转型之路", content: "在互联网视频平台的冲击下，传统电视台正积极寻求数字化转型。本文分析了几家成功实现转型的电视台案例..." },
+            { id: "4", category: "entertainmentgossip", title: "明星如何利用新媒体打造个人品牌", content: "新媒体时代，明星个人品牌的塑造已经成为其职业发展的重要组成部分。本文将揭秘几位成功案例背后的策略..." },
+            { id: "5", category: "cultureknowledge", title: "新媒体时代的传统文化传播策略", content: "如何利用现代媒体技术传播传统文化，让更多年轻人了解并喜爱传统文化？本文提供了几种创新传播模式..." },
+            { id: "6", category: "library", title: "数字图书馆建设与未来发展方向", content: "随着数字阅读的普及，数字图书馆建设已成为图书馆发展的重要方向。本文将探讨数字图书馆建设中的关键问题..." },
+            { id: "7", category: "radiobroadcasting", title: "广播媒体的转型与创新", content: "在新媒体时代，广播媒体如何通过内容创新和技术升级来保持竞争力？本文分享了一些成功案例..." },
+            { id: "8", category: "livestream", title: "直播带货的发展现状与未来趋势", content: "直播带货已成为电商领域的重要销售模式。本文分析了直播带货的发展现状、存在问题及未来趋势..." },
+            { id: "9", category: "outdooradvertising", title: "户外广告的数字化转型", content: "随着数字技术的发展，户外广告正在经历从传统到数字的转型。本文将探讨这一转型过程中的机遇与挑战..." },
+            { id: "10", category: "newspaperoffice", title: "传统报业的数字化生存策略", content: "面对数字媒体的冲击，传统报业如何实现数字化转型？本文分析了国内外几家成功转型的报业案例..." },
+            { id: "11", category: "periodical", title: "期刊杂志的数字化出版探索", content: "数字化出版已成为期刊杂志发展的必然趋势。本文将探讨期刊杂志数字化出版的模式与策略..." },
+            { id: "12", category: "mediamanagement", title: "媒体融合背景下的传媒管理创新", content: "媒体融合是当前传媒行业发展的大趋势，这对传媒管理提出了新的挑战。本文将探讨媒体融合背景下的管理创新..." },
+            { id: "13", category: "localgazetteers", title: "地方志的数字化保护与利用", content: "地方志是重要的文化遗产，数字化技术为地方志的保护与利用提供了新的途径。本文将探讨地方志数字化的相关问题..." },
+            { id: "14", category: "mediapersonnel", title: "新媒体环境下传媒人才的培养", content: "新媒体时代对传媒人才提出了新的要求。本文将探讨新媒体环境下传媒人才培养的模式与方法..." },
+            { id: "15", category: "publisher", title: "数字出版时代出版社的转型策略", content: "数字出版的兴起给传统出版社带来了巨大挑战。本文分析了数字出版时代出版社的转型策略..." }
+        ];
 
-// DOM元素
-const elements = {
-// 主题切换
-themeToggle: document.getElementById('theme-toggle'),
+        const state = {
+            currentCategory: 'all',
+            currentPage: 1,
+            searchTerm: '',
+            searchType: 'title',
+            totalArticles: 0,
+            totalPages: 0,
+            allArticles: [],
+            filteredArticles: [],
+            articleCache: new Map(),
+            categoryCounts: {},
+            searchHistory: [],
+            darkMode: false,
+            markedRenderer: null,
+            markedLoaded: false,
+            usingFallbackRenderer: false,
+            currentArticle: null, // 当前显示的文章
+            isLoading: false, // 是否正在加载中
+            isInitialLoaded: false // 初始数据是否加载完成
+        };
 
-// 搜索相关
-searchInput: document.getElementById('search-input'),
-searchBtn: document.getElementById('search-btn'),
-resetBtn: document.getElementById('reset-btn'),
-searchTypeRadios: document.querySelectorAll('input[name="search-type"]'),
+        // DOM元素映射
+        const elements = {
+            // 主题切换
+            themeToggle: document.getElementById('theme-toggle'),
+            // 搜索相关
+            searchInput: document.getElementById('search-input'),
+            searchBtn: document.getElementById('search-btn'),
+            resetBtn: document.getElementById('reset-btn'),
+            searchTypeRadios: document.querySelectorAll('input[name="search-type"]'),
+            // 搜索历史相关
+            searchHistoryDropdown: document.getElementById('search-history'),
+            historyList: document.getElementById('history-list'),
+            clearHistoryBtn: document.getElementById('clear-history'),
+            noHistoryMsg: document.getElementById('no-history'),
+            // 分类相关
+            categoryBtns: document.querySelectorAll('.category-btn'),
+            // 内容区域
+            articlesGrid: document.getElementById('articles-grid'),
+            articlesCount: document.getElementById('articles-count'),
+            emptyState: document.getElementById('empty-state'),
+            emptyResetBtn: document.getElementById('empty-reset-btn'),
+            // 加载与错误状态
+            loadingSection: document.getElementById('loading-section'),
+            loadingDetail: document.getElementById('loading-detail'),
+            errorSection: document.getElementById('error-section'),
+            errorMessage: document.getElementById('error-message'),
+            retryBtn: document.getElementById('retry-btn'),
+            // 分页
+            pagination: document.getElementById('pagination'),
+            prevPageBtn: document.getElementById('prev-page'),
+            nextPageBtn: document.getElementById('next-page'),
+            pageNumbers: document.getElementById('page-numbers'),
+            // 统计信息
+            totalArticles: document.getElementById('total-articles'),
+            newsArticles: document.getElementById('news-articles'),
+            tutorialArticles: document.getElementById('tutorial-articles'),
+            resourceArticles: document.getElementById('resource-articles'),
+            // 文章详情
+            articlesSection: document.getElementById('articles-section'),
+            articleDetail: document.getElementById('article-detail'),
+            backToListBtn: document.getElementById('back-to-list'),
+            detailTitle: document.getElementById('detail-title'),
+            detailContentInner: document.getElementById('detail-content-container-inner'),
+            detailCategory: document.getElementById('detail-category'),
+            detailId: document.getElementById('detail-id'),
+            prevArticleBtn: document.getElementById('prev-article'),
+            nextArticleBtn: document.getElementById('next-article'),
+            // 渲染错误相关
+            renderErrorContainer: document.getElementById('render-error-container'),
+            retryRenderBtn: document.getElementById('retry-render-btn'),
+            useBasicRendererBtn: document.getElementById('use-basic-renderer-btn'),
+            // 详情页加载和错误状态
+            detailLoading: document.getElementById('detail-loading'),
+            detailContentContainer: document.getElementById('detail-content-container'),
+            detailError: document.getElementById('detail-error'),
+            detailErrorMessage: document.getElementById('detail-error-message'),
+            detailRetryBtn: document.getElementById('detail-retry-btn'),
+            showPlaintextBtn: document.getElementById('show-plaintext-btn'),
+            // Marked加载指示器
+            markedLoadingIndicator: document.getElementById('marked-loading-indicator'),
+            // 动态标题和搜索链接元素
+            pageTitle: document.getElementById('page-title'),
+            searchLinkContainer: document.getElementById('search-link-container'),
+            articleSearchLink: document.getElementById('article-search-link')
+        };
 
-// 搜索历史相关
-searchHistoryDropdown: document.getElementById('search-history'),
-historyList: document.getElementById('history-list'),
-clearHistoryBtn: document.getElementById('clear-history'),
-noHistoryMsg: document.getElementById('no-history'),
+        // 动态更新页面标题（根据分类/文章状态）
+        function updatePageTitle() {
+            const baseTitle = "鲁虺应用软件资源网 http://soft.luhui.net 鲁虺软件资源搜索引擎群,快速找到免费商业软件、PC、Mac®、Android™、iOS、优秀开源软件、实用App Store、有趣、绿色的软件,APP应用,手机应用,系统软件搜索下载,免费海量软件高速下载,全球最好网真互动式种源文化传播交流索引平台 lǔ 鲁 huǐ 虺 wén 文 huà 化 wǎng 网";
+            
+            // 校验必要元素
+            if (!elements.pageTitle) return;
 
-// 分类相关
-categoryBtns: document.querySelectorAll('.category-btn'),
+            // 场景1：查看特定文章（优先显示文章标题）
+            if (state.currentArticle) {
+                elements.pageTitle.textContent = `${state.currentArticle.title} - ${baseTitle}`;
+                // 同步更新搜索链接（编码标题防止特殊字符问题）
+                if (elements.articleSearchLink) {
+                    const encodedTitle = encodeURIComponent(state.currentArticle.title);
+                    elements.articleSearchLink.href = `http://search.luhui.net/?q=${encodedTitle}`;
+                    elements.articleSearchLink.textContent = state.currentArticle.title;
+                }
+                // 显示搜索链接容器（仅文章详情页需要）
+                if (elements.searchLinkContainer) {
+                    elements.searchLinkContainer.classList.remove('hidden');
+                }
+            } 
+            // 场景2：浏览特定分类（显示分类名称）
+            else if (state.currentCategory && state.currentCategory !== 'all') {
+                const categoryName = config.categories[state.currentCategory] || state.currentCategory;
+                elements.pageTitle.textContent = `${categoryName} - ${baseTitle}`;
+                // 隐藏搜索链接容器
+                if (elements.searchLinkContainer) {
+                    elements.searchLinkContainer.classList.add('hidden');
+                }
+            } 
+            // 场景3：首页/默认状态（显示基础标题）
+            else {
+                elements.pageTitle.textContent = baseTitle;
+                // 隐藏搜索链接容器
+                if (elements.searchLinkContainer) {
+                    elements.searchLinkContainer.classList.add('hidden');
+                }
+            }
+        }
 
-// 内容区域
-articlesGrid: document.getElementById('articles-grid'),
-articlesCount: document.getElementById('articles-count'),
-emptyState: document.getElementById('empty-state'),
-emptyResetBtn: document.getElementById('empty-reset-btn'),
+        // 加载marked.js库
+        async function loadMarkedLibrary() {
+            // 检查是否已经加载过marked.js
+            if (window.marked) {
+                state.markedLoaded = true;
+                return true;
+            }
+            
+            // 检查本地缓存是否已有标记表示marked.js加载失败过
+            const markedLoadFailed = localStorage.getItem('markedLoadFailed') === 'true';
+            if (markedLoadFailed) {
+                console.warn('marked.js 加载失败记录存在，直接使用备用渲染器');
+                state.usingFallbackRenderer = true;
+                return false;
+            }
+            
+            // 显示加载指示器
+            elements.markedLoadingIndicator.classList.remove('hidden');
+            
+            // 增加加载超时时间设置
+            const timeout = 5000; // 减少到5秒，更快失败以便使用备用方案
+            
+            // 尝试所有CDN源
+            for (const url of config.markedCdnUrls) {
+                try {
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.integrity = url.includes('cdn.jsdelivr.net') ? 'sha256-EGkF67+wL2NqgM7UeA1tM52Bx5j5tQl3Zp9V4qM2aZg=' : '';
+                    script.crossOrigin = 'anonymous';
+                    script.defer = true; // 允许异步加载不阻塞页面渲染
 
-// 加载与错误状态
-loadingSection: document.getElementById('loading-section'),
-loadingDetail: document.getElementById('loading-detail'),
-errorSection: document.getElementById('error-section'),
-errorMessage: document.getElementById('error-message'),
-retryBtn: document.getElementById('retry-btn'),
+                    const loadPromise = new Promise((resolve, reject) => {
+                        const timeoutId = setTimeout(() => {
+                            console.warn(`加载marked.js超时 (${url})`);
+                            reject(new Error('加载超时'));
+                        }, timeout);
+                        script.onload = () => {
+                            clearTimeout(timeoutId);
+                            resolve();
+                        };
+                        script.onerror = () => {
+                            clearTimeout(timeoutId);
+                            reject(new Error('加载失败'));
+                        };
+                    });
 
-// 分页
-pagination: document.getElementById('pagination'),
-prevPageBtn: document.getElementById('prev-page'),
-nextPageBtn: document.getElementById('next-page'),
-pageNumbers: document.getElementById('page-numbers'),
+                    document.head.appendChild(script);
+                    await loadPromise;
 
-// 统计信息
-totalArticles: document.getElementById('total-articles'),
-newsArticles: document.getElementById('news-articles'),
-tutorialArticles: document.getElementById('tutorial-articles'),
-resourceArticles: document.getElementById('resource-articles'),
+                    if (window.marked && typeof window.marked === 'function') {
+                        state.markedLoaded = true;
+                        elements.markedLoadingIndicator.classList.add('hidden');
+                        console.log('marked.js 从CDN成功加载');
+                        return true;
+                    }
+                } catch (error) {
+                    console.error(`加载marked.js失败 (${url}):`, error);
+                    continue;
+                }
+            }
 
-// 文章详情
-articlesSection: document.getElementById('articles-section'),
-articleDetail: document.getElementById('article-detail'),
-backToListBtn: document.getElementById('back-to-list'),
-detailTitle: document.getElementById('detail-title'),
-detailContentInner: document.getElementById('detail-content-container-inner'),
-detailCategory: document.getElementById('detail-category'),
-detailId: document.getElementById('detail-id'),
-prevArticleBtn: document.getElementById('prev-article'),
-nextArticleBtn: document.getElementById('next-article'),
+            // 所有CDN都失败时，尝试本地备用方案
+            try {
+                const localUrl = 'marked.min.js'; // 假设有本地备份文件
+                const script = document.createElement('script');
+                script.src = localUrl;
+                script.defer = true;
 
-// 渲染错误相关
-renderErrorContainer: document.getElementById('render-error-container'),
-retryRenderBtn: document.getElementById('retry-render-btn'),
-useBasicRendererBtn: document.getElementById('use-basic-renderer-btn'),
+                const localLoadPromise = new Promise((resolve, reject) => {
+                    const timeoutId = setTimeout(() => reject(new Error('本地加载超时')), timeout);
+                    script.onload = () => {
+                        clearTimeout(timeoutId);
+                        resolve();
+                    };
+                    script.onerror = () => {
+                        clearTimeout(timeoutId);
+                        reject(new Error('本地加载失败'));
+                    };
+                });
 
-// 详情页加载和错误状态
-detailLoading: document.getElementById('detail-loading'),
-detailContentContainer: document.getElementById('detail-content-container'),
-detailError: document.getElementById('detail-error'),
-detailErrorMessage: document.getElementById('detail-error-message'),
-detailRetryBtn: document.getElementById('detail-retry-btn'),
-showPlaintextBtn: document.getElementById('show-plaintext-btn'),
+                document.head.appendChild(script);
+                await localLoadPromise;
 
-// Marked加载指示器
-markedLoadingIndicator: document.getElementById('marked-loading-indicator')
-};
+                if (window.marked && typeof window.marked === 'function') {
+                    state.markedLoaded = true;
+                    elements.markedLoadingIndicator.classList.add('hidden');
+                    console.log('marked.js 从本地成功加载');
+                    return true;
+                }
+            } catch (error) {
+                console.error('加载本地marked.js失败:', error);
+            }
 
-// 初始化应用
-async function init() {
-// 绑定事件处理程序
-bindEvents();
+            // 所有加载尝试都失败
+            console.warn('所有marked.js加载尝试失败，将使用备用渲染器');
+            // 记录失败状态到本地存储，避免每次都进行耗时的加载尝试
+            localStorage.setItem('markedLoadFailed', 'true');
+            // 24小时后自动清除失败记录，允许重试
+            setTimeout(() => {
+                localStorage.removeItem('markedLoadFailed');
+            }, 24 * 60 * 60 * 1000);
+            
+            state.usingFallbackRenderer = true;
+            elements.markedLoadingIndicator.classList.add('hidden');
+            return false;
+        }
 
-// 预加载marked.js
-await loadMarkedLibrary();
+        // 初始化marked渲染器
+        async function initMarkedRenderer() {
+            if (state.usingFallbackRenderer) return;
+            if (window.marked) {
+                try {
+                    const renderer = new marked.Renderer();
+                    // 自定义图片渲染
+                    renderer.image = function(href, title, text) {
+                        let imageUrl = href;
+                        if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('/')) {
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const category = urlParams.get('category');
+                            if (category && config.categories[category]) {
+                                imageUrl = `${config.imageBasePath}${category}/${href}`;
+                            } else {
+                                imageUrl = `${config.imageBasePath}${href}`;
+                            }
+                        }
+                        const titleAttr = title ? `title="${title}"` : '';
+                        return `<img src="${imageUrl}" alt="${text}" ${titleAttr} loading="lazy" onerror="this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>${text}</p></div>'">`;
+                    };
+                    // 自定义链接渲染
+                    renderer.link = function(href, title, text) {
+                        const titleAttr = title ? `title="${title}"` : '';
+                        const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'));
+                        const targetAttr = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
+                        return `<a href="${href}" ${titleAttr} ${targetAttr}>${text}</a>`;
+                    };
 
-// 初始化marked渲染器
-await initMarkedRenderer();
+                    state.markedRenderer = renderer;
+                    marked.setOptions({ breaks: true, gfm: true, renderer: state.markedRenderer });
+                    console.log('marked.js 初始化成功');
+                } catch (error) {
+                    console.error('marked.js 初始化失败:', error);
+                    state.usingFallbackRenderer = true;
+                }
+            } else {
+                console.warn('marked.js 未加载，将使用备用渲染器');
+                state.usingFallbackRenderer = true;
+            }
+        }
 
-// 加载搜索历史
-loadSearchHistory();
+        // 基础备用渲染器
+        function basicMarkdownRenderer(text) {
+            if (!text) return '';
+            let html = text;
+            // 处理标题
+            html = html.replace(/^(#{1,6})\s+(.*?)$/gm, (match, hashes, title) => {
+                const level = hashes.length;
+                return `<h${level} class="font-bold mt-4 mb-2">${title}</h${level}>`;
+            });
+            // 处理粗体/斜体
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            html = html.replace(/_(.*?)_/g, '<em>$1</em>');
+            // 处理链接
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+            
+            // 修复Markdown图片显示bug: ! `http://flash.luhui.net/images/zhifu.png`
+            html = html.replace(/!\s*`([^`]+)`/g, (match, src) => {
+                let imageUrl = src;
+                if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/')) {
+                    if (state.currentArticle && state.currentArticle.category) {
+                        imageUrl = `${config.imageBasePath}${state.currentArticle.category}/${src}`;
+                    } else {
+                        imageUrl = `${config.imageBasePath}${src}`;
+                    }
+                }
+                return `<img src="${imageUrl}" alt="Image" class="my-4 max-w-full h-auto rounded shadow-sm" loading="lazy" onerror="this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>Image</p></div>'">`;
+            });
+            
+            // 处理标准Markdown图片
+            html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+                let imageUrl = src;
+                if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/')) {
+                    if (state.currentArticle && state.currentArticle.category) {
+                        imageUrl = `${config.imageBasePath}${state.currentArticle.category}/${src}`;
+                    } else {
+                        imageUrl = `${config.imageBasePath}${src}`;
+                    }
+                }
+                return `<img src="${imageUrl}" alt="${alt}" class="my-4 max-w-full h-auto rounded shadow-sm" loading="lazy" onerror="this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>${alt}</p></div>'">`;
+            });
+            
+            // 处理列表
+            html = processLists(html);
+            // 处理代码块
+            html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+            // 处理引用
+            html = html.replace(/^> (.*?)$/gm, '<blockquote>$1</blockquote>');
+            // 处理换行
+            html = html.replace(/\n\n/g, '</p><p>');
+            html = html.replace(/\n/g, '<br>');
+            // 添加段落标签
+            if (!html.startsWith('<p>')) {
+                html = `<p>${html}</p>`;
+            }
+            
+            // 增加兼容显示UUB图片
+            html = html.replace(/\[img\](.*?)\[\/img\]/g, (match, src) => {
+                let imageUrl = src.trim();
+                if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://') && !imageUrl.startsWith('/')) {
+                    if (state.currentArticle && state.currentArticle.category) {
+                        imageUrl = `${config.imageBasePath}${state.currentArticle.category}/${imageUrl}`;
+                    } else {
+                        imageUrl = `${config.imageBasePath}${imageUrl}`;
+                    }
+                }
+                return `<img src="${imageUrl}" alt="UUB Image" class="my-4 max-w-full h-auto rounded shadow-sm" loading="lazy" onerror="this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>UUB Image</p></div>'">`;
+            });
+            
+            // 增加兼容显示音频
+            html = html.replace(/\[audio\](.*?)\[\/audio\]/g, (match, src) => {
+                const audioUrl = src.trim();
+                return `<audio controls class="my-4 w-full max-w-md"><source src="${audioUrl}" type="audio/mpeg">您的浏览器不支持音频播放。</think>`;
+            });
+            
+            // 增加兼容显示流媒体视频
+            html = html.replace(/\[media=(\w+),(\d+),(\d+)\](.*?)\[\/media\]/g, (match, type, width, height, src) => {
+                const videoUrl = src.trim();
+                return `<video width="${width}" height="${height}" controls class="my-4 max-w-full rounded shadow-sm"><source src="${videoUrl}" type="video/${type}">您的浏览器不支持视频播放。</video>`;
+            });
+            
+            // 增加兼容显示Flash
+            html = html.replace(/\[flash\](.*?)\[\/flash\]/g, (match, src) => {
+                const flashUrl = src.trim();
+                return `<div class="my-4">该内容需要Flash播放器，现代浏览器可能不再支持。<br><a href="${flashUrl}" target="_blank" class="text-purple-600 hover:underline">下载Flash内容</a></div>`;
+            });
+            
+            // 增加显示地图框
+            html = html.replace(/\[gmap\](.*?)\[\/gmap\]/g, (match, src) => {
+                const mapUrl = src.trim();
+                return `<iframe src="${mapUrl}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="my-4 rounded shadow-sm"></iframe>`;
+            });
+            
+            return html;
+        }
 
-// 加载主题偏好
-loadThemePreference();
+        // 处理列表渲染
+        function processLists(html) {
+            const lines = html.split('\n');
+            let inUnorderedList = false;
+            let inOrderedList = false;
+            let result = [];
+            
+            lines.forEach(line => {
+                if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
+                    const text = line.trim().substring(2);
+                    if (!inUnorderedList) {
+                        result.push('<ul>');
+                        inUnorderedList = true;
+                    }
+                    if (inOrderedList) {
+                        result.push('</ol>');
+                        inOrderedList = false;
+                    }
+                    result.push(`<li>${text}</li>`);
+                } else if (/^\d+\. /.test(line.trim())) {
+                    const text = line.trim().replace(/^\d+\. /, '');
+                    if (!inOrderedList) {
+                        result.push('<ol>');
+                        inOrderedList = true;
+                    }
+                    if (inUnorderedList) {
+                        result.push('</ul>');
+                        inUnorderedList = false;
+                    }
+                    result.push(`<li>${text}</li>`);
+                } else {
+                    if (inUnorderedList) {
+                        result.push('</ul>');
+                        inUnorderedList = false;
+                    }
+                    if (inOrderedList) {
+                        result.push('</ol>');
+                        inOrderedList = false;
+                    }
+                    result.push(line);
+                }
+            });
 
-// 从URL参数加载状态
-loadStateFromUrl();
+            if (inUnorderedList) result.push('</ul>');
+            if (inOrderedList) result.push('</ol>');
+            return result.join('\n');
+        }
 
-// 加载所有文章
-await loadAllArticles();
-}
+        // 从URL参数加载状态
+        function loadStateFromUrl() {
+            const cleanUrl = window.location.search.replace(/%20/g, '').replace(/\s+/g, '');
+            const urlParams = new URLSearchParams(cleanUrl);
+            let category = urlParams.get('category') || '';
+            category = category.trim();
+            const articleId = urlParams.get('id');
+            const page = parseInt(urlParams.get('p')) || 1;
+            const search = urlParams.get('q') || '';
 
-// 加载marked.js库，尝试多个CDN地址
-async function loadMarkedLibrary() {
-// 如果已经加载，直接返回
-if (window.marked) {
-state.markedLoaded = true;
-return true;
-}
+            // 验证分类参数
+            const validCategories = Object.keys(config.categories);
+            let normalizedCategory = category;
+            if (category && !validCategories.includes(category)) {
+                const similarCategory = findSimilarCategory(category, validCategories);
+                normalizedCategory = similarCategory || 'all';
+            }
 
-// 显示加载指示器
-elements.markedLoadingIndicator.classList.remove('hidden');
+            // 应用参数
+            if (normalizedCategory && config.categories[normalizedCategory]) {
+                state.currentCategory = normalizedCategory;
+                updateCategoryButtons();
+            }
+            if (page > 1) state.currentPage = page;
+            if (search) {
+                elements.searchInput.value = search;
+                state.searchTerm = search;
+            }
 
-// 尝试每个CDN地址
-for (const url of config.markedCdnUrls) {
-try {
-console.log(`尝试加载marked.js: ${url}`);
+            // 处理文章详情跳转
+            if (normalizedCategory && articleId) {
+                const showDetail = async () => {
+                    if (state.allArticles.length === 0) {
+                        setTimeout(showDetail, 100);
+                        return;
+                    }
+                    await viewArticleDetail(normalizedCategory, articleId);
+                };
+                showDetail();
+            } else {
+                elements.articleDetail.classList.add('hidden');
+                elements.articlesSection.classList.remove('hidden');
+                updatePageTitle(); // 初始化列表页标题
+            }
+        }
 
-// 动态创建script标签
-const script = document.createElement('script');
-script.src = url;
-script.integrity = url.includes('cdn.jsdelivr.net') ? 'sha256-EGkF67+wL2NqgM7UeA1tM52Bx5j5tQl3Zp9V4qM2aZg=' : '';
-script.crossOrigin = 'anonymous';
+        // 查找相似分类（修复拼写错误）
+        function findSimilarCategory(input, validCategories) {
+            input = input.toLowerCase();
+            // 检查子串匹配
+            for (const category of validCategories) {
+                if (input.length === category.length + 1 && input.includes(category)) return category;
+                if (category.length === input.length + 1 && category.includes(input)) return category;
+            }
+            // 检查大小写匹配
+            for (const category of validCategories) {
+                if (category.toLowerCase() === input) return category;
+            }
+            return null;
+        }
 
-// 等待脚本加载完成
-const loadPromise = new Promise((resolve, reject) => {
-script.onload = resolve;
-script.onerror = reject;
+        // 更新URL参数
+        function updateUrl() {
+            const params = new URLSearchParams();
+            if (state.currentCategory !== 'all') params.append('category', state.currentCategory);
+            if (state.currentPage > 1) params.append('p', state.currentPage);
+            if (state.searchTerm) params.append('q', state.searchTerm);
+            const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+            window.history.pushState({}, '', newUrl);
+        }
 
-// 添加超时处理
-const timeoutId = setTimeout(() => {
-reject(new Error('加载超时'));
-}, 10000);
+        // 绑定所有事件
+        function bindEvents() {
+            // 主题切换
+            elements.themeToggle.addEventListener('click', toggleTheme);
+            // 搜索事件
+            elements.searchBtn.addEventListener('click', handleSearch);
+            elements.searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleSearch());
+            // 重置搜索
+            elements.resetBtn.addEventListener('click', resetSearch);
+            elements.emptyResetBtn.addEventListener('click', resetSearch);
+            // 搜索类型切换
+            elements.searchTypeRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    state.searchType = e.target.value;
+                    filterAndDisplayArticles();
+                });
+            });
+            // 分类切换
+            elements.categoryBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const category = e.target.dataset.category;
+                    if (category) {
+                        state.currentCategory = category;
+                        state.currentPage = 1;
+                        updateCategoryButtons();
+                        filterAndDisplayArticles();
+                        updateUrl();
+                        updatePageTitle(); // 切换分类后更新标题
+                    }
+                });
+            });
+            // 分页事件
+            elements.prevPageBtn.addEventListener('click', () => {
+                if (state.currentPage > 1) {
+                    state.currentPage--;
+                    displayCurrentPageArticles();
+                    updatePagination();
+                    updateUrl();
+                }
+            });
+            elements.nextPageBtn.addEventListener('click', () => {
+                if (state.currentPage < state.totalPages) {
+                    state.currentPage++;
+                    displayCurrentPageArticles();
+                    updatePagination();
+                    updateUrl();
+                }
+            });
+            // 重试加载
+            elements.retryBtn.addEventListener('click', async () => await loadAllArticles());
+            elements.detailRetryBtn.addEventListener('click', async () => {
+                const currentUrl = new URL(window.location.href);
+                const category = currentUrl.searchParams.get('category');
+                const id = currentUrl.searchParams.get('id');
+                if (category && id) await viewArticleDetail(category, id, true);
+            });
+            // 显示纯文本
+            elements.showPlaintextBtn.addEventListener('click', () => {
+                if (state.currentArticle) {
+                    elements.detailContentInner.innerHTML = `<div class="plain-text-content text-gray-700">${escapeHtml(state.currentArticle.content)}</div>`;
+                    elements.detailError.classList.add('hidden');
+                    elements.detailContentContainer.classList.remove('hidden');
+                }
+            });
+            // 重试渲染
+            elements.retryRenderBtn.addEventListener('click', async () => {
+                elements.renderErrorContainer.classList.add('hidden');
+                await loadMarkedLibrary();
+                await initMarkedRenderer();
+                if (state.currentArticle) renderArticleContent(state.currentArticle);
+            });
+            // 使用基础渲染器
+            elements.useBasicRendererBtn.addEventListener('click', () => {
+                if (state.currentArticle) {
+                    state.usingFallbackRenderer = true;
+                    renderArticleContent(state.currentArticle);
+                }
+            });
+            // 返回列表
+            elements.backToListBtn.addEventListener('click', () => {
+                elements.articleDetail.classList.add('hidden');
+                elements.articlesSection.classList.remove('hidden');
+                updateUrl();
+                window.scrollTo(0, 0);
+                state.currentArticle = null; // 清除当前文章状态
+                updatePageTitle(); // 恢复列表页标题
+            });
+            // 搜索历史事件
+            elements.searchInput.addEventListener('focus', showSearchHistory);
+            elements.searchInput.addEventListener('input', filterSearchHistory);
+            document.addEventListener('click', (e) => {
+                if (!elements.searchInput.contains(e.target) && !elements.searchHistoryDropdown.contains(e.target)) {
+                    hideSearchHistory();
+                }
+            });
+            elements.clearHistoryBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                clearAllSearchHistory();
+            });
+        }
 
-// 清理超时
-script.onload = () => {
-clearTimeout(timeoutId);
-resolve();
-};
+        // 渲染文章内容 - 优化版（增加渲染缓存）
+        function renderArticleContent(article) {
+            state.currentArticle = article;
+            
+            // 检查内容是否为空
+            if (!article.content.trim()) {
+                elements.detailContentInner.innerHTML = `
+                    <div class="content-error">
+                        <p><i class="fas fa-exclamation-triangle mr-1"></i> 注意：这篇文章没有内容。</p>
+                    </div>
+                `;
+                return true;
+            }
 
-script.onerror = () => {
-clearTimeout(timeoutId);
-reject(new Error('加载失败'));
-};
+            // 生成内容哈希作为缓存键
+            const contentHash = generateContentHash(article.content);
+            const cacheKey = `render_cache_${article.category}_${article.id}_${contentHash}`;
+            
+            // 检查是否有现成的渲染缓存
+            const cachedRender = sessionStorage.getItem(cacheKey);
+            if (cachedRender) {
+                console.log(`使用缓存的渲染结果: ${cacheKey}`);
+                elements.detailContentInner.innerHTML = cachedRender;
+                elements.renderErrorContainer.classList.add('hidden');
+                return true;
+            }
+
+            try {
+                let htmlContent = '';
+                
+                // 优先使用备用渲染器以提高性能
+                if (state.usingFallbackRenderer || !window.marked || !state.markedRenderer) {
+                    htmlContent = basicMarkdownRenderer(article.content);
+                } else {
+                    // 使用marked渲染器
+                    htmlContent = marked.parse(article.content, { 
+                        renderer: state.markedRenderer, 
+                        breaks: true, 
+                        gfm: true,
+                        mangle: false, // 禁用电子邮件地址混淆以提高性能
+                        headerIds: false // 禁用标题ID生成以提高性能
+                    });
+                }
+
+                // 缓存渲染结果
+                sessionStorage.setItem(cacheKey, htmlContent);
+                
+                // 应用渲染结果到DOM
+                elements.detailContentInner.innerHTML = `<div class="markdown-content text-gray-700">${htmlContent}</div>`;
+                elements.renderErrorContainer.classList.add('hidden');
+                return true;
+            } catch (error) {
+                console.error('内容渲染失败:', error);
+                if (error.message && error.message.includes('this.renderer.paragraph is not a function')) {
+                    state.usingFallbackRenderer = true;
+                    return renderArticleContent(article);
+                }
+                // 显示纯文本备用
+                elements.detailContentInner.innerHTML = `<div class="plain-text-content text-gray-700">${escapeHtml(article.content)}</div>`;
+                elements.renderErrorContainer.classList.remove('hidden');
+                return false;
+            }
+        }
+        
+        // 生成内容哈希用于缓存
+        function generateContentHash(content) {
+            let hash = 0;
+            if (content.length === 0) return hash;
+            for (let i = 0; i < content.length; i++) {
+                const char = content.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // 转换为32位整数
+            }
+            return Math.abs(hash).toString(36);
+        }
+
+        // HTML转义（纯文本显示用）
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 编码检测与转换 - 全兼容优化版
+        function decodeText(buffer, encodings = config.supportedEncodings) {
+            // 尝试使用BOM检测UTF-8
+            const uint8Array = new Uint8Array(buffer);
+            const hasUtf8Bom = uint8Array.length >= 3 && uint8Array[0] === 0xEF && uint8Array[1] === 0xBB && uint8Array[2] === 0xBF;
+            
+            // 如果有BOM，直接用UTF-8解码
+            if (hasUtf8Bom) {
+                return new TextDecoder('utf-8').decode(uint8Array.subarray(3));
+            }
+            
+            // 特殊处理中文编码，增加容错性
+            const chineseEncodings = ['big5', 'gbk', 'gb2312', 'gb18030'];
+            
+            // 对于中文编码，先尝试使用更专业的解码库
+            if (typeof iconvLite !== 'undefined' && typeof iconvLite.decode === 'function') {
+                // 针对每种中文编码，尝试不同的解码选项
+                for (const encoding of encodings) {
+                    if (chineseEncodings.includes(encoding)) {
+                        try {
+                            // 核心解码策略：使用iconv-lite的宽松模式
+                            const options = { ignoreBOM: true, stripBOM: true };
+                            
+                            // 特殊处理Big5编码
+                            if (encoding === 'big5') {
+                                // 先尝试标准Big5
+                                let decoded = iconvLite.decode(Buffer.from(buffer), 'big5', options);
+                                if (!hasInvalidChars(decoded, 0.15)) { // 对Big5使用15%的容错率
+                                    return decoded;
+                                }
+                                
+                                // 尝试Big5-HKSCS扩展（兼容更多字符）
+                                decoded = iconvLite.decode(Buffer.from(buffer), 'big5-hkscs', options);
+                                if (!hasInvalidChars(decoded, 0.15)) {
+                                    return decoded;
+                                }
+                            } 
+                            // 处理GB2312和GBK/GB18030
+                            else if (encoding === 'gb2312') {
+                                // 先尝试标准GB2312
+                                let decoded = iconvLite.decode(Buffer.from(buffer), 'gb2312', options);
+                                if (!hasInvalidChars(decoded, 0.15)) {
+                                    return decoded;
+                                }
+                                
+                                // GB2312解码失败时，尝试GBK作为备选（向下兼容）
+                                decoded = iconvLite.decode(Buffer.from(buffer), 'gbk', options);
+                                if (!hasInvalidChars(decoded, 0.15)) {
+                                    return decoded;
+                                }
+                            } 
+                            // 标准处理GBK和GB18030
+                            else {
+                                const decoded = iconvLite.decode(Buffer.from(buffer), encoding, options);
+                                if (!hasInvalidChars(decoded, 0.15)) {
+                                    return decoded;
+                                }
+                            }
+                        } catch (e) {
+                            console.log(`使用iconv-lite解码${encoding}失败:`, e.message);
+                        }
+                    }
+                }
+            }
+            
+            // 尝试使用TextDecoder解码（如果浏览器支持）
+            if (window.TextDecoder) {
+                for (const encoding of encodings) {
+                    try {
+                        // 为中文编码设置较低的容错阈值
+                        const threshold = chineseEncodings.includes(encoding) ? 0.15 : 0.1;
+                        const decoder = new TextDecoder(encoding, { fatal: false });
+                        const decoded = decoder.decode(uint8Array);
+                        
+                        if (!hasInvalidChars(decoded, threshold)) {
+                            return decoded;
+                        }
+                    } catch (e) {
+                        // TextDecoder不支持该编码或解码失败
+                    }
+                }
+            }
+            
+            // 额外的编码尝试策略
+            try {
+                // 尝试UTF-8宽松模式（替换无效字符）
+                const utf8Decoder = new TextDecoder('utf-8', { fatal: false });
+                const utf8Decoded = utf8Decoder.decode(uint8Array);
+                if (!hasInvalidChars(utf8Decoded, 0.2)) { // 对UTF-8使用20%的容错率
+                    return utf8Decoded;
+                }
+            } catch (e) {
+                console.log('UTF-8宽松模式解码失败:', e.message);
+            }
+            
+            // 尝试使用Encoding.js库进行转换（如果可用）
+            if (typeof Encoding !== 'undefined' && typeof Encoding.convert === 'function') {
+                try {
+                    // 尝试GB2312到UTF-8的转换
+                    const gb2312Converted = Encoding.convert(uint8Array, { to: 'UTF8', from: 'GB2312' });
+                    const gb2312Decoded = new TextDecoder('utf-8').decode(gb2312Converted);
+                    if (!hasInvalidChars(gb2312Decoded, 0.15)) {
+                        return gb2312Decoded;
+                    }
+                    
+                    // 尝试Big5到UTF-8的转换
+                    const big5Converted = Encoding.convert(uint8Array, { to: 'UTF8', from: 'BIG5' });
+                    const big5Decoded = new TextDecoder('utf-8').decode(big5Converted);
+                    if (!hasInvalidChars(big5Decoded, 0.15)) {
+                        return big5Decoded;
+                    }
+                } catch (e) {
+                    console.log('使用Encoding.js解码失败:', e.message);
+                }
+            }
+            
+            // 终极备用：尝试所有可能的中文编码组合
+            if (typeof iconvLite.decode === 'function') {
+                const fallbackEncodings = ['big5', 'big5-hkscs', 'gb2312', 'gbk', 'gb18030'];
+                for (const enc of fallbackEncodings) {
+                    try {
+                        const decoded = iconvLite.decode(Buffer.from(buffer), enc, { ignoreBOM: true });
+                        // 对于终极备用方案，使用更高的容错阈值
+                        if (!hasInvalidChars(decoded, 0.25)) {
+                            return decoded;
+                        }
+                    } catch (e) {
+                        // 忽略错误，继续尝试下一个
+                    }
+                }
+            }
+            
+            // 最后尝试：原始二进制数据的字符串表示
+            try {
+                let result = '';
+                for (let i = 0; i < uint8Array.length; i++) {
+                    result += String.fromCharCode(uint8Array[i]);
+                }
+                return result;
+            } catch (e) {
+                console.error('所有编码解码均失败', e);
+                return '';
+            }
+        }
+        
+        // 检查字符串是否包含大量无效字符（支持自定义容错率）
+        function hasInvalidChars(text, threshold = 0.1) {
+            if (!text || text.length === 0) return false;
+            
+            // 计算无效字符（�）的比例
+            const invalidCount = (text.match(/�/g) || []).length;
+            const invalidRatio = invalidCount / text.length;
+            
+            // 如果无效字符比例超过阈值，则认为解码失败
+            return invalidRatio > threshold;
+        }
+
+        // 定义加载队列，避免重复请求
+        const loadingQueue = new Map();
+        
+        // 缓存最近失败的请求，避免短时间内重复请求不存在的文件
+        const failedRequests = new Set();
+        const FAILED_REQUEST_EXPIRE_TIME = 5 * 60 * 1000; // 5分钟
+        
+        // 加载文章内容
+        async function loadArticleContent(category, id) {
+            const cacheKey = `${category}-${id}`;
+            const requestKey = `${category}/${id}.txt`;
+            
+            // 快速检查：如果这个请求最近失败过，直接返回错误
+            if (failedRequests.has(requestKey)) {
+                console.log(`跳过最近失败过的请求: ${requestKey}`);
+                throw new Error(`文件不存在或加载失败`);
+            }
+            
+            // 1. 检查缓存
+            if (state.articleCache.has(cacheKey)) {
+                console.log(`从缓存加载文章: ${requestKey}`);
+                return state.articleCache.get(cacheKey);
+            }
+            
+            // 2. 检查是否在加载队列中，如果是则等待已有的加载请求完成
+            if (loadingQueue.has(cacheKey)) {
+                console.log(`等待已有加载请求完成: ${requestKey}`);
+                return loadingQueue.get(cacheKey);
+            }
+
+            const url = `${config.baseUrl}${category}/${id}.txt`;
+            console.log(`开始加载文章: ${url}`);
+            
+            // 3. 创建新的加载请求并加入队列
+            const loadPromise = (async () => {
+                try {
+                    // 使用流式处理大文件
+                    const controller = new AbortController();
+                    const signal = controller.signal;
+                    
+                    // 设置超时自动取消，根据文件类型调整超时时间
+                    const shortTimeout = 5000; // 5秒快速超时
+                    const timeoutId = setTimeout(() => {
+                        console.log(`取消长时间未响应的请求: ${requestKey}`);
+                        controller.abort();
+                    }, shortTimeout);
+                    
+                    // 优化fetch选项
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        cache: 'force-cache', // 使用缓存优化性能
+                        headers: { 'Accept': 'text/plain; charset=*' },
+                        signal: signal,
+                        priority: 'low' // 降低请求优先级，避免阻塞重要资源
+                    });
+                    
+                    clearTimeout(timeoutId); // 清除超时定时器
+
+                    // 处理HTTP错误
+                    if (!response.ok) {
+                        // 特殊处理404错误，添加到失败列表
+                        if (response.status === 404) {
+                            failedRequests.add(requestKey);
+                            // 设置自动移除失败记录的定时器
+                            setTimeout(() => {
+                                failedRequests.delete(requestKey);
+                            }, FAILED_REQUEST_EXPIRE_TIME);
+                            throw new Error(`HTTP错误: 404，文件不存在`);
+                        }
+                        throw new Error(`HTTP错误: ${response.status}，无法加载文件`);
+                    }
+                    
+                    // 检查文件大小，对于超大文件进行特殊处理
+                    const contentLength = response.headers.get('content-length');
+                    const fileSize = contentLength ? parseInt(contentLength) : 0;
+                    
+                    // 对于大文件，使用更高效的处理方式
+                    const buffer = await response.arrayBuffer();
+                    
+                    // 4. 使用优化后的decodeText函数
+                    const content = decodeText(buffer);
+
+                    if (!content.trim()) throw new Error('文章内容为空');
+                    const lines = content.split('\n');
+                    const title = lines[0] ? lines[0].trim() : `未命名文章 (${category}-${id})`;
+                    const body = lines.slice(1).join('\n').trim();
+
+                    const article = { id, category, title, content: body, fullContent: content };
+                    
+                    // 5. 存入缓存
+                    state.articleCache.set(cacheKey, article);
+                    return article;
+                } catch (error) {
+                    // 处理中止错误
+                    if (error.name === 'AbortError') {
+                        console.error(`加载文章 ${requestKey} 超时中止`);
+                        // 将超时请求也添加到失败列表，避免重复请求
+                        failedRequests.add(requestKey);
+                        setTimeout(() => {
+                            failedRequests.delete(requestKey);
+                        }, FAILED_REQUEST_EXPIRE_TIME);
+                        throw new Error(`加载超时，无法获取文章内容`);
+                    }
+                    console.error(`加载文章 ${requestKey} 失败:`, error);
+                    throw error;
+                }
+            })().finally(() => {
+                // 加载完成后从队列中移除
+                loadingQueue.delete(cacheKey);
+            });
+            
+            // 记录到加载队列
+            loadingQueue.set(cacheKey, loadPromise);
+            return loadPromise;
+        }
+
+        // 分类检测结果缓存，避免重复检测文件存在性
+        const categoryDetectionCache = new Map();
+        const CACHE_EXPIRE_TIME = 30 * 60 * 1000; // 30分钟
+        
+        // 缓存控制函数
+        function getCachedDetectionResult(category) {
+            const cached = categoryDetectionCache.get(category);
+            if (cached && Date.now() < cached.expiry) {
+                return cached.fileIds;
+            }
+            return null;
+        }
+        
+        function setCachedDetectionResult(category, fileIds) {
+            categoryDetectionCache.set(category, {
+                fileIds,
+                expiry: Date.now() + CACHE_EXPIRE_TIME
+            });
+        }
+
+        // 检测并加载分类文章 - 优化版，仅检测统计现有txt文件
+        async function detectAndLoadCategoryArticles(category) {
+            const articles = [];
+            // 动态调整批处理大小，根据系统性能
+            const batchSize = navigator.hardwareConcurrency ? Math.min(navigator.hardwareConcurrency * 2, 8) : 5;
+            const maxFileCheck = 100; // 最多检查的文件数
+            let existingFileIds = [];
+            let batchLoadSize = 3;
+            
+            // 检查是否有缓存的检测结果
+            const cachedFileIds = getCachedDetectionResult(category);
+            if (cachedFileIds) {
+                console.log(`使用缓存的检测结果: ${category} 分类`);
+                existingFileIds = cachedFileIds;
+            } else {
+                // 先快速扫描可能存在的文件ID
+                console.log(`开始扫描 ${category} 分类中的现有文件`);
+                elements.loadingDetail.textContent = `正在扫描 ${config.categories[category]} 分类的现有文件...`;
+                
+                // 第一阶段：快速检测存在的文件
+                let currentId = 1;
+                // 使用requestAnimationFrame优化DOM更新频率
+                let lastUpdateTime = 0;
+                const updateInterval = 500; // 每500ms更新一次UI
+                
+                while (currentId <= maxFileCheck && existingFileIds.length < 300) { // 限制最多300个文件
+                    const batchIds = [];
+                    for (let i = 0; i < batchSize && currentId <= maxFileCheck; i++) {
+                        batchIds.push(currentId++);
+                    }
+                    
+                    // 只发送HEAD请求来检查文件是否存在，不下载内容
+                    const checkPromises = batchIds.map(id => {
+                        const url = `${config.baseUrl}${category}/${id}.txt`;
+                        return fetch(url, { 
+                            method: 'HEAD', 
+                            signal: AbortSignal.timeout(2000),
+                            priority: 'low', // 降低请求优先级
+                            cache: 'force-cache' // 使用缓存优化性能
+                        })
+                            .then(response => ({ id, exists: response.ok }))
+                            .catch(() => ({ id, exists: false }));
+                    });
+                    
+                    const results = await Promise.all(checkPromises);
+                    for (const result of results) {
+                        if (result.exists) {
+                            existingFileIds.push(result.id);
+                        }
+                    }
+                    
+                    // 优化DOM更新频率
+                    const now = Date.now();
+                    if (now - lastUpdateTime > updateInterval) {
+                        elements.loadingDetail.textContent = `正在扫描 ${config.categories[category]} 分类的现有文件 (已发现 ${existingFileIds.length} 个)...`;
+                        lastUpdateTime = now;
+                    }
+                    
+                    // 如果连续多个文件不存在，可能没有更多文件了
+                    const lastBatchResults = results.slice(-batchSize);
+                    const nonExistentCount = lastBatchResults.filter(r => !r.exists).length;
+                    if (nonExistentCount >= batchSize - 1 && existingFileIds.length > 0) {
+                        break;
+                    }
+                }
+                
+                console.log(`扫描完成，发现 ${existingFileIds.length} 个现有文件`);
+                
+                // 缓存检测结果
+                if (existingFileIds.length > 0) {
+                    setCachedDetectionResult(category, existingFileIds);
+                }
+            }
+            
+            // 如果没有发现文件，返回空数组
+            if (existingFileIds.length === 0) {
+                return [];
+            }
+            
+            // 第二阶段：加载已确认存在的文件
+            elements.loadingDetail.textContent = `正在加载 ${config.categories[category]} 分类的内容 (0/${existingFileIds.length})`;
+            
+            // 根据文件数量调整加载批次大小
+            if (existingFileIds.length > 50) {
+                batchLoadSize = Math.min(Math.floor(navigator.hardwareConcurrency || 4), 8);
+            }
+            
+            // 分批加载，每次加载一批文件
+            let lastLoadUpdateTime = 0;
+            const loadUpdateInterval = 300; // 每300ms更新一次加载进度
+            
+            for (let i = 0; i < existingFileIds.length; i += batchLoadSize) {
+                const batchIds = existingFileIds.slice(i, i + batchLoadSize);
+                const loadPromises = batchIds.map(id => {
+                    // 优先从缓存加载
+                    const cacheKey = `${category}-${id}`;
+                    if (state.articleCache.has(cacheKey)) {
+                        return Promise.resolve({ 
+                            success: true, 
+                            article: state.articleCache.get(cacheKey), 
+                            id 
+                        });
+                    }
+                    
+                    return loadArticleContent(category, id)
+                        .then(article => ({ success: true, article, id }))
+                        .catch(error => {
+                            console.log(`加载失败: ${category}/${id}.txt`, error);
+                            return { success: false, id, error: error.message };
+                        });
+                });
+                
+                const batchResults = await Promise.all(loadPromises);
+                
+                // 优化DOM更新频率
+                const now = Date.now();
+                const progress = Math.min(i + batchLoadSize, existingFileIds.length);
+                if (now - lastLoadUpdateTime > loadUpdateInterval || progress === existingFileIds.length) {
+                    elements.loadingDetail.textContent = `正在加载 ${config.categories[category]} 分类的内容 (${progress}/${existingFileIds.length})`;
+                    lastLoadUpdateTime = now;
+                }
+                
+                // 延迟添加文章数据，减少频繁的数组操作
+                const batchArticles = [];
+                for (const result of batchResults) {
+                    if (result.success) {
+                        batchArticles.push(result.article);
+                        // 在新架构中，categoryCounts由loadAllArticles中的tempCategoryCounts管理
+                        // 不再直接修改state.categoryCounts
+                    }
+                }
+                
+                // 批量添加文章
+                if (batchArticles.length > 0) {
+                    articles.push(...batchArticles);
+                }
+            }
+            
+            console.log(`完成加载 ${category} 分类，共 ${articles.length} 篇文章`);
+            return articles;
+        }
+
+        // 加载所有文章 - 立即显示、渐进加载策略
+        async function loadAllArticles() {
+            // 如果已经是后台加载模式，则不显示全局加载状态
+            const isBackgroundLoad = state.isInitialLoaded;
+            
+            // 检查是否已经有实际文章数据（不是模拟数据）
+            if (state.allArticles && state.allArticles.length > 0 && 
+                !state.allArticles.every(article => mockArticles.some(mock => mock.id === article.id))) {
+                console.log('已有实际文章数据，无需重新加载');
+                return;
+            }
+            
+            // 只有在非后台加载模式下才显示加载状态
+            if (!isBackgroundLoad) {
+                showLoading('开始加载文章数据...');
+                hideError();
+            }
+            
+            try {
+                // 初始化分类计数
+                const tempCategoryCounts = {};
+                Object.keys(config.categories).forEach(category => {
+                    tempCategoryCounts[category] = 0;
+                });
+
+                // 检查是否有本地存储的文章数据缓存
+                const cachedArticles = localStorage.getItem('cachedArticles');
+                const cacheTimestamp = localStorage.getItem('articlesCacheTimestamp');
+                const CACHE_VALIDITY = 10 * 60 * 1000; // 10分钟缓存有效期
+                
+                // 先尝试使用缓存数据
+                if (cachedArticles && cacheTimestamp && Date.now() - parseInt(cacheTimestamp) < CACHE_VALIDITY) {
+                    try {
+                        const cachedData = JSON.parse(cachedArticles);
+                        console.log('使用本地缓存的文章数据');
+                        
+                        // 如果是缓存数据，需要为每个文章添加内容（缓存只存储了元数据）
+                        // 注意：这里可能需要根据实际情况决定如何处理缓存
+                        // 为了简单起见，我们暂时将缓存数据视为完整数据
+                        const cacheWithContent = cachedData.map(article => ({
+                            ...article,
+                            content: article.content || `这是${article.title}的缓存内容。由于性能原因，完整内容可能需要额外加载。`
+                        }));
+                        
+                        // 更新状态并显示数据
+                        updateActualArticles(cacheWithContent, tempCategoryCounts);
+                        
+                        return;
+                    } catch (error) {
+                        console.error('解析缓存文章数据失败:', error);
+                        // 缓存无效，继续加载
+                    }
+                }
+
+                // 获取分类列表，根据性能动态调整并发数量
+                const categories = Object.keys(config.categories);
+                const concurrencyLimit = Math.min(navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 3, 4);
+                
+                // 使用信号量模式控制并发
+                const semaphore = new Semaphore(concurrencyLimit);
+                const categoryPromises = categories.map(category => semaphore.acquire().then(async () => {
+                    try {
+                        const articles = await detectAndLoadCategoryArticles(category);
+                        return articles;
+                    } finally {
+                        semaphore.release();
+                    }
+                }));
+
+                // 等待所有分类加载完成
+                const results = await Promise.all(categoryPromises);
+
+                // 合并文章
+                const newAllArticles = [];
+                results.forEach(articles => {
+                    if (articles && articles.length > 0) {
+                        newAllArticles.push(...articles);
+                        articles.forEach(article => {
+                            tempCategoryCounts[article.category]++;
+                        });
+                    }
+                });
+                
+                // 处理加载结果
+                if (newAllArticles.length > 0) {
+                    // 优化排序，使用插入排序对已部分有序的数据进行排序
+                    insertionSortArticles(newAllArticles);
+                    
+                    // 缓存文章数据到localStorage
+                    try {
+                        const articlesToCache = newAllArticles.map(article => ({
+                            id: article.id,
+                            category: article.category,
+                            title: article.title,
+                            // 不缓存完整内容，只缓存元数据以减少存储
+                        }));
+                        localStorage.setItem('cachedArticles', JSON.stringify(articlesToCache));
+                        localStorage.setItem('articlesCacheTimestamp', Date.now().toString());
+                    } catch (error) {
+                        console.error('缓存文章数据失败:', error);
+                        // 忽略存储错误，继续执行
+                    }
+                }
+
+                // 更新实际文章数据
+                updateActualArticles(newAllArticles, tempCategoryCounts);
+                
+            } catch (error) {
+                console.error('加载文章失败:', error);
+                
+                // 只有在非后台加载模式下才显示错误
+                if (!isBackgroundLoad) {
+                    hideLoading();
+                    showError(`加载文章时发生错误: ${error.message}`);
+                }
+            }
+        }
+        
+        // 更新实际文章数据并刷新UI
+        function updateActualArticles(newArticles, newCategoryCounts) {
+            // 如果没有新文章或者文章数量比当前数据少，不更新
+            if (!newArticles || newArticles.length === 0 || 
+                (state.allArticles.length > 0 && newArticles.length < state.allArticles.length)) {
+                console.log('不更新实际文章数据，因为新文章数量不足或为0');
+                return;
+            }
+            
+            console.log('updateActualArticles - 收到的新文章数量:', newArticles.length);
+            console.log('updateActualArticles - 收到的新分类计数:', newCategoryCounts);
+            
+            // 保存当前的过滤器状态
+            const currentFilterState = {
+                category: state.currentCategory,
+                searchTerm: state.searchTerm,
+                searchType: state.searchType,
+                currentPage: state.currentPage
+            };
+            
+            console.log('updateActualArticles - 保存的过滤状态:', currentFilterState);
+            
+            // 确保newCategoryCounts是有效的对象
+            const validCategoryCounts = { ...newCategoryCounts };
+            Object.keys(config.categories).forEach(category => {
+                if (validCategoryCounts[category] === undefined) {
+                    validCategoryCounts[category] = 0;
+                }
+            });
+            
+            // 更新状态
+            state.allArticles = newArticles;
+            state.categoryCounts = validCategoryCounts;
+            
+            console.log('updateActualArticles - 更新后的总文章数:', state.allArticles.length);
+            console.log('updateActualArticles - 更新后的分类计数:', state.categoryCounts);
+            
+            // 恢复过滤器状态
+            state.currentCategory = currentFilterState.category;
+            state.searchTerm = currentFilterState.searchTerm;
+            state.searchType = currentFilterState.searchType;
+            
+            // 只在后台加载模式下不重置页码，保持用户浏览位置
+            if (!state.isInitialLoaded) {
+                state.currentPage = 1;
+            }
+            
+            // 更新统计与显示
+            updateStatistics();
+            filterAndDisplayArticles();
+            updatePageTitle();
+            
+            // 只有在非后台加载模式下才隐藏加载状态
+            if (!state.isInitialLoaded) {
+                hideLoading();
+            }
+        }
+        
+        // 信号量实现，控制并发数量
+        class Semaphore {
+            constructor(limit) {
+                this.limit = limit;
+                this.count = 0;
+                this.queue = [];
+            }
+            
+            acquire() {
+                return new Promise(resolve => {
+                    if (this.count < this.limit) {
+                        this.count++;
+                        resolve();
+                    } else {
+                        this.queue.push(resolve);
+                    }
+                });
+            }
+            
+            release() {
+                this.count--;
+                if (this.queue.length > 0) {
+                    this.count++;
+                    this.queue.shift()();
+                }
+            }
+        }
+        
+        // 对文章列表进行插入排序（对于已部分有序的数据效率更高）
+        function insertionSortArticles(articles) {
+            const n = articles.length;
+            for (let i = 1; i < n; i++) {
+                const current = articles[i];
+                let j = i - 1;
+                while (j >= 0) {
+                    const compare = articles[j];
+                    if (compare.category !== current.category) {
+                        if (compare.category.localeCompare(current.category) > 0) {
+                            articles[j + 1] = compare;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (parseInt(compare.id) > parseInt(current.id)) {
+                            articles[j + 1] = compare;
+                        } else {
+                            break;
+                        }
+                    }
+                    j--;
+                }
+                articles[j + 1] = current;
+            }
+        }
+        
+        // 后台刷新文章数据
+        async function refreshArticlesData() {
+            try {
+                // 清除分类检测缓存
+                categoryDetectionCache.clear();
+                
+                const tempCategoryCounts = {};
+                Object.keys(config.categories).forEach(category => {
+                    tempCategoryCounts[category] = 0;
+                });
+                
+                // 并发加载所有分类
+                const categories = Object.keys(config.categories);
+                const concurrencyLimit = Math.min(navigator.hardwareConcurrency ? navigator.hardwareConcurrency : 3, 4);
+                const semaphore = new Semaphore(concurrencyLimit);
+                
+                const categoryPromises = categories.map(category => semaphore.acquire().then(async () => {
+                    try {
+                        const articles = await detectAndLoadCategoryArticles(category);
+                        return articles;
+                    } finally {
+                        semaphore.release();
+                    }
+                }));
+                
+                const results = await Promise.all(categoryPromises);
+                
+                // 合并并排序新的文章数据
+                const newAllArticles = [];
+                results.forEach(articles => {
+                    if (articles && articles.length > 0) {
+                        newAllArticles.push(...articles);
+                        articles.forEach(article => {
+                            tempCategoryCounts[article.category]++;
+                        });
+                    }
+                });
+                
+                if (newAllArticles.length > 0) {
+                    insertionSortArticles(newAllArticles);
+                    
+                    // 缓存更新后的数据
+                    try {
+                        const articlesToCache = newAllArticles.map(article => ({
+                            id: article.id,
+                            category: article.category,
+                            title: article.title,
+                        }));
+                        localStorage.setItem('cachedArticles', JSON.stringify(articlesToCache));
+                        localStorage.setItem('articlesCacheTimestamp', Date.now().toString());
+                    } catch (error) {
+                        console.error('更新缓存文章数据失败:', error);
+                    }
+                    
+                    // 使用统一的更新函数处理状态和UI刷新
+                    updateActualArticles(newAllArticles, tempCategoryCounts);
+                    
+                    console.log('文章数据已在后台刷新完成');
+                }
+            } catch (error) {
+                console.error('后台刷新文章数据失败:', error);
+            }
+        }
+
+        // 更新统计信息
+        function updateStatistics() {
+            const total = state.allArticles.length;
+            elements.totalArticles.textContent = total;
+            
+            // 使用真实的分类计数
+            // 计算新闻类、教程类和资源类的数量
+            const newsCategories = ['journalism', 'onlinemedia', 'radiobroadcasting', 'livestream', 'newspaperoffice'];
+            const tutorialCategories = ['mediamanagement', 'cultureknowledge', 'localgazetteers'];
+            const resourceCategories = ['outdooradvertising', 'periodical', 'entertainmentgossip', 'mediapersonnel', 'publisher', 'tvstation', 'library'];
+            
+            let newsCount = 0;
+            let tutorialCount = 0;
+            let resourceCount = 0;
+            
+            state.allArticles.forEach(article => {
+                if (newsCategories.includes(article.category)) {
+                    newsCount++;
+                } else if (tutorialCategories.includes(article.category)) {
+                    tutorialCount++;
+                } else if (resourceCategories.includes(article.category)) {
+                    resourceCount++;
+                }
+            });
+            
+            elements.newsArticles.textContent = newsCount;
+            elements.tutorialArticles.textContent = tutorialCount;
+            elements.resourceArticles.textContent = resourceCount;
+            
+            // 更新分类计数显示
+            Object.keys(config.categories).forEach(category => {
+                const count = state.categoryCounts[category] || 0;
+                const countElement = document.querySelector(`.category-count[data-category="${category}"]`);
+                if (countElement) {
+                    countElement.textContent = count;
+                }
+            });
+        }
+
+        // 过滤并显示文章
+        function filterAndDisplayArticles() {
+            // 应用分类过滤
+            let filtered = state.currentCategory === 'all' 
+                ? [...state.allArticles] 
+                : state.allArticles.filter(article => article.category === state.currentCategory);
+            
+            // 应用搜索过滤
+            if (state.searchTerm) {
+                const searchLower = state.searchTerm.toLowerCase();
+                filtered = filtered.filter(article => {
+                    if (state.searchType === 'title' || state.searchType === 'both') {
+                        if (article.title.toLowerCase().includes(searchLower)) return true;
+                    }
+                    if (state.searchType === 'content' || state.searchType === 'both') {
+                        if (article.content.toLowerCase().includes(searchLower)) return true;
+                    }
+                    return false;
+                });
+            }
+            
+            console.log('filterAndDisplayArticles - 总文章数:', state.allArticles.length);
+            console.log('filterAndDisplayArticles - 过滤后文章数:', filtered.length);
+            console.log('filterAndDisplayArticles - 当前分类:', state.currentCategory);
+            console.log('filterAndDisplayArticles - 搜索关键词:', state.searchTerm);
+            
+            // 更新状态
+            state.filteredArticles = filtered;
+            state.totalArticles = filtered.length;
+            state.totalPages = Math.max(1, Math.ceil(state.totalArticles / config.itemsPerPage));
+            
+            // 重置页码（如果超出范围）
+            if (state.currentPage > state.totalPages) {
+                state.currentPage = 1;
+            }
+            
+            // 显示结果
+            elements.articlesCount.textContent = state.totalArticles;
+            displayCurrentPageArticles();
+            updatePagination();
+            
+            // 显示空状态或文章列表
+            if (state.totalArticles === 0) {
+                elements.articlesGrid.innerHTML = '';
+                elements.emptyState.classList.remove('hidden');
+                elements.pagination.classList.add('hidden');
+            } else {
+                elements.emptyState.classList.add('hidden');
+                elements.pagination.classList.remove('hidden');
+            }
+        }
+
+        // 显示当前页的文章 - 优化版（使用DocumentFragment减少重排）
+        function displayCurrentPageArticles() {
+            const startIndex = (state.currentPage - 1) * config.itemsPerPage;
+            const endIndex = Math.min(startIndex + config.itemsPerPage, state.filteredArticles.length);
+            const currentArticles = state.filteredArticles.slice(startIndex, endIndex);
+            
+            console.log('displayCurrentPageArticles - 当前页码:', state.currentPage);
+            console.log('displayCurrentPageArticles - 每页显示数量:', config.itemsPerPage);
+            console.log('displayCurrentPageArticles - 开始索引:', startIndex);
+            console.log('displayCurrentPageArticles - 结束索引:', endIndex);
+            console.log('displayCurrentPageArticles - 要显示的文章数:', currentArticles.length);
+            
+            // 创建文档片段用于批量DOM操作
+            const fragment = document.createDocumentFragment();
+            
+            // 预编译文章卡片模板
+            const renderCardTemplate = (article) => `
+                <div class="p-5">
+                    <div class="flex items-center text-xs text-gray-500 mb-2">
+                        <span class="bg-gray-100 px-2 py-0.5 rounded-full">${config.categories[article.category] || article.category}</span>
+                        <span class="ml-2">ID: ${article.id}</span>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2 line-clamp-2 h-12">${article.title}</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3 h-20">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</p>
+                    <button class="view-article-btn w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded transition flex items-center justify-center" 
+                            data-category="${article.category}" 
+                            data-id="${article.id}">
+                        <span>阅读全文</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            `;
+            
+            // 缓存点击事件处理函数
+            const handleViewArticle = async (e) => {
+                const btn = e.currentTarget;
+                const category = btn.dataset.category;
+                const id = btn.dataset.id;
+                await viewArticleDetail(category, id);
+            };
+            
+            // 批量创建文章卡片并添加到文档片段
+            currentArticles.forEach(article => {
+                const card = document.createElement('article');
+                card.className = 'article-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition';
+                card.innerHTML = renderCardTemplate(article);
+                fragment.appendChild(card);
+                
+                // 添加点击事件
+                card.querySelector('.view-article-btn').addEventListener('click', handleViewArticle);
+            });
+            
+            // 清空网格并一次性添加所有卡片（减少DOM重排）
+            elements.articlesGrid.innerHTML = '';
+            elements.articlesGrid.appendChild(fragment);
+        }
+
+        // 查看文章详情 - 优化版（减少不必要的marked库加载）
+        async function viewArticleDetail(category, id, forceReload = false) {
+            // 显示加载状态
+            elements.articlesSection.classList.add('hidden');
+            elements.articleDetail.classList.remove('hidden');
+            elements.detailContentContainer.classList.add('hidden');
+            elements.detailError.classList.add('hidden');
+            elements.detailLoading.classList.remove('hidden');
+            
+            try {
+                // 加载文章内容
+                const article = forceReload ? 
+                    await loadArticleContent(category, id) : 
+                    await loadArticleContent(category, id);
+                
+                // 更新URL
+                const params = new URLSearchParams();
+                params.append('category', category);
+                params.append('id', id);
+                window.history.pushState({}, '', `?${params.toString()}`);
+                
+                // 快速更新UI显示基本信息
+                elements.detailTitle.textContent = article.title;
+                elements.detailCategory.textContent = config.categories[category] || category;
+                elements.detailId.textContent = `ID: ${id}`;
+                
+                // 渲染内容（异步进行marked库加载，但不阻塞内容显示）
+                if (!state.usingFallbackRenderer && (!window.marked || !state.markedRenderer)) {
+                    // 并行执行：同时开始渲染（使用基础渲染器）和加载marked库
+                    const renderPromise = Promise.resolve().then(() => {
+                        // 立即使用基础渲染器显示内容
+                        state.usingFallbackRenderer = true;
+                        renderArticleContent(article);
+                        return true;
+                    });
+                    
+                    // 同时尝试加载marked库（不阻塞UI）
+                    const markedPromise = Promise.resolve().then(async () => {
+                        try {
+                            await loadMarkedLibrary();
+                            await initMarkedRenderer();
+                            if (window.marked && state.markedRenderer && state.currentArticle) {
+                                // 如果marked库加载成功，再次渲染以获得更好的效果
+                                state.usingFallbackRenderer = false;
+                                renderArticleContent(state.currentArticle);
+                            }
+                        } catch (error) {
+                            console.error('加载marked库失败，但内容已使用基础渲染器显示:', error);
+                        }
+                    });
+                    
+                    // 等待渲染完成（至少是基础渲染）
+                    await renderPromise;
+                    // 忽略marked加载的结果，不阻塞UI
+                    markedPromise.catch(err => console.error('异步加载marked库出错:', err));
+                } else {
+                    // 直接渲染内容
+                    renderArticleContent(article);
+                }
+                
+                // 更新导航按钮
+                updateArticleNavigation(category, id);
+                
+                // 隐藏加载状态，显示内容
+                elements.detailLoading.classList.add('hidden');
+                elements.detailContentContainer.classList.remove('hidden');
+                
+                // 更新页面标题
+                updatePageTitle();
+                
+                // 滚动到顶部
+                window.scrollTo(0, 0);
+                
+            } catch (error) {
+                console.error('加载文章详情失败:', error);
+                elements.detailLoading.classList.add('hidden');
+                elements.detailError.classList.remove('hidden');
+                elements.detailErrorMessage.textContent = error.message || '无法加载文章内容，请稍后重试';
+            }
+        }
+
+        // 更新文章导航按钮（上下篇）
+        function updateArticleNavigation(currentCategory, currentId) {
+            const currentIndex = state.allArticles.findIndex(
+                article => article.category === currentCategory && article.id === currentId
+            );
+            
+            // 上一篇
+            if (currentIndex > 0) {
+                const prevArticle = state.allArticles[currentIndex - 1];
+                elements.prevArticleBtn.disabled = false;
+                elements.prevArticleBtn.onclick = async () => {
+                    await viewArticleDetail(prevArticle.category, prevArticle.id);
+                };
+            } else {
+                elements.prevArticleBtn.disabled = true;
+                elements.prevArticleBtn.onclick = null;
+            }
+            
+            // 下一篇
+            if (currentIndex < state.allArticles.length - 1) {
+                const nextArticle = state.allArticles[currentIndex + 1];
+                elements.nextArticleBtn.disabled = false;
+                elements.nextArticleBtn.onclick = async () => {
+                    await viewArticleDetail(nextArticle.category, nextArticle.id);
+                };
+            } else {
+                elements.nextArticleBtn.disabled = true;
+                elements.nextArticleBtn.onclick = null;
+            }
+        }
+
+        // 更新分类按钮状态
+        function updateCategoryButtons() {
+            elements.categoryBtns.forEach(btn => {
+                if (btn.dataset.category === state.currentCategory) {
+                    btn.classList.remove('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
+                    btn.classList.add('bg-purple-600', 'text-white');
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('bg-purple-600', 'text-white', 'active');
+                    btn.classList.add('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
+                }
+            });
+        }
+
+        // 更新分页控件
+        function updatePagination() {
+            // 更新按钮状态
+            elements.prevPageBtn.disabled = state.currentPage === 1;
+            elements.nextPageBtn.disabled = state.currentPage === state.totalPages;
+            
+            // 清空页码容器
+            elements.pageNumbers.innerHTML = '';
+            
+            // 生成页码按钮（最多显示5个页码）
+            let startPage = Math.max(1, state.currentPage - 2);
+            let endPage = Math.min(state.totalPages, startPage + 4);
+            
+            // 调整显示范围
+            if (endPage - startPage < 4 && state.totalPages > 5) {
+                startPage = Math.max(1, endPage - 4);
+            }
+            
+            // 添加第一页按钮（如果当前范围不包含第一页）
+            if (startPage > 1) {
+                addPageButton(1);
+                if (startPage > 2) {
+                    addEllipsis();
+                }
+            }
+            
+            // 添加当前范围内的页码
+            for (let i = startPage; i <= endPage; i++) {
+                addPageButton(i);
+            }
+            
+            // 添加最后一页按钮（如果当前范围不包含最后一页）
+            if (endPage < state.totalPages) {
+                if (endPage < state.totalPages - 1) {
+                    addEllipsis();
+                }
+                addPageButton(state.totalPages);
+            }
+        }
+
+        // 添加页码按钮
+        function addPageButton(pageNum) {
+            const button = document.createElement('button');
+            button.className = `px-3 py-1 rounded transition ${
+                pageNum === state.currentPage 
+                    ? 'bg-purple-600 text-white' 
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+            }`;
+            button.textContent = pageNum;
+            button.addEventListener('click', () => {
+                state.currentPage = pageNum;
+                displayCurrentPageArticles();
+                updatePagination();
+                updateUrl();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            elements.pageNumbers.appendChild(button);
+        }
+
+        // 添加省略号
+        function addEllipsis() {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'px-2 text-gray-500';
+            ellipsis.textContent = '...';
+            elements.pageNumbers.appendChild(ellipsis);
+        }
+
+        // 处理搜索
+        function handleSearch() {
+            const searchTerm = elements.searchInput.value.trim();
+            state.searchTerm = searchTerm;
+            state.currentPage = 1;
+            
+            // 如果有搜索词，添加到搜索历史
+            if (searchTerm) {
+                addToSearchHistory(searchTerm);
+            }
+            
+            // 过滤并显示结果
+            filterAndDisplayArticles();
+            updateUrl();
+            hideSearchHistory();
+        }
+
+        // 重置搜索
+        function resetSearch() {
+            elements.searchInput.value = '';
+            state.searchTerm = '';
+            state.currentPage = 1;
+            elements.searchTypeRadios.forEach(radio => {
+                radio.checked = radio.value === 'title';
+            });
+            state.searchType = 'title';
+            
+            filterAndDisplayArticles();
+            updateUrl();
+            hideSearchHistory();
+        }
+
+        // 显示加载状态
+        function showLoading(detail) {
+            // 添加加载动画类
+            elements.loadingSection.classList.add('loading-animation');
+            
+            // 更新加载消息
+            if (detail) {
+                elements.loadingDetail.textContent = detail;
+            }
+            
+            // 显示加载区域，隐藏其他区域
+            elements.articlesSection.classList.add('hidden');
+            elements.errorSection.classList.add('hidden');
+            elements.loadingSection.classList.remove('hidden');
+        }
+
+        // 更新加载进度信息
+        function updateLoadingProgress(message) {
+            if (elements.loadingDetail) {
+                elements.loadingDetail.textContent = message;
+            }
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            // 添加淡出动画
+            elements.loadingSection.classList.add('fade-out');
+            
+            setTimeout(() => {
+                elements.loadingSection.classList.add('hidden');
+                elements.loadingSection.classList.remove('fade-out', 'loading-animation');
+                elements.articlesSection.classList.remove('hidden');
+            }, 300);
+        }
+
+        // 显示错误信息
+        function showError(message, isPersistent = false) {
+            // 添加错误动画
+            elements.errorSection.classList.add('error-animation');
+            
+            // 更新错误消息
+            elements.errorMessage.textContent = message;
+            
+            // 显示错误区域，隐藏其他区域
+            elements.articlesSection.classList.add('hidden');
+            elements.loadingSection.classList.add('hidden');
+            elements.errorSection.classList.remove('hidden');
+            
+            // 如果不是持久性错误，5秒后自动隐藏
+            if (!isPersistent) {
+                setTimeout(hideError, 5000);
+            }
+        }
+
+        // 隐藏错误信息
+        function hideError() {
+            elements.errorSection.classList.add('fade-out');
+            
+            setTimeout(() => {
+                elements.errorSection.classList.add('hidden');
+                elements.errorSection.classList.remove('fade-out', 'error-animation');
+                elements.articlesSection.classList.remove('hidden');
+            }, 300);
+        }
+
+        // 切换主题（明/暗模式）
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            
+            // 更新图标
+            const icon = elements.themeToggle.querySelector('i');
+            if (state.darkMode) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            // 保存偏好
+            localStorage.setItem('darkMode', state.darkMode ? 'true' : 'false');
+        }
+
+        // 初始化主题
+        function initTheme() {
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode === 'true' || 
+                (!savedMode && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                state.darkMode = true;
+                document.body.classList.add('dark-mode');
+                const icon = elements.themeToggle.querySelector('i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+
+        // 搜索历史相关功能
+        function initSearchHistory() {
+            const savedHistory = localStorage.getItem('searchHistory');
+            if (savedHistory) {
+                try {
+                    state.searchHistory = JSON.parse(savedHistory);
+                    renderSearchHistory();
+                } catch (e) {
+                    console.error('加载搜索历史失败:', e);
+                    state.searchHistory = [];
+                }
+            }
+        }
+
+        function addToSearchHistory(term) {
+            // 移除已存在的相同项
+            state.searchHistory = state.searchHistory.filter(item => item.term !== term);
+            
+            // 添加新项
+            state.searchHistory.unshift({
+                term,
+                timestamp: new Date().toISOString()
+            });
+            
+            // 限制历史记录数量
+            if (state.searchHistory.length > config.maxSearchHistory) {
+                state.searchHistory = state.searchHistory.slice(0, config.maxSearchHistory);
+            }
+            
+            // 保存到本地存储
+            localStorage.setItem('searchHistory', JSON.stringify(state.searchHistory));
+            
+            // 更新UI
+            renderSearchHistory();
+        }
+
+        function renderSearchHistory(filterTerm = '') {
+            elements.historyList.innerHTML = '';
+            
+            // 过滤历史记录
+            let filteredHistory = state.searchHistory;
+            if (filterTerm) {
+                const lowerFilter = filterTerm.toLowerCase();
+                filteredHistory = state.searchHistory.filter(item => 
+                    item.term.toLowerCase().includes(lowerFilter)
+                );
+            }
+            
+            // 显示或隐藏空状态
+            if (filteredHistory.length === 0) {
+                elements.noHistoryMsg.classList.remove('hidden');
+                return;
+            } else {
+                elements.noHistoryMsg.classList.add('hidden');
+            }
+            
+            // 添加历史记录项
+            filteredHistory.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                
+                // 格式化时间
+                const date = new Date(item.timestamp);
+                const timeStr = date.toLocaleString();
+                
+                li.innerHTML = `
+                    <span class="history-text">${item.term}</span>
+                    <span class="history-time">${timeStr}</span>
+                    <span class="remove-history" data-index="${index}">
+                        <i class="fas fa-times"></i>
+                    </span>
+                `;
+                
+                // 添加点击事件
+                li.addEventListener('click', (e) => {
+                    if (!e.target.closest('.remove-history')) {
+                        elements.searchInput.value = item.term;
+                        handleSearch();
+                    }
+                });
+                
+                // 添加删除事件
+                li.querySelector('.remove-history').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeFromSearchHistory(index);
+                });
+                
+                elements.historyList.appendChild(li);
+            });
+        }
+
+        function removeFromSearchHistory(index) {
+            state.searchHistory.splice(index, 1);
+            localStorage.setItem('searchHistory', JSON.stringify(state.searchHistory));
+            renderSearchHistory(elements.searchInput.value.trim());
+        }
+
+        function clearAllSearchHistory() {
+            state.searchHistory = [];
+            localStorage.removeItem('searchHistory');
+            renderSearchHistory();
+        }
+
+        function showSearchHistory() {
+            elements.searchHistoryDropdown.classList.add('active');
+            renderSearchHistory(elements.searchInput.value.trim());
+        }
+
+        function hideSearchHistory() {
+            elements.searchHistoryDropdown.classList.remove('active');
+        }
+
+        function filterSearchHistory() {
+            const term = elements.searchInput.value.trim();
+            renderSearchHistory(term);
+        }
+
+        // 初始化应用
+            async function init() {
+                // 显示加载状态
+                showLoading();
+                
+                try {
+                    // 初始化基础配置
+                    initTheme();
+                    initSearchHistory();
+                    bindEvents();
+                    loadStateFromUrl();
+                    
+                    // 立即显示模拟数据，不让用户等待
+            console.log('立即显示模拟文章数据');
+            state.allArticles = [...mockArticles];
+            
+            // 初始化模拟文章的分类计数
+            state.categoryCounts = {};
+            Object.keys(config.categories).forEach(category => {
+                state.categoryCounts[category] = 0;
+            });
+            mockArticles.forEach(article => {
+                if (state.categoryCounts[article.category] !== undefined) {
+                    state.categoryCounts[article.category]++;
+                }
+            });
+            
+            updateStatistics();
+            filterAndDisplayArticles();
+            updatePageTitle();
+                    
+                    // 隐藏初始加载状态
+                    hideLoading();
+                    
+                    // 标记为已初始加载
+                    state.isInitialLoaded = true;
+                    
+                    // 在后台异步加载实际文章数据
+                    console.log('开始在后台加载实际文章数据');
+                    loadAllArticles().catch(error => {
+                        console.error('后台加载文章数据失败:', error);
+                        showError('部分文章数据加载失败，但应用仍可继续使用');
+                    });
+                    
+                    // 并行加载Marked.js库（与文章数据加载并行）
+                    loadMarkedLibrary().then(() => {
+                        return initMarkedRenderer();
+                    }).catch(error => {
+                        console.error('加载Marked.js失败:', error);
+                        // 继续使用基础渲染器，不影响用户体验
+                    });
+                    
+                } catch (error) {
+                    console.error('应用初始化失败:', error);
+                    hideLoading();
+                    showError('应用加载过程中出现错误，请刷新页面重试');
+                }
+            }
+
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', init);
+		
+
+// 滚动控制按钮功能
+const backToTopBtn = document.getElementById('back-to-top-btn');
+const backToBottomBtn = document.getElementById('back-to-bottom-btn');
+
+// 监听滚动事件，控制按钮显示/隐藏
+window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = Math.max(
+        document.body.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.clientHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
+    );
+
+    // 当滚动超过100px时显示回到顶部按钮
+    if (scrollPosition > 100) {
+        backToTopBtn.classList.add('visible');
+    } else {
+        backToTopBtn.classList.remove('visible');
+    }
+
+    // 当距离底部超过100px时显示回到底部按钮
+    if (documentHeight - scrollPosition - windowHeight > 100) {
+        backToBottomBtn.classList.add('visible');
+    } else {
+        backToBottomBtn.classList.remove('visible');
+    }
 });
 
-// 添加到文档
-document.head.appendChild(script);
-
-// 等待加载完成
-await loadPromise;
-
-// 验证是否加载成功
-if (window.marked && typeof window.marked === 'function') {
-console.log(`成功加载marked.js: ${url}`);
-state.markedLoaded = true;
-elements.markedLoadingIndicator.classList.add('hidden');
-return true;
-}
-} catch (error) {
-console.error(`加载marked.js失败 (${url}):`, error);
-continue;
-}
-}
-
-// 如果所有CDN都失败，使用备用渲染器
-console.warn('所有marked.js CDN加载失败，将使用备用渲染器');
-state.usingFallbackRenderer = true;
-elements.markedLoadingIndicator.classList.add('hidden');
-return false;
-}
-
-// 初始化marked渲染器，确保加载完成
-async function initMarkedRenderer() {
-// 如果使用备用渲染器，不需要初始化marked
-if (state.usingFallbackRenderer) {
-return;
-}
-
-// 检查marked是否已加载
-if (window.marked) {
-try {
-// 创建自定义渲染器
-const renderer = new marked.Renderer();
-
-// 自定义图片渲染
-renderer.image = function(href, title, text) {
-let imageUrl = href;
-
-// 处理相对路径图片
-if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('/')) {
-// 尝试从当前URL获取分类信息
-const urlParams = new URLSearchParams(window.location.search);
-const category = urlParams.get('category');
-
-if (category && config.categories[category]) {
-imageUrl = `${config.imageBasePath}${category}/${href}`;
-} else {
-imageUrl = `${config.imageBasePath}${href}`;
-}
-}
-
-const titleAttr = title ? `title="${title}"` : '';
-// 添加图片加载失败处理
-return `<img src="${imageUrl}" alt="${text}" ${titleAttr} loading="lazy" 
-onerror="this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>${text}</p></div>'">`;
-};
-
-// 自定义链接渲染
-renderer.link = function(href, title, text) {
-const titleAttr = title ? `title="${title}"` : '';
-// 为外部链接添加target="_blank"
-const isExternal = href && (href.startsWith('http://') || href.startsWith('https://'));
-const targetAttr = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
-return `<a href="${href}" ${titleAttr} ${targetAttr}>${text}</a>`;
-};
-
-// 保存渲染器实例
-state.markedRenderer = renderer;
-
-// 配置marked
-marked.setOptions({
-breaks: true,
-gfm: true,
-renderer: state.markedRenderer
+// 回到顶部功能
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 });
 
-console.log('marked.js 初始化成功');
-} catch (error) {
-console.error('marked.js 初始化失败:', error);
-// 切换到备用渲染器
-state.usingFallbackRenderer = true;
-}
-} else {
-// 如果marked未加载，使用备用渲染器
-console.warn('marked.js 未加载，将使用备用渲染器');
-state.usingFallbackRenderer = true;
-}
-}
-
-// 创建基础的备用渲染器（不依赖marked.js）
-function basicMarkdownRenderer(text) {
-if (!text) return '';
-
-let html = text;
-
-// 处理标题
-html = html.replace(/^(#{1,6})\s+(.*?)$/gm, (match, hashes, title) => {
-const level = hashes.length;
-return `<h${level} class="font-bold mt-4 mb-2">${title}</h${level}>`;
-});
-
-// 处理粗体
-html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
-
-// 处理斜体
-html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-html = html.replace(/_(.*?)_/g, '<em>$1</em>');
-
-// 处理链接
-html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-
-// 处理图片
-html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
-let imageUrl = src;
-// 处理相对路径图片
-if (src && !src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('/')) {
-if (state.currentArticle && state.currentArticle.category) {
-imageUrl = `${config.imageBasePath}${state.currentArticle.category}/${src}`;
-} else {
-imageUrl = `${config.imageBasePath}${src}`;
-}
-}
-return `<img src="${imageUrl}" alt="${alt}" loading="lazy" 
-onerror="this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>${alt}</p></div>'">`;
-});
-
-// 处理无序列表
-html = processLists(html);
-
-// 处理代码块
-html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-html = html.replace(/`(.*?)`/g, '<code>$1</code>');
-
-// 处理引用
-html = html.replace(/^> (.*?)$/gm, '<blockquote>$1</blockquote>');
-
-// 处理换行
-html = html.replace(/\n\n/g, '</p><p>');
-html = html.replace(/\n/g, '<br>');
-
-// 添加段落标签
-if (!html.startsWith('<p>')) {
-html = `<p>${html}</p>`;
-}
-
-return html;
-}
-
-// 处理列表
-function processLists(html) {
-// 先分割成行
-const lines = html.split('\n');
-let inUnorderedList = false;
-let inOrderedList = false;
-let result = [];
-
-lines.forEach(line => {
-// 处理无序列表
-if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
-const text = line.trim().substring(2);
-if (!inUnorderedList) {
-result.push('<ul>');
-inUnorderedList = true;
-}
-if (inOrderedList) {
-result.push('</ol>');
-inOrderedList = false;
-}
-result.push(`<li>${text}</li>`);
-} 
-// 处理有序列表
-else if (/^\d+\. /.test(line.trim())) {
-const text = line.trim().replace(/^\d+\. /, '');
-if (!inOrderedList) {
-result.push('<ol>');
-inOrderedList = true;
-}
-if (inUnorderedList) {
-result.push('</ul>');
-inUnorderedList = false;
-}
-result.push(`<li>${text}</li>`);
-} 
-// 非列表行
-else {
-if (inUnorderedList) {
-result.push('</ul>');
-inUnorderedList = false;
-}
-if (inOrderedList) {
-result.push('</ol>');
-inOrderedList = false;
-}
-result.push(line);
-}
-});
-
-// 关闭任何未关闭的列表
-if (inUnorderedList) {
-result.push('</ul>');
-}
-if (inOrderedList) {
-result.push('</ol>');
-}
-
-return result.join('\n');
-}
-
-// 从URL参数加载状态
-function loadStateFromUrl() {
-// 处理URL中的空格和编码问题
-const cleanUrl = window.location.search.replace(/%20/g, '').replace(/\s+/g, '');
-const urlParams = new URLSearchParams(cleanUrl);
-
-let category = urlParams.get('category') || '';
-// 清除可能的额外字符
-category = category.trim();
-
-const articleId = urlParams.get('id');
-const page = parseInt(urlParams.get('p')) || 1;
-const search = urlParams.get('q') || '';
-
-// 验证并修复分类参数
-const validCategories = Object.keys(config.categories);
-let normalizedCategory = category;
-
-// 如果分类无效，尝试查找最相似的有效分类
-if (category && !validCategories.includes(category)) {
-// 查找可能的拼写错误
-const similarCategory = findSimilarCategory(category, validCategories);
-if (similarCategory) {
-normalizedCategory = similarCategory;
-console.log(`自动修复分类参数: ${category} -> ${similarCategory}`);
-} else {
-normalizedCategory = 'all';
-console.log(`无效分类参数: ${category}，已重置为全部`);
-}
-}
-
-// 应用URL参数
-if (normalizedCategory && config.categories[normalizedCategory]) {
-state.currentCategory = normalizedCategory;
-updateCategoryButtons();
-}
-
-if (page > 1) {
-state.currentPage = page;
-}
-
-if (search) {
-elements.searchInput.value = search;
-state.searchTerm = search;
-}
-
-// 如果有文章ID参数，直接显示文章详情
-if (normalizedCategory && articleId) {
-// 确保在文章数据加载后再显示详情
-const showDetail = async () => {
-// 等待文章数据加载完成
-if (state.allArticles.length === 0) {
-setTimeout(showDetail, 100);
-return;
-}
-viewArticleDetail(normalizedCategory, articleId);
-};
-showDetail();
-} else {
-// 默认显示文章列表
-elements.articleDetail.classList.add('hidden');
-elements.articlesSection.classList.remove('hidden');
-}
-}
-
-// 查找相似的分类（用于修复拼写错误）
-function findSimilarCategory(input, validCategories) {
-input = input.toLowerCase();
-// 优先检查是否是有效分类的子串或只差一个字符
-for (const category of validCategories) {
-// 如果输入比有效分类多一个字符且其他部分匹配
-if (input.length === category.length + 1 && 
-input.includes(category)) {
-return category;
-}
-// 如果有效分类比输入多一个字符且其他部分匹配
-if (category.length === input.length + 1 && 
-category.includes(input)) {
-return category;
-}
-}
-// 检查是否有完全匹配（忽略大小写）
-for (const category of validCategories) {
-if (category.toLowerCase() === input) {
-return category;
-}
-}
-return null;
-}
-
-// 更新URL参数
-function updateUrl() {
-const params = new URLSearchParams();
-
-if (state.currentCategory !== 'all') {
-params.append('category', state.currentCategory);
-}
-
-if (state.currentPage > 1) {
-params.append('p', state.currentPage);
-}
-
-if (state.searchTerm) {
-params.append('q', state.searchTerm);
-}
-
-const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
-window.history.pushState({}, '', newUrl);
-}
-
-// 绑定事件处理程序
-function bindEvents() {
-// 主题切换按钮
-elements.themeToggle.addEventListener('click', toggleTheme);
-
-// 搜索按钮
-elements.searchBtn.addEventListener('click', handleSearch);
-elements.searchInput.addEventListener('keypress', (e) => {
-if (e.key === 'Enter') handleSearch();
-});
-
-// 重置按钮
-elements.resetBtn.addEventListener('click', resetSearch);
-elements.emptyResetBtn.addEventListener('click', resetSearch);
-
-// 搜索类型切换
-elements.searchTypeRadios.forEach(radio => {
-radio.addEventListener('change', (e) => {
-state.searchType = e.target.value;
-filterAndDisplayArticles();
-});
-});
-
-// 分类按钮
-elements.categoryBtns.forEach(btn => {
-btn.addEventListener('click', (e) => {
-const category = e.target.dataset.category;
-if (category) {
-state.currentCategory = category;
-state.currentPage = 1;
-updateCategoryButtons();
-filterAndDisplayArticles();
-updateUrl();
-}
-});
-});
-
-// 分页按钮
-elements.prevPageBtn.addEventListener('click', () => {
-if (state.currentPage > 1) {
-state.currentPage--;
-displayCurrentPageArticles();
-updatePagination();
-updateUrl();
-}
-});
-
-elements.nextPageBtn.addEventListener('click', () => {
-if (state.currentPage < state.totalPages) {
-state.currentPage++;
-displayCurrentPageArticles();
-updatePagination();
-updateUrl();
-}
-});
-
-// 重试按钮
-elements.retryBtn.addEventListener('click', async () => {
-await loadAllArticles();
-});
-
-// 详情页重试按钮
-elements.detailRetryBtn.addEventListener('click', async () => {
-const currentUrl = new URL(window.location.href);
-const category = currentUrl.searchParams.get('category');
-const id = currentUrl.searchParams.get('id');
-
-if (category && id) {
-await viewArticleDetail(category, id, true);
-}
-});
-
-// 显示纯文本按钮
-elements.showPlaintextBtn.addEventListener('click', () => {
-if (state.currentArticle) {
-// 显示纯文本内容
-elements.detailContentInner.innerHTML = `
-<div class="plain-text-content text-gray-700">${escapeHtml(state.currentArticle.content)}</div>
-`;
-
-// 切换到内容显示状态
-elements.detailError.classList.add('hidden');
-elements.detailContentContainer.classList.remove('hidden');
-}
-});
-
-// 重试渲染按钮
-elements.retryRenderBtn.addEventListener('click', async () => {
-// 隐藏渲染错误提示
-elements.renderErrorContainer.classList.add('hidden');
-
-// 尝试重新加载marked.js
-await loadMarkedLibrary();
-await initMarkedRenderer();
-
-if (state.currentArticle) {
-renderArticleContent(state.currentArticle);
-}
-});
-
-// 使用基础渲染器按钮
-elements.useBasicRendererBtn.addEventListener('click', () => {
-if (state.currentArticle) {
-// 强制使用基础渲染器
-state.usingFallbackRenderer = true;
-renderArticleContent(state.currentArticle);
-}
-});
-
-// 返回列表按钮
-elements.backToListBtn.addEventListener('click', () => {
-elements.articleDetail.classList.add('hidden');
-elements.articlesSection.classList.remove('hidden');
-updateUrl();
-window.scrollTo(0, 0);
-});
-
-// 搜索历史相关事件
-elements.searchInput.addEventListener('focus', showSearchHistory);
-elements.searchInput.addEventListener('input', filterSearchHistory);
-
-// 点击页面其他地方关闭搜索历史
-document.addEventListener('click', (e) => {
-if (!elements.searchInput.contains(e.target) && 
-!elements.searchHistoryDropdown.contains(e.target)) {
-hideSearchHistory();
-}
-});
-
-// 清除所有搜索历史
-elements.clearHistoryBtn.addEventListener('click', (e) => {
-e.stopPropagation();
-clearAllSearchHistory();
-});
-}
-
-// 渲染文章内容，添加错误处理
-function renderArticleContent(article) {
-// 保存当前文章引用
-state.currentArticle = article;
-
-try {
-// 处理空内容情况
-if (!article.content.trim()) {
-elements.detailContentInner.innerHTML = `
-<div class="content-error">
-<p><i class="fas fa-exclamation-triangle mr-1"></i> 注意：这篇文章没有内容。</p>
-</div>
-`;
-return true;
-}
-
-let htmlContent = '';
-
-// 如果使用备用渲染器或marked未加载，使用基础渲染器
-if (state.usingFallbackRenderer || !window.marked || !state.markedRenderer) {
-console.log('使用基础渲染器渲染内容');
-htmlContent = basicMarkdownRenderer(article.content);
-} else {
-// 尝试使用marked渲染
-console.log('使用marked.js渲染内容');
-htmlContent = marked.parse(article.content, {
-renderer: state.markedRenderer
-});
-}
-
-// 添加Markdown样式类
-elements.detailContentInner.innerHTML = `<div class="markdown-content text-gray-700">${htmlContent}</div>`;
-
-// 隐藏渲染错误提示
-elements.renderErrorContainer.classList.add('hidden');
-return true;
-} catch (error) {
-console.error('内容渲染失败:', error);
-
-// 特殊处理renderer.paragraph错误
-if (error.message && error.message.includes('this.renderer.paragraph is not a function')) {
-console.log('检测到renderer.paragraph错误，自动切换到备用渲染器');
-state.usingFallbackRenderer = true;
-return renderArticleContent(article);
-}
-
-// 显示纯文本内容作为备用
-elements.detailContentInner.innerHTML = `
-<div class="plain-text-content text-gray-700">${escapeHtml(article.content)}</div>
-`;
-
-// 显示渲染错误提示
-elements.renderErrorContainer.classList.remove('hidden');
-return false;
-}
-}
-
-// HTML转义函数，用于纯文本显示
-function escapeHtml(unsafe) {
-if (!unsafe) return '';
-return unsafe
-.replace(/&/g, "&amp;")
-.replace(/</g, "&lt;")
-.replace(/>/g, "&gt;")
-.replace(/"/g, "&quot;")
-.replace(/'/g, "&#039;");
-}
-
-// 编码检测与转换函数
-function decodeText(buffer, encodings = config.supportedEncodings) {
-// 尝试使用多种编码进行解码
-for (const encoding of encodings) {
-try {
-// 特殊处理日语编码
-if (encoding === 'shift-jis') {
-const array = new Uint8Array(buffer);
-const decoded = Encoding.convert(array, {
-to: 'UTF8',
-from: 'SJIS'
-});
-return new TextDecoder('utf-8').decode(decoded);
-}
-
-// 特殊处理韩语编码
-if (encoding === 'euc-kr') {
-const array = new Uint8Array(buffer);
-const decoded = Encoding.convert(array, {
-to: 'UTF8',
-from: 'EUC-KR'
-});
-return new TextDecoder('utf-8').decode(decoded);
-}
-
-// 使用iconv-lite处理其他编码
-return iconvLite.decode(Buffer.from(buffer), encoding);
-} catch (e) {
-console.log(`使用${encoding}解码失败:`, e.message);
-continue;
-}
-}
-
-// 如果所有编码都失败，尝试使用UTF-8的替换模式
-try {
-return new TextDecoder('utf-8', { fatal: false }).decode(buffer);
-} catch (e) {
-console.error('所有编码解码均失败', e);
-return '';
-}
-}
-
-// 加载文章内容（带编码处理）
-async function loadArticleContent(category, id) {
-// 检查缓存
-const cacheKey = `${category}-${id}`;
-if (state.articleCache.has(cacheKey)) {
-console.log(`从缓存加载文章: ${category}/${id}.txt`);
-return state.articleCache.get(cacheKey);
-}
-
-// 生成正确的URL
-const url = `${config.baseUrl}${category}/${id}.txt`;
-console.log(`加载文章: ${url}`);
-
-try {
-const response = await fetch(url, {
-method: 'GET',
-cache: 'no-cache', // 禁用缓存以确保获取最新内容
-headers: {
-'Accept': 'text/plain; charset=*'
-}
-});
-
-if (!response.ok) {
-throw new Error(`HTTP错误: ${response.status}，无法加载文件`);
-}
-
-// 获取原始二进制数据
-const buffer = await response.arrayBuffer();
-
-// 尝试多种编码解码
-const content = decodeText(buffer);
-
-// 如果内容为空，抛出错误
-if (!content.trim()) {
-throw new Error('文章内容为空');
-}
-
-// 简单解析标题和内容（假设标题在第一行）
-const lines = content.split('\n');
-const title = lines[0] ? lines[0].trim() : `未命名文章 (${category}-${id})`;
-const body = lines.slice(1).join('\n').trim();
-
-const article = {
-id,
-category,
-title,
-content: body,
-fullContent: content
-};
-
-// 存入缓存
-state.articleCache.set(cacheKey, article);
-
-return article;
-} catch (error) {
-console.error(`加载文章 ${category}/${id}.txt 失败:`, error);
-throw error;
-}
-}
-
-// 检测并加载分类文章
-async function detectAndLoadCategoryArticles(category) {
-const articles = [];
-let attempts = 0;
-
-while (attempts < config.maxDetectionAttempts) {
-attempts++;
-const articleId = attempts;
-
-try {
-elements.loadingDetail.textContent = `正在加载 ${config.categories[category]} (${articleId}/${config.maxDetectionAttempts})`;
-
-// 尝试加载文章
-const article = await Promise.race([
-loadArticleContent(category, articleId),
-new Promise((_, reject) => 
-setTimeout(() => reject(new Error('加载超时')), config.timeout)
-)
-]);
-
-articles.push(article);
-state.categoryCounts[category]++;
-console.log(`成功加载 ${category}/${articleId}.txt`);
-} catch (error) {
-// 连续3次失败则认为该分类文章已加载完毕
-if (attempts > 3) break;
-console.log(`尝试加载 ${category}/${articleId}.txt 失败，继续尝试...`);
-}
-}
-
-console.log(`完成加载 ${category} 分类，共 ${articles.length} 篇文章`);
-return articles;
-}
-
-// 加载所有文章
-async function loadAllArticles() {
-showLoading('开始加载文章数据...');
-hideError();
-state.allArticles = [];
-state.categoryCounts = {};
-
-try {
-// 初始化分类计数
-Object.keys(config.categories).forEach(category => {
-state.categoryCounts[category] = 0;
-});
-
-// 并发检测所有分类的文章
-const categoryPromises = Object.keys(config.categories).map(category => 
-detectAndLoadCategoryArticles(category)
-);
-
-// 等待所有分类加载完成
-const results = await Promise.all(categoryPromises);
-
-// 合并所有文章
-results.forEach(articles => {
-state.allArticles.push(...articles);
-});
-
-// 按分类和ID排序
-state.allArticles.sort((a, b) => {
-if (a.category !== b.category) {
-return a.category.localeCompare(b.category);
-}
-return parseInt(a.id) - parseInt(b.id);
-});
-
-// 更新统计信息
-updateStatistics();
-
-// 过滤并显示文章
-filterAndDisplayArticles();
-
-hideLoading();
-} catch (error) {
-console.error('加载文章失败:', error);
-hideLoading();
-showError(`加载文章时发生错误: ${error.message}`);
-}
-}
-
-// 更新统计信息
-function updateStatistics() {
-// 计算总文章数
-state.totalArticles = state.allArticles.length;
-elements.totalArticles.textContent = state.totalArticles;
-
-// 计算各类型文章数
-const newsCount = ['softnews'].reduce((sum, cat) => sum + (state.categoryCounts[cat] || 0), 0);
-const tutorialCount = ['flashedu'].reduce((sum, cat) => sum + (state.categoryCounts[cat] || 0), 0);
-const resourceCount = Object.keys(config.categories)
-.filter(cat => !['softnews', 'flashedu'].includes(cat))
-.reduce((sum, cat) => sum + (state.categoryCounts[cat] || 0), 0);
-
-elements.newsArticles.textContent = newsCount;
-elements.tutorialArticles.textContent = tutorialCount;
-elements.resourceArticles.textContent = resourceCount;
-}
-
-// 过滤并显示文章
-function filterAndDisplayArticles() {
-// 根据当前分类和搜索词过滤文章
-state.filteredArticles = state.allArticles.filter(article => {
-// 分类过滤
-if (state.currentCategory !== 'all' && article.category !== state.currentCategory) {
-return false;
-}
-
-// 搜索词过滤
-if (state.searchTerm) {
-const term = state.searchTerm.toLowerCase();
-const titleMatch = article.title.toLowerCase().includes(term);
-const contentMatch = article.content.toLowerCase().includes(term);
-
-if (state.searchType === 'title') return titleMatch;
-if (state.searchType === 'content') return contentMatch;
-return titleMatch || contentMatch;
-}
-
-return true;
-});
-
-// 更新文章计数
-elements.articlesCount.textContent = state.filteredArticles.length;
-
-// 计算总页数
-state.totalPages = Math.max(1, Math.ceil(state.filteredArticles.length / config.itemsPerPage));
-
-// 确保当前页有效
-if (state.currentPage > state.totalPages) {
-state.currentPage = 1;
-}
-
-// 显示当前页文章
-displayCurrentPageArticles();
-
-// 更新分页控件
-updatePagination();
-
-// 显示空状态（如果需要）
-if (state.filteredArticles.length === 0) {
-elements.articlesGrid.classList.add('hidden');
-elements.pagination.classList.add('hidden');
-elements.emptyState.classList.remove('hidden');
-} else {
-elements.articlesGrid.classList.remove('hidden');
-elements.pagination.classList.remove('hidden');
-elements.emptyState.classList.add('hidden');
-}
-}
-
-// 显示当前页的文章
-function displayCurrentPageArticles() {
-elements.articlesGrid.innerHTML = '';
-
-const startIndex = (state.currentPage - 1) * config.itemsPerPage;
-const endIndex = Math.min(startIndex + config.itemsPerPage, state.filteredArticles.length);
-const currentArticles = state.filteredArticles.slice(startIndex, endIndex);
-
-currentArticles.forEach(article => {
-const card = document.createElement('div');
-card.className = 'article-card bg-white rounded-lg shadow-sm overflow-hidden';
-card.innerHTML = `
-<div class="p-5">
-<div class="text-sm text-gray-500 mb-2">
-<i class="fas fa-folder mr-1"></i>${config.categories[article.category]}
-</div>
-<h3 class="text-lg font-semibold mb-3 text-gray-800 hover:text-blue-600 transition">
-<a href="?category=${article.category}&id=${article.id}" class="article-link" data-category="${article.category}" data-id="${article.id}">
-${truncateText(article.title, 50)}
-</a>
-</h3>
-<p class="text-gray-600 text-sm mb-4 line-clamp-3">
-${truncateText(stripMarkdown(article.content), 120)}
-</p>
-<div class="flex justify-between items-center text-xs text-gray-500">
-<span><i class="fas fa-file-code mr-1"></i>ID: ${article.id}</span>
-<button class="text-blue-600 hover:text-blue-800 article-link" data-category="${article.category}" data-id="${article.id}">
-阅读更多 <i class="fas fa-angle-right ml-1"></i>
-</button>
-</div>
-</div>
-`;
-
-elements.articlesGrid.appendChild(card);
-
-// 添加文章链接点击事件
-card.querySelectorAll('.article-link').forEach(link => {
-link.addEventListener('click', (e) => {
-// 如果是按钮则阻止默认行为并手动处理导航
-if (e.target.tagName === 'BUTTON' || e.target.closest('BUTTON')) {
-e.preventDefault();
-const category = link.dataset.category;
-const id = link.dataset.id;
-viewArticleDetail(category, id);
-}
-});
-});
-});
-}
-
-// 查看文章详情，增加forceReload参数强制重新加载
-async function viewArticleDetail(category, id, forceReload = false) {
-// 显示加载状态
-elements.articlesSection.classList.add('hidden');
-elements.articleDetail.classList.remove('hidden');
-elements.detailContentContainer.classList.add('hidden');
-elements.detailError.classList.add('hidden');
-elements.renderErrorContainer.classList.add('hidden');
-elements.detailLoading.classList.remove('hidden');
-
-try {
-let article;
-
-// 确保有可用的渲染方式
-if (!state.markedLoaded && !state.usingFallbackRenderer) {
-// 尝试再次加载marked.js
-await loadMarkedLibrary();
-await initMarkedRenderer();
-}
-
-// 如果需要强制重新加载或缓存中没有，则重新加载
-const cacheKey = `${category}-${id}`;
-if (forceReload || !state.articleCache.has(cacheKey)) {
-// 从服务器加载文章
-article = await loadArticleContent(category, id);
-} else {
-// 从缓存获取
-article = state.articleCache.get(cacheKey);
-}
-
-// 验证文章数据
-if (!article || !article.content) {
-throw new Error('文章数据不完整');
-}
-
-// 更新详情页内容
-elements.detailTitle.textContent = article.title || `未命名文章 (${category}-${id})`;
-elements.detailCategory.textContent = config.categories[article.category] || article.category;
-elements.detailId.textContent = `ID: ${article.id}`;
-
-// 渲染文章内容
-renderArticleContent(article);
-
-// 查找上一篇和下一篇文章（在同一分类中）
-const sameCategoryArticles = state.allArticles.filter(a => a.category === category);
-const currentIndex = sameCategoryArticles.findIndex(a => a.id.toString() === id.toString());
-const prevArticle = currentIndex > 0 ? sameCategoryArticles[currentIndex - 1] : null;
-const nextArticle = currentIndex < sameCategoryArticles.length - 1 ? sameCategoryArticles[currentIndex + 1] : null;
-
-// 更新上一篇/下一篇按钮
-elements.prevArticleBtn.disabled = !prevArticle;
-elements.nextArticleBtn.disabled = !nextArticle;
-
-// 绑定上一篇/下一篇点击事件
-elements.prevArticleBtn.onclick = () => {
-if (prevArticle) {
-viewArticleDetail(prevArticle.category, prevArticle.id);
-}
-};
-
-elements.nextArticleBtn.onclick = () => {
-if (nextArticle) {
-viewArticleDetail(nextArticle.category, nextArticle.id);
-}
-};
-
-// 显示内容，隐藏加载状态
-elements.detailLoading.classList.add('hidden');
-elements.detailContentContainer.classList.remove('hidden');
-
-// 更新URL
-const params = new URLSearchParams(window.location.search);
-params.set('category', category);
-params.set('id', id);
-window.history.pushState({}, '', `?${params.toString()}`);
-
-// 滚动到顶部
-window.scrollTo(0, 0);
-
-} catch (error) {
-console.error(`显示文章详情失败:`, error);
-// 保存当前尝试加载的文章ID，用于"查看纯文本"功能
-state.currentArticle = { category, id, content: '加载失败的内容' };
-
-// 显示错误状态
-elements.detailLoading.classList.add('hidden');
-elements.detailError.classList.remove('hidden');
-
-// 特殊处理渲染器错误
-if (error.message && error.message.includes('this.renderer.paragraph is not a function')) {
-elements.detailErrorMessage.textContent = '内容渲染组件加载失败，请尝试使用纯文本查看';
-// 显示"查看纯文本"按钮
-elements.showPlaintextBtn.classList.remove('hidden');
-} else {
-elements.detailErrorMessage.textContent = `无法加载文章内容: ${error.message}`;
-// 根据错误类型决定是否显示"查看纯文本"按钮
-elements.showPlaintextBtn.classList.toggle('hidden', 
-!(error.message.includes('渲染') || error.message.includes('解析'))
-);
-}
-}
-}
-
-// 更新分页控件
-function updatePagination() {
-elements.pageNumbers.innerHTML = '';
-elements.prevPageBtn.disabled = state.currentPage === 1;
-elements.nextPageBtn.disabled = state.currentPage === state.totalPages;
-
-// 计算显示的页码范围
-let startPage = Math.max(1, state.currentPage - 2);
-let endPage = Math.min(state.totalPages, startPage + 4);
-
-// 调整页码范围
-if (endPage - startPage < 4 && startPage > 1) {
-startPage = Math.max(1, endPage - 4);
-}
-
-// 添加第一页按钮
-if (startPage > 1) {
-addPageButton(1);
-if (startPage > 2) {
-addEllipsis();
-}
-}
-
-// 添加中间页码按钮
-for (let i = startPage; i <= endPage; i++) {
-addPageButton(i);
-}
-
-// 添加最后一页按钮
-if (endPage < state.totalPages) {
-if (endPage < state.totalPages - 1) {
-addEllipsis();
-}
-addPageButton(state.totalPages);
-}
-}
-
-// 添加页码按钮
-function addPageButton(pageNum) {
-const button = document.createElement('button');
-button.className = `px-3 py-1 rounded-lg transition ${
-pageNum === state.currentPage 
-? 'bg-blue-600 text-white' 
-: 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-}`;
-button.textContent = pageNum;
-button.addEventListener('click', () => {
-state.currentPage = pageNum;
-displayCurrentPageArticles();
-updatePagination();
-updateUrl();
-});
-elements.pageNumbers.appendChild(button);
-}
-
-// 添加省略号
-function addEllipsis() {
-const ellipsis = document.createElement('span');
-ellipsis.className = 'px-2 text-gray-500';
-ellipsis.textContent = '...';
-elements.pageNumbers.appendChild(ellipsis);
-}
-
-// 更新分类按钮状态
-function updateCategoryButtons() {
-elements.categoryBtns.forEach(btn => {
-if (btn.dataset.category === state.currentCategory) {
-btn.classList.remove('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
-btn.classList.add('bg-blue-600', 'text-white');
-btn.classList.add('active');
-} else {
-btn.classList.remove('bg-blue-600', 'text-white', 'active');
-btn.classList.add('bg-gray-200', 'hover:bg-gray-300', 'text-gray-700');
-}
-});
-}
-
-// 处理搜索
-function handleSearch() {
-const searchTerm = elements.searchInput.value.trim();
-state.searchTerm = searchTerm;
-state.currentPage = 1;
-
-// 如果有搜索词，添加到搜索历史
-if (searchTerm) {
-addToSearchHistory(searchTerm);
-}
-
-filterAndDisplayArticles();
-updateUrl();
-hideSearchHistory();
-}
-
-// 重置搜索
-function resetSearch() {
-elements.searchInput.value = '';
-state.searchTerm = '';
-state.currentPage = 1;
-document.querySelector('input[name="search-type"][value="title"]').checked = true;
-state.searchType = 'title';
-
-filterAndDisplayArticles();
-updateUrl();
-hideSearchHistory();
-}
-
-// 显示加载状态
-function showLoading(detail) {
-elements.loadingSection.classList.remove('hidden');
-elements.articlesSection.classList.add('hidden');
-elements.errorSection.classList.add('hidden');
-
-if (detail) {
-elements.loadingDetail.textContent = detail;
-}
-}
-
-// 隐藏加载状态
-function hideLoading() {
-elements.loadingSection.classList.add('hidden');
-elements.articlesSection.classList.remove('hidden');
-}
-
-// 显示错误信息
-function showError(message) {
-elements.errorSection.classList.remove('hidden');
-elements.loadingSection.classList.add('hidden');
-elements.articlesSection.classList.add('hidden');
-
-if (message) {
-elements.errorMessage.textContent = message;
-}
-}
-
-// 隐藏错误信息
-function hideError() {
-elements.errorSection.classList.add('hidden');
-}
-
-// 截断文本
-function truncateText(text, maxLength) {
-if (!text) return '';
-if (text.length <= maxLength) {
-return text;
-}
-return text.substring(0, maxLength) + '...';
-}
-
-// 去除Markdown格式
-function stripMarkdown(text) {
-if (!text) return '';
-return text
-.replace(/#{1,6}\s+/g, '') // 标题
-.replace(/\*\*|__/g, '') // 粗体
-.replace(/\*|_/g, '') // 斜体
-.replace(/`/g, '') // 代码
-.replace(/!\[.*?\]\(.*?\)/g, '') // 图片
-.replace(/\[(.*?)\]\(.*?\)/g, '$1') // 链接
-.replace(/> /g, '') // 引用
-.replace(/---/g, '') // 分隔线
-.replace(/\s{2,}/g, ' '); // 多余空格
-}
-
-// 搜索历史相关函数
-function loadSearchHistory() {
-try {
-const savedHistory = localStorage.getItem('searchHistory');
-if (savedHistory) {
-state.searchHistory = JSON.parse(savedHistory);
-renderSearchHistory();
-}
-} catch (error) {
-console.error('加载搜索历史失败:', error);
-state.searchHistory = [];
-}
-}
-
-function saveSearchHistory() {
-try {
-localStorage.setItem('searchHistory', JSON.stringify(state.searchHistory));
-} catch (error) {
-console.error('保存搜索历史失败:', error);
-}
-}
-
-function addToSearchHistory(term) {
-// 移除已存在的相同记录
-state.searchHistory = state.searchHistory.filter(item => item.term !== term);
-
-// 添加新记录
-state.searchHistory.unshift({
-term,
-timestamp: new Date().toISOString()
-});
-
-// 限制历史记录数量
-if (state.searchHistory.length > config.maxSearchHistory) {
-state.searchHistory = state.searchHistory.slice(0, config.maxSearchHistory);
-}
-
-// 保存并渲染
-saveSearchHistory();
-renderSearchHistory();
-}
-
-function renderSearchHistory() {
-elements.historyList.innerHTML = '';
-
-if (state.searchHistory.length === 0) {
-elements.noHistoryMsg.classList.remove('hidden');
-return;
-}
-
-elements.noHistoryMsg.classList.add('hidden');
-
-state.searchHistory.forEach((item, index) => {
-const li = document.createElement('li');
-li.className = 'history-item';
-
-// 格式化时间
-const date = new Date(item.timestamp);
-const timeStr = date.toLocaleString();
-
-li.innerHTML = `
-<div class="flex items-center">
-<span class="history-text">${item.term}</span>
-<span class="history-time">${timeStr}</span>
-</div>
-<span class="remove-history" data-index="${index}">
-<i class="fas fa-times"></i>
-</span>
-`;
-
-elements.historyList.appendChild(li);
-
-// 添加点击事件
-li.addEventListener('click', (e) => {
-if (!e.target.closest('.remove-history')) {
-elements.searchInput.value = item.term;
-hideSearchHistory();
-}
-});
-
-// 添加删除事件
-li.querySelector('.remove-history').addEventListener('click', (e) => {
-e.stopPropagation();
-removeSearchHistoryItem(index);
-});
-});
-}
-
-function removeSearchHistoryItem(index) {
-state.searchHistory.splice(index, 1);
-saveSearchHistory();
-renderSearchHistory();
-}
-
-function clearAllSearchHistory() {
-state.searchHistory = [];
-saveSearchHistory();
-renderSearchHistory();
-}
-
-function showSearchHistory() {
-elements.searchHistoryDropdown.classList.add('active');
-}
-
-function hideSearchHistory() {
-elements.searchHistoryDropdown.classList.remove('active');
-}
-
-function filterSearchHistory() {
-const term = elements.searchInput.value.toLowerCase();
-const items = elements.historyList.querySelectorAll('.history-item');
-
-items.forEach(item => {
-const text = item.querySelector('.history-text').textContent.toLowerCase();
-if (text.includes(term)) {
-item.style.display = '';
-} else {
-item.style.display = 'none';
-}
-});
-}
-
-// 主题切换相关函数
-function loadThemePreference() {
-// 从localStorage加载主题偏好
-const savedTheme = localStorage.getItem('darkMode');
-if (savedTheme !== null) {
-state.darkMode = savedTheme === 'true';
-} else {
-// 如果没有保存的偏好，检查系统设置
-state.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-}
-applyTheme();
-}
-
-function toggleTheme() {
-state.darkMode = !state.darkMode;
-applyTheme();
-// 保存主题偏好
-localStorage.setItem('darkMode', state.darkMode);
-}
-
-function applyTheme() {
-if (state.darkMode) {
-document.body.classList.add('dark-mode');
-elements.themeToggle.innerHTML = '<i class="fas fa-sun text-yellow-400"></i>';
-elements.themeToggle.setAttribute('aria-label', '切换到彩色模式');
-} else {
-document.body.classList.remove('dark-mode');
-elements.themeToggle.innerHTML = '<i class="fas fa-moon text-gray-600"></i>';
-elements.themeToggle.setAttribute('aria-label', '切换到黑白模式');
-}
-}
-
-// 初始化应用
-document.addEventListener('DOMContentLoaded', init);
-</script>
+// 回到底部功能
+backToBottomBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
+});		
+		
+		
+    </script>
 
 <!--版权说明开始
 /*
 +------------------------------------------------------------------------+
- System Name : Luhui Flash History Museum Information System V1.1.5
- 系统名称 : 鲁虺Flash历史博物馆资讯系统 html JavaScript txt V1.1.5
+ System Name : Luhui news Information System V1.1.2
+ 系统名称 : 鲁虺新闻资讯网 html JavaScript txt V1.1.2
 +------------------------------------------------------------------------+
- 创建 Created  2025-5-4 / 修改 Modify 2025-9-2
+ 创建 Created  2025-9-6 / 修改 Modify 2025-10-11
 +------------------------------------------------------------------------+
- Version : 1.1.5
+ Version : 1.1.2
 +------------------------------------------------------------------------+
  版本更新 : 该版本所有详细更新细节都已在系统迭代说明中详述,如需了解请查阅鲁虺软件文档
  鲁虺软件 : http://soft.luhui.net 点击浏览鲁虺软件开发文档“软件开发”列表查询品鉴
@@ -2271,8 +2959,5 @@ document.addEventListener('DOMContentLoaded', init);
 +------------------------------------------------------------------------+
 */
 --版权说明结束-->
-
-
-
-
-</body></html>
+</body>
+</html>

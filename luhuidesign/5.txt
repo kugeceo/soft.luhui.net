@@ -1,0 +1,10 @@
+有没有支持更多文档格式的开源阅读器项目？
+
+
+以下是一些支持多种文档格式的开源阅读器项目：
+- **Koodo Reader**：基于Electron + React实现，支持Windows、MacOS、Linux和网页版。支持的文档格式包括EPUB、PDF、Kindle（.azw3、.mobi、.azw）、纯文本、漫画（.cbr、.cbz、.cbt、.cb7）、富文本（.md、.docx）、FB2、超文本（.html、.xml等）。
+- **KOReader**：专为电子墨水阅读器设计，也兼容Android和Linux计算机。支持PDF、DjVu、CBT、CBZ等固定页格式，以及EPUB、FB2、Mobi、DOC、RTF、HTML、CHM、TXT等可重排的电子书格式。
+- **Readest**：开源、跨平台的电子书阅读器，支持macOS、Windows、Linux、iOS、Android及Web端。支持EPUB、MOBI、AZW3、PDF（实验性）、TXT等主流电子书格式。
+- **Okular**：一款跨平台文档阅读器，支持PDF、EPub、DjVU、MD文档，JPEG、PNG、GIF、Tiff和WebP图像，CBR和CBZ漫画电子书等多种格式。
+- **Librera Reader**：一款专为Android设备设计的开源电子书阅读器，能够打开PDF、EPUB、MOBI等流行格式。
+- **Anx Reader**：用Flutter开发的开源电子书阅读软件，支持EPUB、MOBI、AZW3、FB2、TXT等多种格式。

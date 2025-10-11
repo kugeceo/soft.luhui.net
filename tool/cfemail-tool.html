@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare cfemail 解密加密工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        neutral: '#1F2937',
+                        light: '#F3F4F6',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .card-shadow {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter text-neutral min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 页面标题 -->
+        <header class="text-center mb-12">
+            <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-neutral mb-4">
+                <i class="fa fa-envelope text-primary mr-3"></i>cfemail 工具
+            </h1>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                解密和加密 Cloudflare 的 cfemail 格式，保护您的电子邮件地址免受爬虫抓取
+            </p>
+        </header>
+
+        <!-- 功能卡片 -->
+        <div class="grid md:grid-cols-2 gap-8 mb-10">
+            <!-- 解密功能 -->
+            <div class="bg-white rounded-xl p-6 card-shadow hover:shadow-lg transition-all-300">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                        <i class="fa fa-unlock text-primary text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold">解密 cfemail</h2>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="encrypted" class="block text-sm font-medium text-gray-700 mb-1">
+                        输入 cfemail 加密字符串
+                    </label>
+                    <textarea id="encrypted" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all-300" placeholder="例如: 582b2d2828372a2c182c373734373722763b3735"></textarea>
+                </div>
+                
+                <button id="decryptBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all-300 flex items-center justify-center">
+                    <i class="fa fa-key mr-2"></i> 解密
+                </button>
+                
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">解密结果</label>
+                    <div id="decryptedResult" class="w-full min-h-[60px] p-3 bg-gray-50 border border-gray-300 rounded-lg break-all"></div>
+                </div>
+            </div>
+
+            <!-- 加密功能 -->
+            <div class="bg-white rounded-xl p-6 card-shadow hover:shadow-lg transition-all-300">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center mr-3">
+                        <i class="fa fa-lock text-secondary text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold">加密为 cfemail</h2>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                        输入电子邮件地址
+                    </label>
+                    <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all-300" placeholder="例如: support@toolooz.com">
+                </div>
+                
+                <button id="encryptBtn" class="w-full bg-secondary hover:bg-secondary/90 text-white font-medium py-2 px-4 rounded-lg transition-all-300 flex items-center justify-center">
+                    <i class="fa fa-shield mr-2"></i> 加密
+                </button>
+                
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">加密结果</label>
+                    <div id="encryptedResult" class="w-full min-h-[60px] p-3 bg-gray-50 border border-gray-300 rounded-lg break-all"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用说明 -->
+        <div class="bg-white rounded-xl p-6 card-shadow mb-10">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fa fa-info-circle text-primary mr-2"></i>使用说明
+            </h2>
+            <div class="text-gray-700 space-y-3">
+                <p>Cloudflare 的 cfemail 是一种用于保护网页中电子邮件地址的加密机制，通过简单的 XOR 运算实现。</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>解密：输入 data-cfemail 属性中的值，点击"解密"按钮获取原始电子邮件地址</li>
+                    <li>加密：输入电子邮件地址，点击"加密"按钮生成对应的 cfemail 格式字符串</li>
+                    <li>加密原理：使用随机密钥对每个字符进行 XOR 运算，然后转换为十六进制字符串</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 代码示例 -->
+        <div class="bg-white rounded-xl p-6 card-shadow">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <i class="fa fa-code text-primary mr-2"></i>在网页中使用
+            </h2>
+            <p class="text-gray-700 mb-3">加密后的电子邮件可以这样在网页中使用，既保护邮箱又不影响用户查看：</p>
+            <div class="bg-gray-800 text-gray-200 p-4 rounded-lg overflow-x-auto text-sm">
+                &lt;a href="mailto:support@toolooz.com" data-cfemail="582b2d2828372a2c182c373734373722763b3735"&gt;
+                <br>&nbsp;&nbsp;support@toolooz.com
+                <br>&lt;/a&gt;
+            </div>
+            <p class="text-gray-700 mt-3">Cloudflare 会自动解密并显示给正常用户，但可以阻止大多数爬虫抓取。</p>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>cfemail 解密加密工具 &copy; 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // 解密函数
+        function decodeCFEmail(encodedStr) {
+            // 移除可能的非十六进制字符
+            encodedStr = encodedStr.replace(/[^0-9a-fA-F]/g, '');
+            
+            if (encodedStr.length < 2) {
+                return "无效的 cfemail 字符串";
+            }
+            
+            try {
+                // 转换为字节数组
+                const bytes = [];
+                for (let i = 0; i < encodedStr.length; i += 2) {
+                    bytes.push(parseInt(encodedStr.substr(i, 2), 16));
+                }
+                
+                // 第一个字节是密钥
+                const key = bytes[0];
+                
+                // 解密后续字节
+                const decrypted = [];
+                for (let i = 1; i < bytes.length; i++) {
+                    decrypted.push(key ^ bytes[i]);
+                }
+                
+                // 转换为字符串
+                return String.fromCharCode(...decrypted);
+            } catch (e) {
+                return `解密失败: ${e.message}`;
+            }
+        }
+
+        // 加密函数
+        function encodeCFEmail(email) {
+            try {
+                // 生成随机密钥 (0-255)
+                const key = Math.floor(Math.random() * 256);
+                
+                // 将电子邮件转换为字节数组
+                const emailBytes = [];
+                for (let i = 0; i < email.length; i++) {
+                    emailBytes.push(email.charCodeAt(i));
+                }
+                
+                // 使用密钥进行XOR加密
+                const encryptedBytes = [key]; // 第一个字节是密钥
+                for (const byte of emailBytes) {
+                    encryptedBytes.push(key ^ byte);
+                }
+                
+                // 转换为十六进制字符串
+                let hexStr = '';
+                for (const byte of encryptedBytes) {
+                    // 确保每个字节转换为两位十六进制
+                    const hex = byte.toString(16).padStart(2, '0');
+                    hexStr += hex;
+                }
+                
+                return hexStr;
+            } catch (e) {
+                return `加密失败: ${e.message}`;
+            }
+        }
+
+        // DOM 元素
+        const encryptedInput = document.getElementById('encrypted');
+        const emailInput = document.getElementById('email');
+        const decryptBtn = document.getElementById('decryptBtn');
+        const encryptBtn = document.getElementById('encryptBtn');
+        const decryptedResult = document.getElementById('decryptedResult');
+        const encryptedResult = document.getElementById('encryptedResult');
+
+        // 解密按钮事件
+        decryptBtn.addEventListener('click', () => {
+            const encryptedStr = encryptedInput.value.trim();
+            if (!encryptedStr) {
+                decryptedResult.textContent = "请输入 cfemail 加密字符串";
+                decryptedResult.classList.add('text-red-500');
+                return;
+            }
+            
+            decryptedResult.classList.remove('text-red-500');
+            const result = decodeCFEmail(encryptedStr);
+            decryptedResult.textContent = result;
+            
+            // 如果结果看起来像电子邮件，添加高亮
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result)) {
+                decryptedResult.classList.add('text-green-600', 'font-medium');
+            } else {
+                decryptedResult.classList.remove('text-green-600', 'font-medium');
+            }
+        });
+
+        // 加密按钮事件
+        encryptBtn.addEventListener('click', () => {
+            const email = emailInput.value.trim();
+            if (!email) {
+                encryptedResult.textContent = "请输入电子邮件地址";
+                encryptedResult.classList.add('text-red-500');
+                return;
+            }
+            
+            // 简单的邮箱格式验证
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                encryptedResult.textContent = "请输入有效的电子邮件地址";
+                encryptedResult.classList.add('text-red-500');
+                return;
+            }
+            
+            encryptedResult.classList.remove('text-red-500');
+            const result = encodeCFEmail(email);
+            encryptedResult.textContent = result;
+            encryptedResult.classList.add('text-blue-600');
+        });
+
+        // 回车键触发解密/加密
+        encryptedInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                decryptBtn.click();
+            }
+        });
+
+        emailInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                encryptBtn.click();
+            }
+        });
+
+        // 示例数据填充
+        encryptedInput.value = "582b2d2828372a2c182c373734373722763b3735";
+        emailInput.value = "support@toolooz.com";
+    </script>
+</body>
+</html>

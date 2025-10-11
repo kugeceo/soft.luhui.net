@@ -1,0 +1,14 @@
+如何在macOS系统上删除Docker Desktop图标？
+
+在macOS系统上删除Docker Desktop图标的方法如下：
+- **删除Docker Desktop应用程序图标**：
+    - 首先确保Docker Desktop没有在运行。在菜单栏找到Docker图标，点击图标并选择“Quit Docker Desktop”选项关闭它。
+    - 打开Finder，转到“应用程序”文件夹。找到“Docker.app”，然后将其拖到废纸篓中。也可以使用终端命令删除Docker应用，在终端中输入`sudo rm -rf /Applications/Docker.app`。
+- **删除Docker相关的支持文件和配置图标（如果需要）**：Docker Desktop卸载后，相关的支持文件和配置可能仍留在系统中，若要彻底删除，可在终端中输入以下命令：
+    - `rm -rf ~/.docker`
+    - `rm -rf ~/Library/Application\ Support/Docker\ Desktop`
+    - `rm -rf ~/Library/Group\ Containers/group.com.docker`
+    - `rm -rf ~/Library/Preferences/com.docker.docker.plist`
+    - `rm -rf ~/Library/Logs/Docker\ Desktop`
+
+

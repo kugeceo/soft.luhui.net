@@ -1,0 +1,11 @@
+vercel免费部署最大支持多少存储空间
+
+
+Vercel 免费部署的存储空间限制因存储类型而异：
+
+静态文件存储：免费套餐为静态文件（如图片、HTML、CSS、JavaScript）提供 1GB 的存储空间。
+Vercel KV 存储：前 512MB 免费。
+Vercel Postgres 存储：前 256MB 写入数据和存储免费。
+Vercel Blob 存储：提供 250MB 的免费存储空间。
+构建容器中的静态文件上传：限制为 1GB。
+构建缓存：最大为 1GB。
