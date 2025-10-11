@@ -1,0 +1,78 @@
+鲁虺文本内容搜索展示系统luhuitxtcms html JavaScript txt Version2.0.6更新
+
+
+
+
+
+![image](/luhuitxtcms/category1/20250710145732.jpg)
+
+
+![image](/luhuitxtcms/category1/exported_image.png)
+
+[![沙漠中的岩石图片](/luhuitxtcms/category1/20250710145732.jpg "Shiprock")](https://markdown.com.cn)
+
+
+Markdown 图片语法
+
+要添加图像，请使用感叹号 (!), 然后在方括号增加替代文本，图片链接放在圆括号里，括号里的链接后可以增加一个可选的图片标题文本。
+
+插入图片Markdown语法代码：![图片alt](图片链接 "图片title")。
+
+对应的HTML代码：<img src="图片链接" alt="图片alt" title="图片title">
+
+![这是图片](/luhuitxtcms/category1/20250710145732.jpg "Magic Gardens")
+渲染效果如下：
+
+这是图片
+
+链接图片
+给图片增加链接，请将图像的Markdown 括在方括号中，然后将链接添加在圆括号中。
+
+[![沙漠中的岩石图片](/luhuitxtcms/category1/20250710145732.jpg "Shiprock")](https://markdown.com.cn)
+ 测试了下无法显示Markdown语法的内容
+ 
+ 
+
+
+我看到您仍然遇到Markdown图片无法显示的问题。让我进一步优化代码，确保所有Markdown图片格式都能正确解析和显示。
+
+
+    
+
+
+本次更新主要针对Markdown图片显示问题进行了全面优化，具体改进如下：
+
+1. **增强的图片路径处理**：
+   - 改进了marked渲染器的图片路径解析逻辑，能够处理绝对路径、相对路径等多种情况
+   - 为图片添加`data-original-href`属性存储原始路径，便于错误处理
+   - 优化了分类路径自动补全逻辑，确保图片路径正确
+
+2. **智能图片错误处理**：
+   - 新增`setupImageErrorHandling`函数，实现多层次的图片路径修复尝试
+   - 当图片加载失败时，自动尝试多种路径修复方案
+   - 所有修复尝试失败后，显示美观的错误提示容器，包含原始路径信息
+
+3. **Markdown识别优化**：
+   - 不仅通过文件名判断是否为Markdown，还通过内容中是否包含图片标记来识别
+   - 对于非Markdown文件但包含图片语法的内容，也会进行解析
+
+4. **链接图片支持**：
+   - 优化了链接渲染器，确保包含图片的链接能正确解析和显示
+   - 保留了图片的标题和替代文本属性
+
+这些改进应该能解决您遇到的Markdown图片无法显示的问题，包括普通图片和链接图片的各种格式。系统会自动处理不同路径格式，并在图片加载失败时提供有用的错误信息。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

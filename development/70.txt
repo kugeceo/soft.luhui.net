@@ -1,121 +1,503 @@
-鲁虺在线贴图器（tietu.luhui.net）使用说明
-
-# 鲁虺在线贴图器（tietu.luhui.net）使用说明
-
-## 项目简介
-「鲁虺在线贴图器」是一款轻量级在线图片处理工具，支持图片上传、预览、基础贴图及简单样式调整，适用于快速制作图文内容、分享图片或嵌入到论坛、文档中。本仓库为工具的前端实现源码，技术栈以HTML和CSS为主，核心功能聚焦于「简单、高效的贴图体验」。
+鲁虺Flash历史博物馆资讯系统 php txt V1.0.1更新
 
 
-## 快速开始
+在低版本PHP环境测试显示 HTTP ERROR 500 错误
 
-### 1. 访问工具
-直接通过在线地址使用：  
-👉 [鲁虺在线贴图器](http://pixie.luhui.net)
 
-### 2. 本地部署（可选）
-若需本地调试或二次开发，可按以下步骤部署：
-```bash
-# 克隆仓库
-git clone https://github.com/kugeceo/tietu.luhui.net.git
+低版本PHP环境出现500错误通常是由于语法不兼容或缺少某些函数导致的。以下是针对低版本PHP（如PHP 5.4及以上）的兼容修复方案：
 
-# 进入目录
-cd tietu.luhui.net
+### 主要兼容性问题及修复
 
-# 启动本地服务器（推荐使用Python简易服务器）
-python -m http.server 8000
+1. **短数组语法**：低版本PHP不支持短数组语法`[]`，需改为`array()`
+2. **匿名函数与`use`关键字**：部分低版本版本对匿名名函数支持不完善
+3. **`preg_replace_callback`使用**：需确保版本对回调函数处理不同
+4. **`mb_detect_encoding`函数**：确保启用mbstring扩展
+
+### 修改后的兼容版本代码
+
+```php
+<?php
+// 配置信息
+$config = array(
+    'baseUrl' => '', // 基础URL
+    'imageBasePath' => '/luhuitxtcms/', // 图片基础路径
+    'itemsPerPage' => 12, // 每页显示文章数量
+    'maxDetectionAttempts' => 100, // 最大检测文章ID尝试次数
+    'timeout' => 15000, // 超时时间(ms)
+    'maxSearchHistory' => 10, // 最大搜索历史记录数量
+    'categories' => array(
+        'flashnews' => 'Flash资讯',
+        'flashsoft' => 'Flash软件',
+        'flashedu' => 'Flash教程',
+        'flashbusiness' => 'Flash商家',
+        'flashsite' => 'Flash网站',
+        'flashcode' => 'Flash源码',
+        'flashtasting' => 'Flash品鉴',
+        'flashplugin' => 'Flash插件',
+        'flashtool' => 'Flash工具',
+        'flashdesign' => 'Flash设计',
+        'flashmuseum' => 'Flash服务'
+    )
+);
+
+// 状态管理
+$state = array(
+    'currentCategory' => 'all',
+    'currentPage' => 1,
+    'searchTerm' => '',
+    'searchType' => 'title',
+    'totalArticles' => 0,
+    'totalPages' => 0,
+    'allArticles' => array(),
+    'filteredArticles' => array(),
+    'articleCache' => array(),
+    'categoryCounts' => array(),
+    'searchHistory' => array() // 搜索历史记录
+);
+
+// 初始化分类计数
+foreach ($config['categories'] as $key => $name) {
+    $state['categoryCounts'][$key] = 0;
+}
+
+// 从URL参数加载状态
+function loadStateFromUrl(&$state, $config) {
+    $validCategories = array_keys($config['categories']);
+    
+    // 处理分类参数
+    if (isset($_GET['category'])) {
+        $category = trim($_GET['category']);
+        if (in_array($category, $validCategories)) {
+            $state['currentCategory'] = $category;
+        } else {
+            // 尝试查找相似分类
+            $similarCategory = findSimilarCategory($category, $validCategories);
+            if ($similarCategory) {
+                $state['currentCategory'] = $similarCategory;
+            }
+        }
+    }
+    
+    // 处理页码
+    if (isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p'] > 0) {
+        $state['currentPage'] = (int)$_GET['p'];
+    }
+    
+    // 处理搜索词
+    if (isset($_GET['q'])) {
+        $state['searchTerm'] = trim($_GET['q']);
+    }
+    
+    // 处理搜索类型
+    if (isset($_GET['searchType']) && in_array($_GET['searchType'], array('title', 'content', 'both'))) {
+        $state['searchType'] = $_GET['searchType'];
+    }
+}
+
+// 查找相似的分类
+function findSimilarCategory($input, $validCategories) {
+    $input = strtolower($input);
+    // 检查是否是有效分类的子串或只差一个字符
+    foreach ($validCategories as $category) {
+        if (strlen($input) === strlen($category) + 1 && strpos($input, $category) !== false) {
+            return $category;
+        }
+        if (strlen($category) === strlen($input) + 1 && strpos($category, $input) !== false) {
+            return $category;
+        }
+    }
+    // 检查是否有完全匹配（忽略大小写）
+    foreach ($validCategories as $category) {
+        if (strtolower($category) === $input) {
+            return $category;
+        }
+    }
+    return null;
+}
+
+// 加载所有文章
+function loadAllArticles(&$state, $config) {
+    $allArticles = array();
+    
+    // 遍历所有分类加载文章
+    foreach ($config['categories'] as $category => $categoryName) {
+        $articles = detectAndLoadCategoryArticles($category, $config);
+        $allArticles = array_merge($allArticles, $articles);
+        $state['categoryCounts'][$category] = count($articles);
+    }
+    
+    // 按分类和ID排序
+    usort($allArticles, create_function('$a, $b', '
+        if ($a["category"] === $b["category"]) {
+            return $a["id"] - $b["id"];
+        }
+        return strcmp($a["category"], $b["category"]);
+    '));
+    
+    $state['allArticles'] = $allArticles;
+    return $allArticles;
+}
+
+// 检测并加载指定分类的文章
+function detectAndLoadCategoryArticles($category, $config) {
+    $articles = array();
+    $consecutiveFailures = 0;
+    
+    // 尝试检测文章ID
+    for ($id = 1; $id <= $config['maxDetectionAttempts']; $id++) {
+        $article = loadArticleContent($category, $id, $config);
+        if ($article) {
+            $articles[] = $article;
+            $consecutiveFailures = 0;
+        } else {
+            $consecutiveFailures++;
+        }
+        
+        // 如果连续5个ID不存在，则停止检测
+        if ($consecutiveFailures >= 5) {
+            break;
+        }
+    }
+    
+    return $articles;
+}
+
+// 加载文章内容
+function loadArticleContent($category, $id, $config) {
+    $filePath = $config['baseUrl'] . $category . '/' . $id . '.txt';
+    
+    // 检查文件是否存在且可读取
+    if (!file_exists($filePath) || !is_readable($filePath)) {
+        return null;
+    }
+    
+    // 读取文件内容
+    $content = file_get_contents($filePath);
+    if ($content === false) {
+        return null;
+    }
+    
+    // 检测编码并转换为UTF-8
+    $encoding = detectEncoding($content);
+    if ($encoding !== 'UTF-8') {
+        $content = mb_convert_encoding($content, 'UTF-8', $encoding);
+    }
+    
+    // 解析标题（第一行为标题）
+    $lines = preg_split('/\r\n|\r|\n/', $content);
+    
+    // 确保至少有一行内容作为标题
+    $title = '';
+    $bodyContent = '';
+    
+    if (!empty($lines)) {
+        $title = trim($lines[0]) ?: "未命名文章 ({$category}-{$id})";
+        $bodyContent = implode("\n", array_slice($lines, 1));
+    } else {
+        $title = "未命名文章 ({$category}-{$id})";
+        $bodyContent = '';
+    }
+    
+    // 判断是否为Markdown内容
+    $isMarkdown = (strpos(strtolower($title), '.md') !== false) ||
+                 (strpos($content, '# ') !== false) ||
+                 (strpos($content, '**') !== false) ||
+                 (strpos($content, '![') !== false);
+    
+    return array(
+        'id' => $id,
+        'category' => $category,
+        'categoryName' => $config['categories'][$category],
+        'title' => preg_replace('/\.md$/i', '', $title),
+        'content' => $bodyContent,
+        'isMarkdown' => $isMarkdown,
+        'path' => "{$category}/{$id}.txt"
+    );
+}
+
+// 检测文本编码
+function detectEncoding($content) {
+    // 检查BOM
+    if (substr($content, 0, 3) === "\xef\xbb\xbf") {
+        return 'UTF-8';
+    }
+    if (substr($content, 0, 2) === "\xfe\xff") {
+        return 'UTF-16BE';
+    }
+    if (substr($content, 0, 2) === "\xff\xfe") {
+        return 'UTF-16LE';
+    }
+    
+    // 尝试检测中文字符编码
+    $encoding = mb_detect_encoding($content, array('UTF-8', 'GBK', 'GB2312', 'ASCII'));
+    return $encoding ? $encoding : 'UTF-8';
+}
+
+// 过滤文章
+function filterArticles(&$state) {
+    // 应用分类过滤
+    $filtered = $state['allArticles'];
+    if ($state['currentCategory'] !== 'all') {
+        $filtered = array_filter($filtered, create_function('$article', '
+            global $state;
+            return $article["category"] === $state["currentCategory"];
+        '));
+        $filtered = array_values($filtered);
+    }
+    
+    // 应用搜索过滤
+    if (!empty($state['searchTerm'])) {
+        $term = strtolower($state['searchTerm']);
+        $filtered = array_filter($filtered, create_function('$article', '
+            global $state, $term;
+            if (($state["searchType"] === "title" || $state["searchType"] === "both") && 
+                strpos(strtolower($article["title"]), $term) !== false) {
+                return true;
+            }
+            if (($state["searchType"] === "content" || $state["searchType"] === "both") && 
+                strpos(strtolower($article["content"]), $term) !== false) {
+                return true;
+            }
+            return false;
+        '));
+        $filtered = array_values($filtered);
+    }
+    
+    // 更新状态
+    $state['filteredArticles'] = $filtered;
+    $state['totalArticles'] = count($filtered);
+    $state['totalPages'] = max(1, ceil($state['totalArticles'] / $config['itemsPerPage']));
+    $state['currentPage'] = min($state['currentPage'], $state['totalPages']);
+    
+    return $filtered;
+}
+
+// 获取当前页的文章
+function getCurrentPageArticles($state, $config) {
+    $startIndex = ($state['currentPage'] - 1) * $config['itemsPerPage'];
+    $endIndex = min($startIndex + $config['itemsPerPage'], $state['totalArticles']);
+    return array_slice($state['filteredArticles'], $startIndex, $endIndex - $startIndex);
+}
+
+// 格式化纯文本内容为HTML
+function formatPlainText($text, $currentCategory = '') {
+    global $config;
+    
+    // 替换换行符为<br>
+    $formatted = nl2br($text);
+    
+    // 解析URL为链接
+    $urlRegex = '/(https?:\/\/[^\s]+)/';
+    $formatted = preg_replace($urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $formatted);
+    
+    // 简单解析图片标记 [图片名](路径)
+    $imageRegex = '/\[([^\]]+)\]\(([^)]+)\)/';
+    
+    // 创建回调函数处理图片
+    function replaceImage($matches) {
+        global $config, $currentCategory;
+        $alt = htmlspecialchars($matches[1]);
+        $src = $matches[2];
+        
+        // 处理相对路径
+        if (!preg_match('/^https?:\/\//', $src) && $src[0] !== '/') {
+            if (!empty($currentCategory)) {
+                $src = $config['imageBasePath'] . $currentCategory . '/' . $src;
+            } else {
+                $src = $config['imageBasePath'] . $src;
+            }
+        }
+        
+        return "<img src=\"{$src}\" alt=\"{$alt}\" loading=\"lazy\" 
+                onerror=\"this.onerror=null;this.outerHTML='<div class=\'image-fallback\'><i class=\'fas fa-image mb-2\'></i><p>图片加载失败</p><p class=\'text-xs\'>{$alt}</p></div>'\">";
+    }
+    
+    $formatted = preg_replace_callback($imageRegex, 'replaceImage', $formatted);
+    
+    return "<div class=\"whitespace-pre-line\">{$formatted}</div>";
+}
+
+// 截断文本
+function truncateText($text, $maxLength) {
+    if (strlen($text) <= $maxLength) {
+        return $text;
+    }
+    return substr($text, 0, $maxLength) . '...';
+}
+
+// 去除HTML标签
+function stripHtml($html) {
+    return strip_tags($html);
+}
+
+// 搜索历史相关函数
+function loadSearchHistory(&$state, $config) {
+    if (isset($_COOKIE['searchHistory'])) {
+        try {
+            $savedHistory = json_decode($_COOKIE['searchHistory'], true);
+            if (is_array($savedHistory)) {
+                $state['searchHistory'] = $savedHistory;
+            }
+        } catch (Exception $e) {
+            $state['searchHistory'] = array();
+        }
+    }
+}
+
+function saveSearchHistory($state, $config) {
+    $history = array_slice($state['searchHistory'], 0, $config['maxSearchHistory']);
+    setcookie('searchHistory', json_encode($history), time() + 30 * 24 * 3600, '/');
+}
+
+function addToSearchHistory(&$state, $term, $config) {
+    $term = trim($term);
+    if (!$term) return;
+    
+    // 检查是否已经存在相同的搜索词（不区分大小写）
+    $existingIndex = -1;
+    foreach ($state['searchHistory'] as $index => $item) {
+        if (strtolower($item['term']) === strtolower($term)) {
+            $existingIndex = $index;
+            break;
+        }
+    }
+    
+    // 如果存在，移除旧的
+    if ($existingIndex !== -1) {
+        array_splice($state['searchHistory'], $existingIndex, 1);
+    }
+    
+    // 添加新的搜索历史
+    array_unshift($state['searchHistory'], array(
+        'term' => $term,
+        'timestamp' => time()
+    ));
+    
+    // 限制最大数量
+    if (count($state['searchHistory']) > $config['maxSearchHistory']) {
+        array_pop($state['searchHistory']);
+    }
+    
+    saveSearchHistory($state, $config);
+}
+
+// 格式化时间
+function formatTime($timestamp) {
+    $now = time();
+    $diffInSeconds = $now - $timestamp;
+    
+    if ($diffInSeconds < 60) {
+        return '刚刚';
+    } elseif ($diffInSeconds < 3600) {
+        $minutes = floor($diffInSeconds / 60);
+        return "{$minutes}分钟前";
+    } elseif ($diffInSeconds < 86400) {
+        $hours = floor($diffInSeconds / 3600);
+        return "{$hours}小时前";
+    } elseif ($diffInSeconds < 604800) {
+        $days = floor($diffInSeconds / 86400);
+        return "{$days}天前";
+    } else {
+        return date('n月j日', $timestamp);
+    }
+}
+
+// 转义HTML
+function escapeHtml($unsafe) {
+    return htmlspecialchars($unsafe, ENT_QUOTES, 'UTF-8');
+}
+
+// 处理搜索提交
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'search') {
+    $term = isset($_GET['q']) ? trim($_GET['q']) : '';
+    if ($term) {
+        loadSearchHistory($state, $config);
+        addToSearchHistory($state, $term, $config);
+    }
+}
+
+// 处理清除搜索历史
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'clearhistory') {
+    setcookie('searchHistory', '', time() - 3600, '/');
+    $state['searchHistory'] = array();
+    // 重定向回原页面
+    $redirectUrl = strtok($_SERVER['REQUEST_URI'], '?');
+    header("Location: {$redirectUrl}");
+    exit;
+}
+
+// 初始化应用
+loadStateFromUrl($state, $config);
+loadSearchHistory($state, $config);
+loadAllArticles($state, $config);
+filterArticles($state);
+
+// 检查是否需要显示文章详情
+$showDetail = false;
+$currentArticle = null;
+if (isset($_GET['category']) && isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $category = $_GET['category'];
+    $id = (int)$_GET['id'];
+    
+    // 查找文章
+    foreach ($state['allArticles'] as $article) {
+        if ($article['category'] === $category && $article['id'] === $id) {
+            $currentArticle = $article;
+            $showDetail = true;
+            break;
+        }
+    }
+}
+
+// Markdown解析函数
+function markdownToHtml($markdown) {
+    // 简单的Markdown解析实现
+    $html = $markdown;
+    
+    // 标题
+    $html = preg_replace('/^# (.*)$/m', '<h1>$1</h1>', $html);
+    $html = preg_replace('/^## (.*)$/m', '<h2>$1</h2>', $html);
+    $html = preg_replace('/^### (.*)$/m', '<h3>$1</h3>', $html);
+    
+    // 粗体和斜体
+    $html = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $html);
+    $html = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $html);
+    
+    // 链接
+    $html = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2" target="_blank">$1</a>', $html);
+    
+    // 列表
+    $html = preg_replace('/^- (.*)$/m', '<li>$1</li>', $html);
+    $html = preg_replace('/(<li>.*<\/li>)+/s', '<ul>$0</ul>', $html);
+    
+    // 段落
+    $html = preg_replace('/^(?!<h|<ul|<li|<p)(.*)$/m', '<p>$1</p>', $html);
+    
+    // 换行
+    $html = nl2br($html);
+    
+    return $html;
+}
+?>
+<!-- HTML部分保持不变，与之前相同 -->
 ```
-访问 `http://localhost:8000` 即可在本地使用。
 
+### 额外建议
 
-## 核心功能使用指南
+1. **错误排查**：
+   - 开启PHP错误显示，在文件开头添加：
+     ```php
+     error_reporting(E_ALL);
+     ini_set('display_errors', 1);
+     ```
+   - 查看服务器错误日志，通常位于 `/var/log/apache2/error.log` 或 `/var/log/nginx/error.log`
 
-### 一、图片上传与预览
-#### 支持格式
-默认支持主流图片格式：
-- 静态图：JPG、PNG（支持透明背景）
-- 其他格式（如WebP）可尝试上传，工具会自动兼容处理
+2. **必要扩展**：
+   - 确保启用了 `mbstring` 扩展（处理中文字符）
+   - 确保启用了 `json` 扩展（处理搜索历史）
 
-#### 上传方式
-1. **点击上传**  
-   进入工具首页后，点击页面中央的「上传图片」按钮，在本地文件管理器中选择需要上传的图片（支持单张或多张）。
+3. **服务器配置**：
+   - 检查文件权限，确保PHP有权限读取文章目录
+   - 确认PHP版本不低于5.4（此版本已做兼容处理）
 
-2. **拖拽上传**  
-   直接从本地文件夹拖拽图片到工具页面的上传区域（虚线框内），松开鼠标即可完成上传。
-
-#### 预览说明
-上传成功后，图片会在预览区显示，同时显示基础信息：
-- 文件名（如 `girl.png`）
-- 原始尺寸（如 `600×400px`）
-
-
-### 二、基础贴图操作
-#### 1. 添加图片到画布
-上传图片后，点击预览区的图片，即可将其添加到右侧「贴图画布」中（画布为编辑区域，支持多图叠加）。
-
-#### 2. 调整贴图位置与大小
-- **移动位置**：选中画布中的图片，按住鼠标左键拖拽至目标位置。
-- **调整大小**：拖拽图片边缘的控制点（小方块），可自由缩放；按住 `Shift` 键缩放可保持比例。
-
-#### 3. 图层管理（多图叠加）
-- 上传多张图片后，画布中会按上传顺序显示图层（后上传的图片在上方）。
-- 右键点击图片可选择「上移一层」「下移一层」调整叠加顺序。
-
-
-### 三、样式调整与配置
-通过页面右侧「配置面板」可调整图片样式，支持以下功能：
-
-| 功能         | 操作说明                                                                 |
-|--------------|--------------------------------------------------------------------------|
-| 透明度调整   | 拖动「透明度」滑块（0-100%），数值越低图片越透明。                       |
-| 显示边框     | 勾选「添加边框」，可给图片添加1px灰色边框（支持自定义边框颜色）。         |
-| 固定尺寸     | 输入「宽度」「高度」数值（单位px），点击「应用」可固定图片尺寸（支持锁定比例）。 |
-| 旋转图片     | 点击「左转90°」「右转90°」按钮，调整图片方向。                           |
-
-
-### 四、图片导出与分享
-#### 1. 导出图片
-完成编辑后，点击画布下方的「导出图片」按钮：
-- 支持格式：默认导出为PNG（保留透明背景）、JPG（压缩体积）
-- 导出质量：可选择「高清」（原尺寸）或「压缩」（适合快速分享）
-
-#### 2. 分享与嵌入
-导出后可通过以下方式使用：
-- **直接下载**：点击「下载图片」保存到本地。
-- **生成外链**：工具会自动生成图片外链（如 `http://pixie.luhui.net/uploads/xxx.png`），可直接粘贴到论坛、文档中使用。
-- **复制HTML代码**：适合嵌入到网页，代码格式为 `<img src="外链地址" width="自定义宽度">`。
-
-
-## 常见问题
-
-### 1. 上传图片失败怎么办？
-- 检查图片格式：确保为JPG、PNG等支持的格式。
-- 检查文件大小：单张图片建议不超过10MB，过大可能导致上传超时。
-- 网络问题：刷新页面后重新尝试，或更换网络环境。
-
-### 2. 如何添加自定义贴纸/水印？
-目前工具支持上传本地图片作为「自定义贴纸」：
-1. 点击「上传贴纸」按钮，选择本地图片（建议使用透明背景的PNG格式）。
-2. 上传后贴纸会显示在「素材库」，拖拽到画布即可添加（支持缩放和旋转）。
-
-### 3. 能否批量处理图片？
-当前版本暂不支持批量上传和编辑，如需该功能可参考仓库二次开发指南（见「开发者说明」）。
-
-
-## 开发者说明
-本项目基于HTML+CSS开发，核心逻辑在 `index.html` 和 `assets/style.css` 中，可通过以下方式扩展功能：
-
-1. **添加新功能**：参考仓库Issues中的「功能扩展建议」，如批量上传、滤镜效果等（需引入JavaScript实现）。
-2. **修改样式**：编辑 `assets/style.css` 可自定义页面布局、按钮样式等。
-3. **多语言支持**：现有 `en.html` 为英文模板，可新增其他语言文件（如 `zh-CN.html`）并配置切换逻辑。
-
-提交代码前请确保测试兼容性，欢迎通过PR贡献功能。
-
-
-## 联系与反馈
-- 项目地址：https://github.com/kugeceo/tietu.luhui.net
-- 问题反馈：在GitHub Issues中提交使用问题或功能建议
-- 在线演示：http://pixie.luhui.net
-
----
-
-© 2025 鲁虺在线贴图器 | 轻量高效的在线贴图工具
+通过以上修改，系统应该能在较低版本的PHP环境中正常运行，避免500错误的发生。

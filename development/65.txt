@@ -1,74 +1,45 @@
-鲁虺文本内容搜索展示系统luhuitxtcms html JavaScript txt Version2.0.6更新
+鲁虺Flash历史博物馆资讯系统 html JavaScript txt V1.1.4更新
+
+Luhui Flash History Museum Information System V1.1.4
+
+修复marked.js渲染器错误导致的文章加载失败问题
+
+网络不稳定的情况下偶尔会出现加载文章失败
+无法加载文章内容:this.renderer.paragraph is not a function Please report this to https://github.com/markedjs/marked.
+重试
+
+修改下
 
 
 
 
-
-![image](/luhuitxtcms/category1/20250710145732.jpg)
-
-
-![image](/luhuitxtcms/category1/exported_image.png)
-
-[![沙漠中的岩石图片](/luhuitxtcms/category1/20250710145732.jpg "Shiprock")](https://markdown.com.cn)
-
-
-Markdown 图片语法
-
-要添加图像，请使用感叹号 (!), 然后在方括号增加替代文本，图片链接放在圆括号里，括号里的链接后可以增加一个可选的图片标题文本。
-
-插入图片Markdown语法代码：![图片alt](图片链接 "图片title")。
-
-对应的HTML代码：<img src="图片链接" alt="图片alt" title="图片title">
-
-![这是图片](/luhuitxtcms/category1/20250710145732.jpg "Magic Gardens")
-渲染效果如下：
-
-这是图片
-
-链接图片
-给图片增加链接，请将图像的Markdown 括在方括号中，然后将链接添加在圆括号中。
-
-[![沙漠中的岩石图片](/luhuitxtcms/category1/20250710145732.jpg "Shiprock")](https://markdown.com.cn)
- 测试了下无法显示Markdown语法的内容
- 
- 
-
-
-我看到您仍然遇到Markdown图片无法显示的问题。让我进一步优化代码，确保所有Markdown图片格式都能正确解析和显示。
+我将修复这个由marked.js渲染器引起的加载失败问题。这个错误通常是由于marked.js库加载不完整或渲染器配置问题导致的。
 
 
     
 
+这次修改重点解决了marked.js渲染器导致的"this.renderer.paragraph is not a function"错误，主要改进包括：
 
-本次更新主要针对Markdown图片显示问题进行了全面优化，具体改进如下：
+1. **增强的marked.js加载机制**：
+   - 为marked.js引入添加了完整性校验，确保库文件完整加载
+   - 实现了marked.js加载状态检测，确保在渲染前库已完全加载
+   - 添加了加载超时和重试机制，应对网络不稳定情况
 
-1. **增强的图片路径处理**：
-   - 改进了marked渲染器的图片路径解析逻辑，能够处理绝对路径、相对路径等多种情况
-   - 为图片添加`data-original-href`属性存储原始路径，便于错误处理
-   - 优化了分类路径自动补全逻辑，确保图片路径正确
+2. **完善的渲染错误处理**：
+   - 创建了专用的渲染错误提示区域，提供清晰的错误信息
+   - 当Markdown渲染失败时，自动切换为纯文本显示模式
+   - 添加"重试渲染"按钮，允许用户在网络恢复后重新尝试渲染
 
-2. **智能图片错误处理**：
-   - 新增`setupImageErrorHandling`函数，实现多层次的图片路径修复尝试
-   - 当图片加载失败时，自动尝试多种路径修复方案
-   - 所有修复尝试失败后，显示美观的错误提示容器，包含原始路径信息
+3. **改进的渲染器初始化**：
+   - 将渲染器实例存储在状态中，避免重复创建
+   - 确保渲染器正确初始化后才进行内容渲染
+   - 详细的错误日志记录，便于诊断问题
 
-3. **Markdown识别优化**：
-   - 不仅通过文件名判断是否为Markdown，还通过内容中是否包含图片标记来识别
-   - 对于非Markdown文件但包含图片语法的内容，也会进行解析
+4. **更友好的错误提示**：
+   - 针对渲染器错误提供专门的提示信息
+   - 指导用户如何解决问题（重试或稍后再试）
 
-4. **链接图片支持**：
-   - 优化了链接渲染器，确保包含图片的链接能正确解析和显示
-   - 保留了图片的标题和替代文本属性
-
-这些改进应该能解决您遇到的Markdown图片无法显示的问题，包括普通图片和链接图片的各种格式。系统会自动处理不同路径格式，并在图片加载失败时提供有用的错误信息。
-
-
-
-
-
-
-
-
+这些改进确保了即使在网络不稳定或marked.js加载不完整的情况下，用户仍然能够查看文章内容（以纯文本形式），并提供了明确的重试选项。
 
 
 

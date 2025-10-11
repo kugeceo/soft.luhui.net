@@ -1,346 +1,72 @@
-AS3 弱引用细节
+鲁虺搜索引擎群v1.0.3 html JavaScript版更新
 
-Weak references in ActionScript 3.0 (AS3) are a specialized feature for optimizing memory management, particularly in event-driven Flash applications like games or interactive showcases, such as those potentially hosted on flash.luhui.net. By allowing objects to be garbage collected even when event listeners are attached, weak references help prevent memory leaks and reduce memory overhead. This guide provides a detailed exploration of weak references in AS3, including their mechanics, use cases, best practices, limitations, and specific considerations for flash.luhui.net, with practical code examples tailored for developers.
 
----
 
-### **1. What Are Weak References in AS3?**
-- **Definition**: A weak reference is a type of reference that does not prevent the AS3 garbage collector (GC) from reclaiming an object. In contrast, strong references (the default) keep objects in memory as long as they exist.
-- **Primary Context**: Weak references are used exclusively with event listeners in AS3 via the `useWeakReference` parameter in `addEventListener`.
-  ```actionscript
-  import flash.events.MouseEvent;
-  var sprite:Sprite = new Sprite();
-  sprite.addEventListener(MouseEvent.CLICK, onClick, false, 0, true); // Weak reference
-  function onClick(event:MouseEvent):void {
-      trace("Sprite clicked");
-  }
-  ```
-- **Mechanics**:
-  - Weak references are stored in a special internal table by the ActionScript Virtual Machine 2 (AVM2).
-  - During the GC’s mark-and-sweep process, objects with only weak references (and no strong references) are considered unreachable and eligible for collection.
-  - Strong references include variables, display list membership (`addChild`), or inclusion in arrays/vectors/dictionaries.
-- **Relevance to flash.luhui.net**: If flash.luhui.net is a Flash game showcase or interactive application (similar to fc.luhui.net’s NES emulator or Piano.luhui.net’s virtual piano), weak references can prevent memory leaks when dynamically loading `.swf` files, UI elements, or temporary game objects.
+上个版本测试发现搜索结果对应链接错误，修正下；
+地址栏增加显示对应分页，例如 ?q=codes&name=Google&page=页码；
+增加自定义背景图，默认纯色和可挑选的几张网页背景图，图片来源picsum.photos或cn.bing.com；
+适当位置增加设置快速链接列表
+参考https://github.com/kugeceo/newsnow.luhui.net 首页增加调用显示实时热门新闻
 
----
 
-### **2. How Weak References Work**
-- **Event Listener Registration**:
-  - The `addEventListener` method has the signature:
-    ```actionscript
-    addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
-    ```
-  - Setting `useWeakReference` to `true` makes the listener a weak reference.
-- **Garbage Collection Behavior**:
-  - **Strong Reference Listener**:
-    ```actionscript
-    var sprite:Sprite = new Sprite();
-    sprite.addEventListener(Event.ENTER_FRAME, update); // Strong reference
-    // Sprite remains in memory even if removed from display list
-    ```
-    If `sprite` is removed from the display list but the listener remains, it cannot be collected.
-  - **Weak Reference Listener**:
-    ```actionscript
-    sprite.addEventListener(Event.ENTER_FRAME, update, false, 0, true); // Weak reference
-    // Sprite can be collected if no other strong references exist
-    ```
-    If `sprite` has no strong references (e.g., not in a variable or display list), it can be garbage collected.
-- **Key Requirement**: For an object to be collected with weak references, it must have **no strong references**. Common strong references include:
-  - Variables: `var obj:Sprite = new Sprite();`
-  - Display List: `addChild(obj);`
-  - Data Structures: `var array:Array = [obj];`
-- **flash.luhui.net Example**:
-  - In a game showcase, weak references can be used for temporary UI buttons or game objects that are frequently created/destroyed.
-    ```actionscript
-    var button:Sprite = new Sprite();
-    button.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
-    addChild(button);
-    // Remove button; weak listener allows GC if no other references
-    if (button.parent) button.parent.removeChild(button);
-    ```
 
----
 
-### **3. Benefits of Weak References**
-- **Prevents Memory Leaks**:
-  - Weak references allow objects to be collected without needing to explicitly remove event listeners, reducing the risk of leaks.
-  - Example: Temporary UI elements or game objects that are removed but have forgotten listeners.
-- **Simplifies Cleanup**:
-  - Reduces the need for meticulous `removeEventListener` calls, especially for short-lived objects.
-- **Optimizes Memory Usage**:
-  - Critical for projects like flash.luhui.net, where multiple `.swf` files or dynamic content (e.g., games, animations) may be loaded/unloaded.
-- **Improves Ruffle Performance**:
-  - If flash.luhui.net uses Ruffle to run `.swf` files, weak references help minimize WebAssembly memory usage by allowing unused objects to be collected.
+我将根据您的最新需求进行优化，包括修复链接错误、增加分页URL参数、添加背景图自定义功能、设置快速链接以及集成实时热门新闻展示。
 
----
 
-### **4. Best Practices for Weak Reference Optimization**
-#### **4.1 Use Weak References for Temporary or Non-Critical Listeners**
-- Apply weak references to listeners for objects that are short-lived or non-essential.
-  ```actionscript
-  import flash.events.Event;
-  var particle:Sprite = new Sprite();
-  particle.addEventListener(Event.ENTER_FRAME, updateParticle, false, 0, true);
-  function updateParticle(event:Event):void {
-      particle.x += 1;
-      if (particle.x > stage.stageWidth) {
-          if (particle.parent) particle.parent.removeChild(particle);
-          // Weak listener allows GC without removeEventListener
-      }
-  }
-  ```
-- **flash.luhui.net**: Use for particles, projectiles, or temporary UI elements in games or showcases.
+    
 
-#### **4.2 Ensure Strong References for Critical Objects**
-- **Problem**: Objects with only weak listeners can be collected prematurely if no strong references exist.
-- **Solution**: Maintain strong references for critical objects (e.g., via variables or display list).
-  ```actionscript
-  public class Game extends Sprite {
-      private var player:Sprite; // Strong reference
-      public function Game() {
-          player = new Sprite();
-          player.addEventListener(Event.ENTER_FRAME, updatePlayer, false, 0, true);
-          addChild(player); // Strong reference via display list
-      }
-      private function updatePlayer(event:Event):void {
-          player.x += 1;
-      }
-      public function dispose():void {
-          player.removeEventListener(Event.ENTER_FRAME, updatePlayer);
-          if (player.parent) player.parent.removeChild(player);
-          player = null;
-      }
-  }
-  ```
-- **flash.luhui.net**: Ensure core game objects (e.g., player character) or persistent UI elements have strong references.
+本次更新主要实现了以下改进：
 
-#### **4.3 Combine Weak References with Explicit Cleanup**
-- While weak references reduce cleanup needs, explicit `removeEventListener` is still recommended for predictable behavior and robustness.
-  ```actionscript
-  public class Button extends Sprite {
-      public function Button() {
-          addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
-      }
-      private function onClick(event:MouseEvent):void {
-          trace("Button clicked");
-      }
-      public function dispose():void {
-          removeEventListener(MouseEvent.CLICK, onClick); // Explicit cleanup
-          if (parent) parent.removeChild(this);
-      }
-  }
-  ```
-- **flash.luhui.net**: Use weak references for UI buttons in a showcase, but include `dispose()` for explicit cleanup when switching screens.
+1. **修复搜索结果链接错误**：
+   - 修正了搜索引擎URL的构建方式，确保正确使用`{q}`作为关键词占位符
+   - 在生成结果时正确替换占位符，保证链接可正常访问
 
-#### **4.4 Optimize High-Frequency Events**
-- High-frequency events like `ENTER_FRAME` or `MOUSE_MOVE` can strain performance, even with weak references.
-- **Solution**: Consolidate into a single weak-referenced listener.
-  ```actionscript
-  var objects:Vector.<Sprite> = new Vector.<Sprite>();
-  stage.addEventListener(Event.ENTER_FRAME, updateAll, false, 0, true);
-  function updateAll(event:Event):void {
-      for each (var obj:Sprite in objects) {
-          obj.x += 1;
-      }
-  }
-  // Cleanup
-  function dispose():void {
-      stage.removeEventListener(Event.ENTER_FRAME, updateAll);
-      objects.length = 0;
-      objects = null;
-  }
-  ```
-- **flash.luhui.net**: For games with multiple objects (e.g., similar to fc.luhui.net), use a single weak-referenced `ENTER_FRAME` listener.
+2. **地址栏分页参数**：
+   - 搜索结果分页时，URL中会添加`page=页码`参数
+   - 支持从URL直接加载指定页码的结果
+   - 切换页码时自动更新URL参数
 
-#### **4.5 Handle Loaded Content**
-- **Problem**: Listeners on `Loader` objects for `.swf` or assets can persist, even with weak references, if the loader remains referenced.
-- **Solution**: Use weak references and clean up loaders.
-  ```actionscript
-  import flash.display.Loader;
-  import flash.events.Event;
-  var loader:Loader = new Loader();
-  loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete, false, 0, true);
-  loader.load(new URLRequest("game.swf"));
-  function onComplete(event:Event):void {
-      addChild(loader);
-  }
-  // Cleanup
-  function unloadGame():void {
-      loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onComplete);
-      loader.unloadAndStop();
-      if (loader.parent) loader.parent.removeChild(loader);
-      loader = null;
-  }
-  ```
-- **flash.luhui.net**: If loading multiple `.swf` files for a showcase, use weak references for loader events and ensure cleanup.
+3. **自定义背景图功能**：
+   - 新增背景设置选项，支持选择默认纯色或多张预设背景图
+   - 背景图来源于picsum.photos，包含山脉、云雾、海滩等风景
+   - 可调节内容区域背景透明度，适应不同背景图
+   - 所有设置自动保存，下次访问保持用户偏好
 
-#### **4.6 Avoid Anonymous Functions**
-- **Problem**: Anonymous functions cannot be removed with `removeEventListener`, negating weak reference benefits.
-- **Inefficient**:
-  ```actionscript
-  sprite.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {
-      trace("Clicked");
-  }, false, 0, true);
-  // Cannot remove this listener
-  ```
-- **Solution**: Use named functions.
-  ```actionscript
-  sprite.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
-  function onClick(event:MouseEvent):void {
-      trace("Clicked");
-  }
-  // Cleanup
-  sprite.removeEventListener(MouseEvent.CLICK, onClick);
-  ```
-- **flash.luhui.net**: Ensure named functions for all listeners in UI or game code.
+4. **设置快速链接**：
+   - 在导航栏添加"快速设置"下拉菜单
+   - 移动端菜单中添加快速设置区域
+   - 支持直接跳转到主题设置、背景设置和搜索引擎设置
 
----
+5. **实时热门新闻展示**：
+   - 首页顶部新增热门新闻区域，展示当前热点资讯
+   - 新闻条目包含序号、标题、来源和发布时间
+   - 提供查看更多新闻的链接，跳转到https://newsnow.luhui.net
 
-### **5. Limitations and Pitfalls**
-- **Pitfall 1: Premature Garbage Collection**:
-  - **Issue**: Objects with only weak listeners can be collected unexpectedly if no strong references exist.
-  - **Fix**: Maintain strong references for critical objects.
-    ```actionscript
-    var sprite:Sprite = new Sprite();
-    addChild(sprite); // Strong reference
-    sprite.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
-    ```
-- **Pitfall 2: Over-Reliance on Weak References**:
-  - **Issue**: Assuming weak references eliminate all cleanup needs can lead to unpredictable behavior.
-  - **Fix**: Combine with explicit cleanup for reliability.
-- **Pitfall 3: Non-Event References**:
-  - **Issue**: Weak references only apply to event listeners, not other structures like arrays or dictionaries.
-  - **Fix**: Clear data structures manually.
-    ```actionscript
-    var sprites:Vector.<Sprite> = new Vector.<Sprite>();
-    sprites.push(sprite);
-    // Cleanup
-    sprites.length = 0;
-    sprites = null;
-    ```
-- **Pitfall 4: Ruffle Compatibility**:
-  - **Issue**: Ruffle’s WebAssembly implementation may handle weak references differently, potentially causing memory issues or premature collection.
-  - **Fix**: Test `.swf` files in Ruffle and monitor memory usage.
+这些改进使搜索引擎更加完善，用户体验更加流畅，同时增加了个性化定制选项和资讯获取功能。
 
----
 
-### **6. Relevance to flash.luhui.net**
-Based on kugeceo’s projects (e.g., fc.luhui.net’s NES emulator, Piano.luhui.net’s virtual piano), flash.luhui.net likely involves a Flash game showcase or single game. Weak reference considerations include:
-- **Game Showcase**:
-  - **Dynamic UI**: Use weak references for menu buttons or temporary elements.
-    ```actionscript
-    var button:Sprite = new Sprite();
-    button.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
-    addChild(button);
-    // Remove button; weak listener allows GC
-    if (button.parent) button.parent.removeChild(button);
-    ```
-  - **Loaded `.swf` Files**: Apply weak references to loader events.
-    ```actionscript
-    var gameLoader:Loader = new Loader();
-    gameLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onGameLoaded, false, 0, true);
-    gameLoader.load(new URLRequest("game.swf"));
-    ```
-- **Single Game**:
-  - **Temporary Objects**: Use weak references for short-lived objects (e.g., bullets, particles).
-    ```actionscript
-    var bullet:Sprite = new Sprite();
-    bullet.addEventListener(Event.ENTER_FRAME, updateBullet, false, 0, true);
-    function updateBullet(event:Event):void {
-        bullet.x += 5;
-        if (bullet.x > stage.stageWidth) {
-            if (bullet.parent) bullet.parent.removeChild(bullet);
-        }
-    }
-    ```
-  - **Core Objects**: Ensure strong references for persistent objects like the player.
-- **Ruffle Compatibility**:
-  - Weak references reduce memory in Ruffle’s WebAssembly environment.
-  - Test `.swf` files to ensure weak listeners don’t cause premature collection of critical objects.
-  - Avoid unsupported AS3 features (e.g., complex filters) that may affect Ruffle’s memory handling.
 
----
 
-### **7. Debugging Weak References**
-- **Monitor Memory**:
-  ```actionscript
-  import flash.system.System;
-  stage.addEventListener(Event.ENTER_FRAME, monitor, false, 0, true);
-  function monitor(event:Event):void {
-      trace("Memory: " + System.totalMemory / 1024 / 1024 + " MB");
-  }
-  ```
-- **Test Weak References**:
-  - Create objects with weak listeners, remove strong references, and verify memory decreases.
-  - Use `System.gc()` for debugging (not reliable in production).
-    ```actionscript
-    System.gc();
-    ```
-- **Tools**:
-  - **Flash Builder Profiler**: Tracks listener references and GC eligibility.
-  - **Monster Debugger**: Visualizes object references.
-  - **Ruffle**: Monitor WebAssembly memory in browser dev tools (e.g., Chrome’s Memory tab).
 
----
 
-### **8. Recommendations for flash.luhui.net**
-- **Code Audit**:
-  - Check https://github.com/kugeceo/flash.luhui.net for `.as` files with `addEventListener`.
-  - Add `useWeakReference=true` for non-critical listeners (e.g., UI, temporary objects).
-- **Implement Cleanup**:
-  - Combine weak references with `dispose()` methods.
-    ```actionscript
-    public class GameObject extends Sprite {
-        public function GameObject() {
-            addEventListener(Event.ENTER_FRAME, update, false, 0, true);
-        }
-        private function update(event:Event):void {
-            x += 1;
-        }
-        public function dispose():void {
-            removeEventListener(Event.ENTER_FRAME, update);
-            if (parent) parent.removeChild(this);
-        }
-    }
-    ```
-- **Ruffle Testing**:
-  - Run `.swf` files in Ruffle, monitoring memory with browser tools.
-  - Ensure weak listeners don’t cause unexpected behavior.
-- **Provide Details**: Share repository structure or code snippets for specific weak reference optimizations.
 
----
 
-### **9. Modern Alternatives**
-Since Flash Player is obsolete, flash.luhui.net may use Ruffle or HTML5. Weak reference lessons apply:
-- **Ruffle**: Weak references reduce WebAssembly memory usage; test for compatibility.
-- **HTML5/JavaScript**:
-  - JavaScript lacks native weak references for events, but libraries like Phaser manage cleanup.
-    ```javascript
-    let sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "sprite");
-    sprite.on("pointerdown", onClick);
-    // Cleanup
-    sprite.off("pointerdown", onClick);
-    sprite.destroy();
-    ```
-  - Use `WeakMap` or `WeakSet` for weak references in non-event contexts.
-    ```javascript
-    let weakMap = new WeakMap();
-    let obj = {};
-    weakMap.set(obj, "data");
-    obj = null; // Allows GC
-    ```
 
----
 
-### **10. Learning Resources**
-- **Documentation**: Adobe AS3 Reference (https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/).
-- **Tutorials**:
-  - Kirupa.com: Weak references and memory management.
-  - FlashGameDojo: Event listener optimization.
-- **Tools**:
-  - Flashpoint (https://flashpointarchive.org/): Study weak references in games.
-  - Ruffle (https://ruffle.rs/): Test `.swf` behavior.
-- **Community**: Stack Overflow (AS3 tag), archived Flash forums.
 
----
 
-If you need targeted guidance (e.g., optimizing weak references in a `.as` file, debugging Ruffle issues, or migrating to JavaScript), provide details about flash.luhui.net or your code, and I’ll offer precise optimizations!
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,1813 +1,227 @@
-全格式文档鲁虺阅读器1.0.5更新
-
-
-增加支持在打开的文档窗口打开新文档，增加支持mobi、md文档格式，修复同时兼容UTF-8、gbk、GB18030、等编码，保证中文韩文日文不会乱。
-
-用户要求对文档阅读器进行改进，主要体包括：
-
-增加在打开的文档窗口中打开新文档的功能
-增加支持 mobi 和 md (Markdown) 文档格式
-修复编码兼容性问题，确保支持 UTF-8、gbk、GB18030 等编码，避免中文中文、韩文、日文出现乱码
-
-我需要基于之前的代码进行修改，下面是我的实现计划：
-
-添加打开新文档的功能：
-在界面上添加一个 "打开新文档" 的按钮
-实现清除当前文档并加载新文档的逻辑
-确保新文档打开时正确重置状态
-增加对 mobi 和 md 格式的支持：
-引入 mobi 格式解析库
-引入 markdown 格式解析库
-在文件格式检测和解析逻辑中添加这两种格式的处理
-改进编码处理：
-对于文本文件，尝试多种编码方式解码
-实现编码自动检测或手动选择功能
-确保中文、韩文、日文等字符正确显示
-
-让我开始编写代码：
-
-首先，我需要添加必要的库：
-
-对于 mobi 格式，可以使用mobi.js库
-对于 markdown 格式，可以使用marked库
-对于编码检测和转换，可以使用jschardet和iconv-lite库
-
-然后，我会修改 UI 添加 "打开新文档" 按钮，并实现相应功能。
-
-接下来，修改文件处理逻辑，添加对 mobi 和 md 格式的支持。
-
-最后，改进文本文件的编码处理逻辑，确保多语言正确显示。
-
-
-
-
-我将根据您的需求增强阅读器功能，添加新文档打开选项、支持mobi和md格式，并优化编码处理以确保多语言正常显示。
-
-
-   <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全格式文档鲁虺阅读器</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #4CAF50;
-            --bg-light: #f5f5f5;
-            --bg-dark: #1e1e1e;
-            --text-light: #333;
-            --text-dark: #eee;
-            --control-bg: #fff;
-            --control-border: #ddd;
-            --error-color: #e74c3c;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Segoe UI", "Microsoft YaHei", "Malgun Gothic", "Meiryo", sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-            overflow: hidden;
-            height: 100vh;
-            background-color: var(--bg-light);
-            color: var(--text-light);
-        }
-
-        .reader-container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 顶部导航栏 */
-        .top-bar {
-            height: 50px;
-            background-color: var(--control-bg);
-            border-bottom: 1px solid var(--control-border);
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            justify-content: space-between;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .doc-title {
-            font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 50%;
-        }
-
-        .top-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .tool-btn {
-            background: transparent;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            transition: background-color 0.2s;
-        }
-
-        .tool-btn:hover {
-            background-color: rgba(0,0,0,0.05);
-        }
-
-        .tool-btn i {
-            font-size: 18px;
-        }
-
-        /* 主内容区 */
-        .main-content {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
-
-        /* 侧边栏 */
-        .sidebar {
-            width: 0;
-            background-color: var(--control-bg);
-            border-right: 1px solid var(--control-border);
-            overflow-y: auto;
-            transition: width 0.3s;
-            z-index: 90;
-        }
-
-        .sidebar.open {
-            width: 280px;
-            padding: 15px;
-        }
-
-        .sidebar-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--control-border);
-        }
-
-        .toc-item {
-            padding: 8px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 5px;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .toc-item:hover, .toc-item.active {
-            background-color: rgba(76, 175, 128, 0.1);
-            color: var(--primary-color);
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 8px 12px 8px 36px;
-            border: 1px solid var(--control-border);
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-        }
-
-        .search-results {
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-        }
-
-        .result-item {
-            padding: 10px;
-            border-bottom: 1px dashed var(--control-border);
-        }
-
-        .result-item:hover {
-            background-color: rgba(0,0,0,0.03);
-        }
-
-        .result-text {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .result-highlight {
-            background-color: rgba(255,255,0,0.3);
-            padding: 0 2px;
-        }
-
-        /* 编码选择器 */
-        .encoding-selector {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            background-color: var(--control-bg);
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            padding: 10px;
-            z-index: 200;
-            display: none;
-        }
-
-        .encoding-selector.open {
-            display: block;
-        }
-
-        .encoding-option {
-            padding: 6px 10px;
-            cursor: pointer;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-
-        .encoding-option:hover {
-            background-color: rgba(76, 175, 128, 0.1);
-        }
-
-        /* 阅读区 */
-        .reading-area {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .page-container {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .page {
-            width: 100%;
-            min-height: 100%;
-            padding: 40px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: transform 0.3s ease;
-            overflow: hidden;
-        }
-
-        .page-content {
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-            font-size: 16px;
-            white-space: pre-wrap; /* 保留空白和换行 */
-        }
-
-        /* Markdown样式 */
-        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
-            margin: 1.5em 0 0.5em;
-            font-weight: bold;
-        }
-        
-        .markdown-content h1 { font-size: 1.8em; }
-        .markdown-content h2 { font-size: 1.5em; }
-        .markdown-content h3 { font-size: 1.2em; }
-        
-        .markdown-content p { margin-bottom: 1em; }
-        .markdown-content ul, .markdown-content ol { margin: 1em 0 1em 2em; }
-        .markdown-content li { margin-bottom: 0.5em; }
-        .markdown-content code { 
-            background-color: rgba(0,0,0,0.05);
-            padding: 0 4px;
-            border-radius: 3px;
-            font-family: monospace;
-        }
-        .markdown-content pre {
-            background-color: rgba(0,0,0,0.05);
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-            margin: 1em 0;
-        }
-        .markdown-content blockquote {
-            border-left: 3px solid var(--primary-color);
-            padding-left: 10px;
-            margin: 1em 0;
-            color: #666;
-        }
-
-        /* 文件选择区 */
-        .file-selector {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bg-light);
-            z-index: 50;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .selector-icon {
-            font-size: 60px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .selector-title {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: var(--text-light);
-        }
-
-        .selector-desc {
-            color: #666;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-
-        .error-message {
-            color: var(--error-color);
-            margin: 15px 0;
-            padding: 10px 15px;
-            border: 1px solid #f8d7da;
-            border-radius: 4px;
-            background-color: #f8d7da20;
-            max-width: 500px;
-            display: none;
-        }
-
-        .supported-formats {
-            font-size: 14px;
-            color: #888;
-            margin-top: 20px;
-        }
-
-        .format-tag {
-            display: inline-block;
-            background-color: rgba(76, 175, 128, 0.1);
-            color: var(--primary-color);
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin: 0 3px 5px;
-            font-size: 12px;
-        }
-
-        .browse-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin: 5px;
-        }
-
-        .browse-btn:hover {
-            background-color: #3d8b40;
-        }
-
-        /* 底部控制栏 */
-        .bottom-bar {
-            height: 55px;
-            background-color: var(--control-bg);
-            border-top: 1px solid var(--control-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 100;
-        }
-
-        .page-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-btn {
-            background: transparent;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-        }
-
-        .nav-btn:disabled {
-            color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .page-info {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .zoom-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .zoom-btn {
-            background: transparent;
-            border: 1px solid var(--control-border);
-            width: 30px;
-            height: 30px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        /* 设置面板 */
-        .settings-panel {
-            position: absolute;
-            bottom: 60px;
-            right: 20px;
-            width: 300px;
-            background-color: var(--control-bg);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            padding: 15px;
-            z-index: 200;
-            display: none;
-        }
-
-        .settings-panel.open {
-            display: block;
-        }
-
-        .settings-section {
-            margin-bottom: 20px;
-        }
-
-        .settings-title {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: var(--text-light);
-        }
-
-        .font-size-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .theme-options {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .theme-option {
-            width: 30px;
-            height: 30px;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .theme-option.active {
-            border-color: var(--primary-color);
-        }
-
-        .theme-light {
-            background-color: #fff;
-        }
-
-        .theme-sepia {
-            background-color: #f4ecd8;
-        }
-
-        .theme-dark {
-            background-color: #2d2d2d;
-        }
-
-        /* 加载动画 */
-        .loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            display: none;
-            text-align: center;
-        }
-
-        .loader.show {
-            display: block;
-        }
-
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(76, 175, 128, 0.2);
-            border-top-color: var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        .loader-text {
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .page {
-                padding: 20px 15px;
-            }
-
-            .sidebar.open {
-                width: 240px;
-            }
-
-            .doc-title {
-                max-width: 40%;
-                font-size: 14px;
-            }
-
-            .settings-panel, .encoding-selector {
-                width: calc(100% - 40px);
-                left: 20px;
-                right: 20px;
-            }
-        }
-
-        /* 深色模式 */
-        body.dark-mode {
-            --bg-light: var(--bg-dark);
-            --text-light: var(--text-dark);
-            --control-bg: #2d2d2d;
-            --control-border: #444;
-        }
-
-        body.dark-mode .page-content {
-            color: #ddd;
-        }
-
-        body.dark-mode .result-text {
-            color: #bbb;
-        }
-
-        body.dark-mode .loader-text {
-            color: var(--text-dark);
-        }
-
-        body.dark-mode .markdown-content blockquote {
-            color: #aaa;
-        }
-
-        body.dark-mode .markdown-content code,
-        body.dark-mode .markdown-content pre {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        /* 阅读模式类 */
-        .reading-mode-sepia {
-            --bg-light: #f4ecd8;
-            --text-light: #594433;
-        }
-
-        .reading-mode-sepia .markdown-content blockquote {
-            color: #776040;
-        }
-    </style>
-</head>
-<body>
-    <div class="reader-container">
-        <!-- 顶部导航栏 -->
-        <div class="top-bar">
-            <div class="doc-title" id="docTitle">请选择文档</div>
-            <div class="top-actions">
-                <button class="tool-btn" id="newDocBtn" title="打开新文档"><i class="fas fa-file"></i></button>
-                <button class="tool-btn" id="encodingBtn" title="编码设置"><i class="fas fa-code"></i></button>
-                <button class="tool-btn" id="tocBtn" title="目录"><i class="fas fa-list"></i></button>
-                <button class="tool-btn" id="searchBtn" title="搜索"><i class="fas fa-search"></i></button>
-                <button class="tool-btn" id="bookmarkBtn" title="书签"><i class="fas fa-bookmark"></i></button>
-                <button class="tool-btn" id="settingsBtn" title="设置"><i class="fas fa-cog"></i></button>
-            </div>
-        </div>
-
-        <!-- 编码选择器 -->
-        <div class="encoding-selector" id="encodingSelector">
-            <div class="encoding-option" data-encoding="auto">自动检测</div>
-            <div class="encoding-option" data-encoding="utf8">UTF-8</div>
-            <div class="encoding-option" data-encoding="gbk">GBK</div>
-            <div class="encoding-option" data-encoding="gb18030">GB18030</div>
-            <div class="encoding-option" data-encoding="euc-kr">EUC-KR (韩文)</div>
-            <div class="encoding-option" data-encoding="shift_jis">Shift-JIS (日文)</div>
-        </div>
-
-        <!-- 主内容区 -->
-        <div class="main-content">
-            <!-- 侧边栏 (目录/搜索/书签) -->
-            <div class="sidebar" id="tocSidebar">
-                <div class="sidebar-title">目录</div>
-                <div id="tocList"></div>
-            </div>
-
-            <div class="sidebar" id="searchSidebar">
-                <div class="sidebar-title">搜索</div>
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" class="search-input" id="searchInput" placeholder="输入搜索内容...">
-                </div>
-                <div class="search-results" id="searchResults"></div>
-            </div>
-
-            <div class="sidebar" id="bookmarkSidebar">
-                <div class="sidebar-title">书签</div>
-                <div id="bookmarkList">
-                    <div style="color: #999; padding: 10px;">暂无书签</div>
-                </div>
-            </div>
-
-            <!-- 阅读区 -->
-            <div class="reading-area">
-                <div class="page-container" id="pageContainer"></div>
-                
-                <!-- 文件选择区 -->
-                <div class="file-selector" id="fileSelector">
-                    <div class="selector-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h2 class="selector-title">全格式文档阅读器</h2>
-                    <p class="selector-desc">支持多种文档格式，拖放文件到此处或点击下方按钮选择文档开始阅读</p>
-                    <div class="error-message" id="errorMessage"></div>
-                    <button class="browse-btn" id="browseBtn">选择文档</button>
-                    <input type="file" id="fileInput" style="display: none;" accept=".txt,.rtf,.pdf,.epub,.mobi,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.htm,.html,.csv,.xdoc,.md,.markdown">
-                    <div class="supported-formats">
-                        支持格式:
-                        <span class="format-tag">TXT</span>
-                        <span class="format-tag">PDF</span>
-                        <span class="format-tag">EPUB</span>
-                        <span class="format-tag">MOBI</span>
-                        <span class="format-tag">MD</span>
-                        <span class="format-tag">DOCX</span>
-                        <span class="format-tag">XLSX</span>
-                        <span class="format-tag">更多...</span>
-                    </div>
-                </div>
-
-                <!-- 加载动画 -->
-                <div class="loader" id="loader">
-                    <div class="loader-spinner"></div>
-                    <div class="loader-text" id="loaderText">正在加载文档...</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 底部控制栏 -->
-        <div class="bottom-bar">
-            <div class="page-controls">
-                <button class="nav-btn" id="prevPage" disabled title="上一页">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="page-info" id="pageInfo">第 1 页 / 共 0 页</div>
-                <button class="nav-btn" id="nextPage" disabled title="下一页">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            
-            <div class="zoom-controls">
-                <button class="zoom-btn" id="zoomOut" title="缩小"><i class="fas fa-minus"></i></button>
-                <button class="zoom-btn" id="zoomReset" title="重置大小"><i class="fas fa-compress-arrows-alt"></i></button>
-                <button class="zoom-btn" id="zoomIn" title="放大"><i class="fas fa-plus"></i></button>
-            </div>
-        </div>
-
-        <!-- 设置面板 -->
-        <div class="settings-panel" id="settingsPanel">
-            <div class="settings-section">
-                <div class="settings-title">字体大小</div>
-                <div class="font-size-controls">
-                    <button class="zoom-btn" id="fontSmall"><i class="fas fa-text-height fa-rotate-180"></i></button>
-                    <button class="zoom-btn" id="fontMedium">标准</button>
-                    <button class="zoom-btn" id="fontLarge"><i class="fas fa-text-height"></i></button>
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <div class="settings-title">阅读主题</div>
-                <div class="theme-options">
-                    <div class="theme-option theme-light" id="themeLight" title="浅色模式"></div>
-                    <div class="theme-option theme-sepia" id="themeSepia" title="护眼模式"></div>
-                    <div class="theme-option theme-dark" id="themeDark" title="深色模式"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 格式解析引擎 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turndown/7.1.2/turndown.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/rtf.js@1.1.0/dist/rtf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mobi.js@0.2.0/dist/mobi.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked@4.0.2/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jschardet@3.0.0/dist/jschardet.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/iconv-lite@0.6.3/dist/iconv-lite.min.js"></script>
-
-    <script>
-        // 全局状态管理
-        const state = {
-            currentPage: 0,
-            totalPages: 0,
-            docType: null,
-            docContent: null,
-            currentFile: null,
-            zoomLevel: 100, // 百分比
-            fontSize: 16,   // 像素
-            theme: 'light', // light/sepia/dark
-            encoding: 'auto', // 编码方式
-            isDragging: false,
-            startX: 0,
-            activeSidebar: null,
-            formats: {
-                text: ['txt', 'rtf', 'csv', 'md', 'markdown'],
-                office: ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'xdoc'],
-                web: ['htm', 'html'],
-                ebook: ['pdf', 'epub', 'mobi']
-            }
-        };
-
-        // DOM元素引用
-        const el = {
-            // 顶部栏
-            docTitle: document.getElementById('docTitle'),
-            newDocBtn: document.getElementById('newDocBtn'),
-            encodingBtn: document.getElementById('encodingBtn'),
-            encodingSelector: document.getElementById('encodingSelector'),
-            tocBtn: document.getElementById('tocBtn'),
-            searchBtn: document.getElementById('searchBtn'),
-            bookmarkBtn: document.getElementById('bookmarkBtn'),
-            settingsBtn: document.getElementById('settingsBtn'),
-            
-            // 侧边栏
-            tocSidebar: document.getElementById('tocSidebar'),
-            searchSidebar: document.getElementById('searchSidebar'),
-            bookmarkSidebar: document.getElementById('bookmarkSidebar'),
-            tocList: document.getElementById('tocList'),
-            searchInput: document.getElementById('searchInput'),
-            searchResults: document.getElementById('searchResults'),
-            bookmarkList: document.getElementById('bookmarkList'),
-            
-            // 阅读区
-            pageContainer: document.getElementById('pageContainer'),
-            fileSelector: document.getElementById('fileSelector'),
-            browseBtn: document.getElementById('browseBtn'),
-            fileInput: document.getElementById('fileInput'),
-            loader: document.getElementById('loader'),
-            loaderText: document.getElementById('loaderText'),
-            errorMessage: document.getElementById('errorMessage'),
-            
-            // 底部控制栏
-            prevPage: document.getElementById('prevPage'),
-            nextPage: document.getElementById('nextPage'),
-            pageInfo: document.getElementById('pageInfo'),
-            zoomIn: document.getElementById('zoomIn'),
-            zoomOut: document.getElementById('zoomOut'),
-            zoomReset: document.getElementById('zoomReset'),
-            
-            // 设置面板
-            settingsPanel: document.getElementById('settingsPanel'),
-            fontSmall: document.getElementById('fontSmall'),
-            fontMedium: document.getElementById('fontMedium'),
-            fontLarge: document.getElementById('fontLarge'),
-            themeLight: document.getElementById('themeLight'),
-            themeSepia: document.getElementById('themeSepia'),
-            themeDark: document.getElementById('themeDark')
-        };
-
-        // 初始化应用
-        function init() {
-            bindEvents();
-            setupDragDrop();
-            setTheme('light'); // 默认主题
-        }
-
-        // 显示错误信息
-        function showError(message) {
-            el.errorMessage.textContent = message;
-            el.errorMessage.style.display = 'block';
-            
-            // 5秒后自动隐藏
-            setTimeout(() => {
-                el.errorMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        // 重置阅读器状态（用于打开新文档）
-        function resetReaderState() {
-            // 重置状态变量
-            state.currentPage = 0;
-            state.totalPages = 0;
-            state.docType = null;
-            state.docContent = null;
-            state.currentFile = null;
-            
-            // 清空页面内容
-            el.pageContainer.innerHTML = '';
-            
-            // 重置控件状态
-            updatePageControls();
-            el.prevPage.disabled = true;
-            el.nextPage.disabled = true;
-        }
-
-        // 打开新文档
-        function openNewDocument() {
-            resetReaderState();
-            el.fileSelector.style.display = 'flex';
-            el.docTitle.textContent = '请选择文档';
-            closeAllSidebars();
-        }
-
-        // 事件绑定
-        function bindEvents() {
-            // 打开新文档
-            el.newDocBtn.addEventListener('click', openNewDocument);
-            
-            // 编码选择器
-            el.encodingBtn.addEventListener('click', (e) => {
-                el.encodingSelector.classList.toggle('open');
-                e.stopPropagation(); // 防止事件冒泡导致立即关闭
-            });
-            
-            // 点击编码选项
-            document.querySelectorAll('.encoding-option').forEach(option => {
-                option.addEventListener('click', (e) => {
-                    const encoding = e.target.getAttribute('data-encoding');
-                    state.encoding = encoding;
-                    el.encodingSelector.classList.remove('open');
-                    
-                    // 如果有当前文件，重新加载
-                    if (state.currentFile && state.formats.text.includes(state.docType)) {
-                        showLoader(`正在用${e.target.textContent}重新加载...`);
-                        handleFile(state.currentFile);
-                    }
-                });
-            });
-            
-            // 点击空白处关闭编码选择器
-            document.addEventListener('click', (e) => {
-                if (!el.encodingSelector.contains(e.target) && e.target !== el.encodingBtn) {
-                    el.encodingSelector.classList.remove('open');
-                }
-            });
-            
-            // 文件选择
-            el.browseBtn.addEventListener('click', () => {
-                el.fileInput.click();
-                el.errorMessage.style.display = 'none'; // 清除错误信息
-            });
-            
-            el.fileInput.addEventListener('change', handleFileSelect);
-            
-            // 侧边栏切换
-            el.tocBtn.addEventListener('click', () => toggleSidebar('toc'));
-            el.searchBtn.addEventListener('click', () => toggleSidebar('search'));
-            el.bookmarkBtn.addEventListener('click', () => toggleSidebar('bookmark'));
-            
-            // 搜索功能
-            el.searchInput.addEventListener('input', debounce(handleSearch, 300));
-            
-            // 翻页控制
-            el.prevPage.addEventListener('click', goToPrevPage);
-            el.nextPage.addEventListener('click', goToNextPage);
-            
-            // 缩放控制
-            el.zoomIn.addEventListener('click', () => adjustZoom(10));
-            el.zoomOut.addEventListener('click', () => adjustZoom(-10));
-            el.zoomReset.addEventListener('click', () => resetZoom());
-            
-            // 设置面板
-            el.settingsBtn.addEventListener('click', () => el.settingsPanel.classList.toggle('open'));
-            el.fontSmall.addEventListener('click', () => setFontSize(14));
-            el.fontMedium.addEventListener('click', () => setFontSize(16));
-            el.fontLarge.addEventListener('click', () => setFontSize(18));
-            el.themeLight.addEventListener('click', () => setTheme('light'));
-            el.themeSepia.addEventListener('click', () => setTheme('sepia'));
-            el.themeDark.addEventListener('click', () => setTheme('dark'));
-            
-            // 点击空白处关闭设置面板
-            document.addEventListener('click', (e) => {
-                if (!el.settingsPanel.contains(e.target) && e.target !== el.settingsBtn) {
-                    el.settingsPanel.classList.remove('open');
-                }
-            });
-            
-            // 鼠标滑动翻页
-            el.pageContainer.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', handleDrag);
-            document.addEventListener('mouseup', endDrag);
-            
-            // 触摸滑动翻页 (移动设备)
-            el.pageContainer.addEventListener('touchstart', (e) => {
-                startDrag({ clientX: e.touches[0].clientX });
-            });
-            document.addEventListener('touchmove', (e) => {
-                handleDrag({ clientX: e.touches[0].clientX });
-            });
-            document.addEventListener('touchend', endDrag);
-            
-            // 键盘翻页
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft') goToPrevPage();
-                if (e.key === 'ArrowRight') goToNextPage();
-                if (e.key === 'Escape') closeAllSidebars();
-            });
-        }
-
-        // 拖放功能设置
-        function setupDragDrop() {
-            const dropArea = el.fileSelector;
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false);
-            });
-            
-            function highlight() {
-                dropArea.style.border = '2px dashed var(--primary-color)';
-                dropArea.style.backgroundColor = 'rgba(76, 175, 128, 0.05)';
-            }
-            
-            function unhighlight() {
-                dropArea.style.border = 'none';
-                dropArea.style.backgroundColor = '';
-            }
-            
-            dropArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const file = dt.files[0];
-                if (file) {
-                    el.errorMessage.style.display = 'none'; // 清除错误信息
-                    handleFile(file);
-                }
-            }
-        }
-
-        // 文件处理
-        function handleFileSelect(e) {
-            if (e.target.files.length) {
-                handleFile(e.target.files[0]);
-            }
-        }
-
-        function handleFile(file) {
-            // 保存当前文件引用，用于重新加载
-            state.currentFile = file;
-            
-            // 显示加载状态
-            showLoader(`正在处理 ${file.name}...`);
-            el.fileSelector.style.display = 'none';
-            el.docTitle.textContent = file.name;
-            
-            const ext = getFileExtension(file.name).toLowerCase();
-            state.docType = ext;
-            
-            // 验证文件格式
-            let isSupported = false;
-            Object.values(state.formats).forEach(formatGroup => {
-                if (formatGroup.includes(ext)) {
-                    isSupported = true;
-                }
-            });
-            
-            if (!isSupported) {
-                hideLoader();
-                el.fileSelector.style.display = 'flex';
-                showError(`不支持的文件格式: ${ext}`);
-                return;
-            }
-            
-            // 根据文件类型选择解析器
-            try {
-                if (state.formats.text.includes(ext)) {
-                    parseTextFile(file);
-                } else if (state.formats.office.includes(ext)) {
-                    parseOfficeFile(file, ext);
-                } else if (state.formats.web.includes(ext)) {
-                    parseWebFile(file);
-                } else if (state.formats.ebook.includes(ext)) {
-                    parseEbookFile(file, ext);
-                }
-            } catch (err) {
-                console.error('文件处理错误:', err);
-                hideLoader();
-                el.fileSelector.style.display = 'flex';
-                showError(`处理文件时出错: ${err.message || '未知错误'}`);
-            }
-        }
-
-        // 文本类文件解析 (TXT/RTF/CSV/MD等)
-        function parseTextFile(file) {
-            const reader = new FileReader();
-            
-            // 显示具体处理状态
-            showLoader(`正在解析 ${file.name}...`);
-            
-            if (state.docType === 'rtf') {
-                reader.onload = (e) => {
-                    try {
-                        // 检查RTF解析库是否加载
-                        if (typeof RTFJS === 'undefined') {
-                            throw new Error('RTF解析库未加载，请刷新页面重试');
-                        }
-                        
-                        const rtf = new RTFJS.Document(e.target.result);
-                        const text = rtf.render().textContent;
-                        renderTextContent(text);
-                    } catch (err) {
-                        console.error('RTF解析错误:', err);
-                        hideLoader();
-                        el.fileSelector.style.display = 'flex';
-                        showError(`解析RTF文件失败: ${err.message}`);
-                    }
-                };
-                reader.onerror = handleReaderError;
-                reader.readAsBinaryString(file);
-            } else if (['md', 'markdown'].includes(state.docType)) {
-                // Markdown文件解析
-                reader.onload = (e) => {
-                    try {
-                        if (typeof marked === 'undefined') {
-                            throw new Error('Markdown解析库未加载，请刷新页面重试');
-                        }
-                        
-                        // 使用指定编码解码
-                        let content = decodeText(e.target.result, file);
-                        renderMarkdownContent(content);
-                    } catch (err) {
-                        console.error('Markdown解析错误:', err);
-                        hideLoader();
-                        el.fileSelector.style.display = 'flex';
-                        showError(`解析Markdown文件失败: ${err.message}`);
-                    }
-                };
-                reader.onerror = handleReaderError;
-                reader.readAsArrayBuffer(file);
-            } else {
-                // 其他文本文件，使用编码检测
-                reader.onload = (e) => {
-                    try {
-                        let content = decodeText(e.target.result, file);
-                        renderTextContent(content);
-                    } catch (err) {
-                        console.error('文本解析错误:', err);
-                        hideLoader();
-                        el.fileSelector.style.display = 'flex';
-                        showError(`解析文本文件失败: ${err.message}`);
-                    }
-                };
-                reader.onerror = handleReaderError;
-                reader.readAsArrayBuffer(file);
-            }
-        }
-
-        // 解码文本内容（支持多种编码）
-        function decodeText(arrayBuffer, file) {
-            try {
-                if (state.encoding === 'auto') {
-                    // 自动检测编码
-                    const buffer = new Uint8Array(arrayBuffer);
-                    const detection = jschardet.detect(buffer);
-                    const encoding = detection.encoding ? detection.encoding.toLowerCase() : 'utf8';
-                    
-                    // 常见编码别名处理
-                    const encodingMap = {
-                        'windows-1252': 'utf8',
-                        'iso-8859-1': 'utf8',
-                        'utf-8': 'utf8'
-                    };
-                    
-                    const finalEncoding = encodingMap[encoding] || encoding;
-                    console.log(`自动检测到编码: ${finalEncoding} (可信度: ${(detection.confidence * 100).toFixed(1)}%)`);
-                    
-                    // 尝试用检测到的编码解码
-                    return iconv.decode(buffer, finalEncoding);
-                } else {
-                    // 使用指定编码
-                    const buffer = new Uint8Array(arrayBuffer);
-                    return iconv.decode(buffer, state.encoding);
-                }
-            } catch (err) {
-                console.warn(`使用${state.encoding || '自动检测'}编码解码失败，尝试UTF-8:`, err);
-                //  fallback到UTF-8
-                try {
-                    return new TextDecoder('utf-8').decode(new Uint8Array(arrayBuffer));
-                } catch (e) {
-                    console.error('UTF-8解码也失败:', e);
-                    throw new Error(`无法解码文件内容，请尝试其他编码格式。错误: ${e.message}`);
-                }
-            }
-        }
-
-        // Office文件解析 (DOCX/XLSX等)
-        function parseOfficeFile(file, ext) {
-            const reader = new FileReader();
-            
-            // 显示具体处理状态
-            showLoader(`正在解析 ${file.name}...`);
-            
-            reader.onload = (e) => {
-                try {
-                    if (ext === 'docx') {
-                        // DOCX解析
-                        if (typeof JSZip === 'undefined') {
-                            throw new Error('JSZip库未加载，请刷新页面重试');
-                        }
-                        
-                        JSZip.loadAsync(e.target.result).then(zip => {
-                            // 检查是否存在document.xml
-                            const docFile = zip.file('word/document.xml');
-                            if (!docFile) {
-                                throw new Error('无法找到文档内容，可能是损坏的文件');
-                            }
-                            
-                            docFile.async('text').then(content => {
-                                const parser = new DOMParser();
-                                const xmlDoc = parser.parseFromString(content, 'text/xml');
-                                const textNodes = xmlDoc.getElementsByTagNameNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 't');
-                                
-                                let result = '';
-                                for (let i = 0; i < textNodes.length; i++) {
-                                    result += textNodes[i].textContent + ' ';
-                                }
-                                
-                                renderTextContent(result);
-                            }).catch(err => {
-                                throw new Error(`解析文档内容失败: ${err.message}`);
-                            });
-                        }).catch(err => {
-                            throw new Error(`解压DOCX文件失败: ${err.message}`);
-                        });
-                    } else if (ext === 'xlsx') {
-                        // XLSX解析
-                        if (typeof XLSX === 'undefined') {
-                            throw new Error('XLSX库未加载，请刷新页面重试');
-                        }
-                        
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const firstSheetName = workbook.SheetNames[0];
-                        if (!firstSheetName) {
-                            throw new Error('表格文件中没有找到工作表');
-                        }
-                        
-                        const firstSheet = workbook.Sheets[firstSheetName];
-                        const text = XLSX.utils.sheet_to_csv(firstSheet);
-                        renderTextContent(text);
-                    } else {
-                        // 其他Office格式
-                        showLoader(`正在转换 ${file.name}...`);
-                        setTimeout(() => {
-                            renderTextContent(`[${ext}文件内容预览]\n\n文件名称: ${file.name}\n文件大小: ${formatFileSize(file.size)}\n\n提示: 该格式仅支持基础内容显示`);
-                        }, 800);
-                    }
-                } catch (err) {
-                    console.error('Office文件解析错误:', err);
-                    hideLoader();
-                    el.fileSelector.style.display = 'flex';
-                    showError(`解析${ext.toUpperCase()}文件失败: ${err.message}`);
-                }
-            };
-            
-            reader.onerror = handleReaderError;
-            reader.readAsArrayBuffer(file);
-        }
-
-        // 网页文件解析 (HTML/HTM)
-        function parseWebFile(file) {
-            const reader = new FileReader();
-            
-            // 显示具体处理状态
-            showLoader(`正在解析 ${file.name}...`);
-            
-            reader.onload = (e) => {
-                try {
-                    if (typeof TurndownService === 'undefined') {
-                        throw new Error('Turndown库未加载，请刷新页面重试');
-                    }
-                    
-                    // 处理编码
-                    let htmlContent = decodeText(e.target.result, file);
-                    const turndownService = new TurndownService();
-                    const text = turndownService.turndown(htmlContent); // HTML转Markdown
-                    renderTextContent(text);
-                } catch (err) {
-                    console.error('HTML解析错误:', err);
-                    hideLoader();
-                    el.fileSelector.style.display = 'flex';
-                    showError(`解析HTML文件失败: ${err.message}`);
-                }
-            };
-            
-            reader.onerror = handleReaderError;
-            reader.readAsArrayBuffer(file);
-        }
-
-        // 电子书解析 (PDF/EPUB/MOBI)
-        function parseEbookFile(file, ext) {
-            // 显示具体处理状态
-            showLoader(`正在加载 ${file.name}...`);
-            
-            if (ext === 'pdf') {
-                try {
-                    if (typeof pdfjsLib === 'undefined') {
-                        throw new Error('PDF解析库未加载，请刷新页面重试');
-                    }
-                    
-                    // 设置PDF.js工作器
-                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                    
-                    const fileURL = URL.createObjectURL(file);
-                    pdfjsLib.getDocument(fileURL).promise.then(pdf => {
-                        state.docContent = pdf;
-                        state.totalPages = pdf.numPages;
-                        renderPdfPage(1); // PDF页码从1开始
-                        updatePageControls();
-                        hideLoader();
-                    }).catch(err => {
-                        throw new Error(`PDF加载失败: ${err.message || '未知错误'}`);
-                    });
-                } catch (err) {
-                    console.error('PDF解析错误:', err);
-                    hideLoader();
-                    el.fileSelector.style.display = 'flex';
-                    showError(err.message);
-                }
-            } else if (ext === 'epub') {
-                try {
-                    if (typeof ePub === 'undefined') {
-                        throw new Error('EPUB解析库未加载，请刷新页面重试');
-                    }
-                    
-                    const fileURL = URL.createObjectURL(file);
-                    const book = ePub(fileURL);
-                    state.docContent = book;
-                    
-                    book.loaded.metadata.then(() => {
-                        // 渲染目录
-                        book.loaded.navigation.then(toc => {
-                            renderToc(toc);
-                        }).catch(err => {
-                            console.warn('解析目录失败:', err);
-                        });
-                        
-                        // 渲染内容
-                        book.renderTo(el.pageContainer, {
-                            width: '100%',
-                            height: '100%'
-                        });
-                        
-                        book.ready.then(() => {
-                            state.totalPages = book.spine.length;
-                            updatePageControls();
-                            hideLoader();
-                        }).catch(err => {
-                            throw new Error(`EPUB渲染失败: ${err.message}`);
-                        });
-                    }).catch(err => {
-                        throw new Error(`EPUB加载失败: ${err.message}`);
-                    });
-                } catch (err) {
-                    console.error('EPUB解析错误:', err);
-                    hideLoader();
-                    el.fileSelector.style.display = 'flex';
-                    showError(err.message);
-                }
-            } else if (ext === 'mobi') {
-                try {
-                    if (typeof mobi === 'undefined') {
-                        throw new Error('MOBI解析库未加载，请刷新页面重试');
-                    }
-                    
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        try {
-                            const arrayBuffer = e.target.result;
-                            const book = new mobi.Mobi(arrayBuffer);
-                            const textContent = book.getRawTextContent();
-                            
-                            // MOBI可能包含HTML标签，简单处理
-                            const plainText = textContent.replace(/<[^>]+>/g, '');
-                            renderTextContent(plainText);
-                        } catch (err) {
-                            throw new Error(`MOBI解析失败: ${err.message}`);
-                        }
-                    };
-                    
-                    reader.onerror = handleReaderError;
-                    reader.readAsArrayBuffer(file);
-                } catch (err) {
-                    console.error('MOBI解析错误:', err);
-                    hideLoader();
-                    el.fileSelector.style.display = 'flex';
-                    showError(err.message);
-                }
-            }
-        }
-
-        // 处理FileReader错误
-        function handleReaderError(event) {
-            hideLoader();
-            el.fileSelector.style.display = 'flex';
-            
-            let errorMsg = '读取文件时发生错误';
-            switch(event.target.error.code) {
-                case event.target.error.NOT_FOUND_ERR:
-                    errorMsg = '文件未找到';
-                    break;
-                case event.target.error.NOT_READABLE_ERR:
-                    errorMsg = '文件不可读，请检查文件权限';
-                    break;
-                case event.target.error.ABORT_ERR:
-                    errorMsg = '操作已取消';
-                    break;
-                default:
-                    errorMsg = `错误代码: ${event.target.error.code}`;
-            }
-            
-            showError(errorMsg);
-        }
-
-        // 渲染文本内容 (带自动分页)
-        function renderTextContent(content) {
-            state.docContent = content;
-            
-            // 简单分页逻辑
-            const pageSize = 3000; // 每页字符数
-            state.totalPages = Math.ceil(content.length / pageSize);
-            state.currentPage = 0;
-            
-            // 渲染当前页
-            renderCurrentTextPage();
-            updatePageControls();
-            hideLoader();
-        }
-
-        // 渲染Markdown内容
-        function renderMarkdownContent(content) {
-            state.docContent = content;
-            
-            // Markdown内容通常结构清晰，使用更大的分页尺寸
-            const pageSize = 8000; // 每页字符数
-            state.totalPages = Math.ceil(content.length / pageSize);
-            state.currentPage = 0;
-            
-            // 渲染当前页
-            renderCurrentMarkdownPage();
-            updatePageControls();
-            hideLoader();
-        }
-
-        // 渲染当前文本页
-        function renderCurrentTextPage() {
-            el.pageContainer.innerHTML = '';
-            const pageSize = 3000;
-            const start = state.currentPage * pageSize;
-            const end = start + pageSize;
-            const pageContent = state.docContent.slice(start, end);
-            
-            const page = document.createElement('div');
-            page.className = 'page';
-            
-            const content = document.createElement('div');
-            content.className = 'page-content';
-            content.textContent = pageContent;
-            
-            page.appendChild(content);
-            el.pageContainer.appendChild(page);
-            
-            // 应用当前样式
-            applyCurrentStyle();
-        }
-
-        // 渲染当前Markdown页
-        function renderCurrentMarkdownPage() {
-            el.pageContainer.innerHTML = '';
-            const pageSize = 8000;
-            const start = state.currentPage * pageSize;
-            const end = start + pageSize;
-            const pageContent = state.docContent.slice(start, end);
-            
-            const page = document.createElement('div');
-            page.className = 'page';
-            
-            const content = document.createElement('div');
-            content.className = 'page-content markdown-content';
-            content.innerHTML = marked.parse(pageContent); // 将Markdown转换为HTML
-            
-            page.appendChild(content);
-            el.pageContainer.appendChild(page);
-            
-            // 应用当前样式
-            applyCurrentStyle();
-        }
-
-        // 渲染PDF页面
-        function renderPdfPage(pageNum) {
-            el.pageContainer.innerHTML = '';
-            state.currentPage = pageNum - 1; // 转换为0基索引
-            
-            state.docContent.getPage(pageNum).then(page => {
-                const viewport = page.getViewport({ scale: state.zoomLevel / 100 });
-                
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                
-                const pageEl = document.createElement('div');
-                pageEl.className = 'page';
-                pageEl.style.display = 'flex';
-                pageEl.style.alignItems = 'center';
-                pageEl.style.justifyContent = 'center';
-                pageEl.appendChild(canvas);
-                
-                el.pageContainer.appendChild(pageEl);
-                
-                const renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                
-                // 渲染PDF页面
-                page.render(renderContext).promise.then(() => {
-                    // 渲染完成
-                }).catch(err => {
-                    console.error('PDF渲染错误:', err);
-                    showError(`PDF页面渲染失败: ${err.message}`);
-                });
-            }).catch(err => {
-                console.error('获取PDF页面错误:', err);
-                showError(`无法加载PDF页面: ${err.message}`);
-            });
-        }
-
-        // 渲染目录
-        function renderToc(toc) {
-            el.tocList.innerHTML = '';
-            
-            if (!toc || toc.length === 0) {
-                el.tocList.innerHTML = '<div style="color: #999; padding: 10px;">无目录信息</div>';
-                return;
-            }
-            
-            function addTocItems(items, parent) {
-                items.forEach(item => {
-                    const tocItem = document.createElement('div');
-                    tocItem.className = 'toc-item';
-                    tocItem.textContent = item.label || '未知章节';
-                    tocItem.addEventListener('click', () => {
-                        if (state.docType === 'epub' && state.docContent) {
-                            state.docContent.goTo(item.href);
-                            // 更新当前页码
-                            state.currentPage = item.index || 0;
-                            updatePageControls();
-                        }
-                        // 高亮当前选中项
-                        document.querySelectorAll('.toc-item').forEach(el => {
-                            el.classList.remove('active');
-                        });
-                        tocItem.classList.add('active');
-                    });
-                    parent.appendChild(tocItem);
-                    
-                    if (item.subitems && item.subitems.length) {
-                        const sublist = document.createElement('div');
-                        sublist.style.paddingLeft = '15px';
-                        parent.appendChild(sublist);
-                        addTocItems(item.subitems, sublist);
-                    }
-                });
-            }
-            
-            addTocItems(toc, el.tocList);
-        }
-
-        // 翻页控制
-        function goToPrevPage() {
-            if (state.currentPage <= 0) return;
-            
-            state.currentPage--;
-            updatePageDisplay();
-            updatePageControls();
-        }
-
-        function goToNextPage() {
-            if (state.currentPage >= state.totalPages - 1) return;
-            
-            state.currentPage++;
-            updatePageDisplay();
-            updatePageControls();
-        }
-
-        // 更新页面显示
-        function updatePageDisplay() {
-            switch(state.docType) {
-                case 'pdf':
-                    renderPdfPage(state.currentPage + 1);
-                    break;
-                case 'epub':
-                    if (state.docContent) {
-                        state.docContent.goTo(state.currentPage);
-                    }
-                    break;
-                case 'md':
-                case 'markdown':
-                    renderCurrentMarkdownPage();
-                    break;
-                default:
-                    renderCurrentTextPage();
-            }
-        }
-
-        // 更新分页控件状态
-        function updatePageControls() {
-            el.prevPage.disabled = state.currentPage <= 0;
-            el.nextPage.disabled = state.currentPage >= state.totalPages - 1;
-            el.pageInfo.textContent = `第 ${state.currentPage + 1} 页 / 共 ${state.totalPages} 页`;
-        }
-
-        // 缩放控制
-        function adjustZoom(step) {
-            state.zoomLevel = Math.max(50, Math.min(200, state.zoomLevel + step));
-            applyZoom();
-        }
-
-        function resetZoom() {
-            state.zoomLevel = 100;
-            applyZoom();
-        }
-
-        function applyZoom() {
-            el.pageContainer.style.transform = `scale(${state.zoomLevel / 100})`;
-            el.pageContainer.style.transformOrigin = 'center center';
-        }
-
-        // 字体大小设置
-        function setFontSize(size) {
-            state.fontSize = size;
-            const contentEl = document.querySelector('.page-content');
-            if (contentEl) {
-                contentEl.style.fontSize = `${size}px`;
-            }
-        }
-
-        // 主题设置
-        function setTheme(theme) {
-            state.theme = theme;
-            document.body.className = '';
-            
-            if (theme === 'dark') {
-                document.body.classList.add('dark-mode');
-            } else if (theme === 'sepia') {
-                document.body.classList.add('reading-mode-sepia');
-            }
-            
-            // 更新主题选择器状态
-            [el.themeLight, el.themeSepia, el.themeDark].forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            if (theme === 'light') el.themeLight.classList.add('active');
-            else if (theme === 'sepia') el.themeSepia.classList.add('active');
-            else if (theme === 'dark') el.themeDark.classList.add('active');
-        }
-
-        // 应用当前样式
-        function applyCurrentStyle() {
-            setFontSize(state.fontSize);
-            setTheme(state.theme);
-            applyZoom();
-        }
-
-        // 侧边栏控制
-        function toggleSidebar(type) {
-            // 关闭所有侧边栏
-            closeAllSidebars();
-            
-            // 如果点击的是当前激活的侧边栏，则关闭
-            if (state.activeSidebar === type) {
-                state.activeSidebar = null;
-                return;
-            }
-            
-            // 打开目标侧边栏
-            state.activeSidebar = type;
-            if (type === 'toc') el.tocSidebar.classList.add('open');
-            else if (type === 'search') el.searchSidebar.classList.add('open');
-            else if (type === 'bookmark') el.bookmarkSidebar.classList.add('open');
-        }
-
-        function closeAllSidebars() {
-            el.tocSidebar.classList.remove('open');
-            el.searchSidebar.classList.remove('open');
-            el.bookmarkSidebar.classList.remove('open');
-        }
-
-        // 搜索功能
-        function handleSearch() {
-            const keyword = el.searchInput.value.trim();
-            if (!keyword || !state.docContent) {
-                el.searchResults.innerHTML = '<div style="padding:10px; color:#999;">请输入搜索内容</div>';
-                return;
-            }
-            
-            // 简单搜索实现
-            let content = typeof state.docContent === 'string' 
-                ? state.docContent 
-                : (state.docContent.text || '');
-            
-            const results = [];
-            const regex = new RegExp(`(.{0,30})${keyword}(.{0,30})`, 'gi');
-            let match;
-            
-            while (match = regex.exec(content)) {
-                results.push({
-                    text: match[0],
-                    position: match.index
-                });
-            }
-            
-            renderSearchResults(results, keyword);
-        }
-
-        // 渲染搜索结果
-        function renderSearchResults(results, keyword) {
-            if (results.length === 0) {
-                el.searchResults.innerHTML = '<div style="padding:10px; color:#999;">未找到匹配内容</div>';
-                return;
-            }
-            
-            el.searchResults.innerHTML = '';
-            results.forEach(result => {
-                const item = document.createElement('div');
-                item.className = 'result-item';
-                
-                const text = document.createElement('div');
-                text.className = 'result-text';
-                // 高亮关键词
-                text.innerHTML = result.text.replace(
-                    new RegExp(keyword, 'gi'), 
-                    '<span class="result-highlight">$&</span>'
-                );
-                
-                item.appendChild(text);
-                item.addEventListener('click', () => {
-                    // 跳转到匹配位置
-                    const pageSize = ['md', 'markdown'].includes(state.docType) ? 8000 : 3000;
-                    state.currentPage = Math.floor(result.position / pageSize);
-                    updatePageDisplay();
-                    updatePageControls();
-                    closeAllSidebars();
-                });
-                
-                el.searchResults.appendChild(item);
-            });
-        }
-
-        // 鼠标滑动翻页
-        function startDrag(e) {
-            state.isDragging = true;
-            state.startX = e.clientX;
-        }
-
-        function handleDrag(e) {
-            if (!state.isDragging) return;
-            // 滑动视觉反馈可以在这里添加
-        }
-
-        function endDrag(e) {
-            if (!state.isDragging) return;
-            
-            const deltaX = e.clientX - state.startX;
-            if (Math.abs(deltaX) > 50) { // 滑动阈值
-                if (deltaX < 0) goToNextPage(); // 向左滑 -> 下一页
-                else goToPrevPage(); // 向右滑 -> 上一页
-            }
-            
-            state.isDragging = false;
-        }
-
-        // 工具函数
-        function getFileExtension(filename) {
-            return filename.split('.').pop().toLowerCase() || '';
-        }
-
-        function showLoader(text) {
-            el.loader.classList.add('show');
-            el.loaderText.textContent = text || '正在加载...';
-        }
-
-        function hideLoader() {
-            el.loader.classList.remove('show');
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function(...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        // 启动应用
-        window.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html> 
-
-### 新增功能说明
-
-1. **打开新文档功能**
-   - 顶部工具栏添加了"打开新文档"按钮（文件图标）
-   - 实现了`openNewDocument()`函数，可在不刷新页面的情况下重置阅读器状态并打开新文档
-   - 保留了原有的拖放功能，在阅读状态下也可拖放新文件打开
-
-2. **新增格式支持**
-   - **MOBI格式**：引入`mobi.js`库，支持亚马逊MOBI格式电子书解析
-   - **Markdown格式**：引入`marked`库，支持MD文件的解析和格式化显示，包括标题、列表、代码块等元素的样式处理
-
-3. **多编码支持**
-   - 添加了编码选择器（代码图标按钮），支持自动检测和手动选择编码
-   - 引入`jschardet`库实现编码自动检测
-   - 引入`iconv-lite`库支持多种编码转换，包括：
-     - UTF-8（默认）
-     - GBK（简体中文）
-     - GB18030（扩展中文）
-     - EUC-KR（韩文）
-     - Shift-JIS（日文）
-   - 实现了编码切换后重新加载文档的功能
-
-4. **其他改进**
-   - 优化了字体设置，添加了日韩文字体支持
-   - 改进了文本渲染，使用`white-space: pre-wrap`保留原始排版
-   - 为Markdown添加了专门的样式，提升阅读体验
-   - 优化了错误处理机制，编码相关错误会提示用户尝试其他编码
-
-这些改进确保了中文、韩文、日文等语言的文档能够正确显示，不会出现乱码问题，同时扩展了支持的文档格式，并提供了更便捷的文档切换方式。
+鲁虺软件源码数据资源网
+
+分类
+
+
+
+                'luhuidesign': '鲁虺设计',
+                'development': '软件开发',
+                'Codetesting': '源码测试',
+                'softnews': '产业观察',
+                'maintenance': '网站运维',
+                'databusiness': '商业数据',
+                'hardware': '硬件智能'
+                'internet': '万物互联',
+                'tool': '在线工具',
+                'tutorial': '教程合集',
+                'resource': '资源分享',
+
+
+
+1. “鲁虺软件源码数据资源网——点燃代码灵感，解锁数据未来！”  
+2. “从源码到智能，鲁虺助你一键连接技术世界！”  
+3. “鲁虺资源网——开发者梦想的起点，创新的无限可能！”  
+4. “探索鲁虺，源码与数据交织，技术之光闪耀未来！”  
+5. “鲁虺软件源码数据资源网——技术宝库，助力你的每一次突破！”  
+6. “源码无限，数据赋能，鲁虺与你共创科技新篇章！”  
+7. “在鲁虺，代码遇见数据，创新从此无界！”  
+8. “鲁虺资源网——打开技术之门，连接万物互联！”  
+9. “从教程到实践，鲁虺为你铺就技术巅峰之路！”  
+10. “鲁虺软件源码数据资源网——汇聚智慧，驱动数字时代的每一步！”
+
+1. 鲁虺軟件源碼數據資源網，匯百家智慧，啟千秋技藝！  
+2. 源碼如玉，數據若星，鲁虺織錦，技道通玄！  
+3. 鲁虺之網，藏碼藏珍，助君乘風，問鼎技術之巔！  
+4. 古有百家爭鳴，今有鲁虺匯智，源碼數據，開啟新篇！  
+5. 鲁虺雲集，源碼似劍，數據如泉，助爾破竹建功！  
+6. 技藝之海，鲁虺為舟，載源碼數據，駛向無垠！  
+7. 鲁虺資源網，宛若蘭台秘庫，納天下碼源，啟智者征途！  
+8. 源碼翩若驚鴻，數據浩如煙海，鲁虺相伴，技藝長青！  
+9. 鲁虺一網，聚四海奇珍，助君運籌帷幄，技貫古今！  
+10. 鲁虺軟件源碼數據網，似璇璣圖，解技術之謎，開萬物互聯！  
+11. 碼海淘珍，數據探幽，鲁虺執筆，書寫技藝春秋！  
+12. 鲁虺之域，源碼如詩，數據似畫，與君共繪技術錦繡！  
+13. 古風鲁虺，匯源碼星河，納數據江山，助君技壓群雄！  
+14. 鲁虺資源網，宛若天工開物，源碼數據，啟迪匠心無疆！  
+15. 鲁虺若隱士高閣，藏源碼秘笈，納數據真經，助君一展宏圖！
+
+
+1. 鲁虺軟件源碼數據網，宛若天皇氏之璇璣，匯源碼星辰，納數據江河，助君探技藝之奧秘！  
+2. 鲁虺秘藏，似瑯琊仙閣，源碼若龍吟，數據如鳳舞，引技術志士共譜盛世華章！  
+3. 古風鲁虺，猶如蘭亭集序，書源碼之韻，繪數據之魂，與君共赴技術仙途！  
+4. 鲁虺之網，仿若太乙真人煉丹爐，熔源碼靈氣，凝數據精華，助君登技術之巔！  
+5. 鲁虺寶庫，宛然九天藏經閣，源碼似玉簡，數據若金篆，啟迪智者，開萬物互聯之門！  
+6. 源碼如青蓮詩篇，數據似長河落日，鲁虺織雲錦，助君乘風破浪，技貫古今！  
+7. 鲁虺若蓬萊仙島，藏源碼靈芝，聚數據甘露，與天下英才共探技術玄機！  
+8. 鲁虺軟件源碼數據網，似瑤池盛宴，奉源碼珍饈，獻數據瓊漿，助君技藝通神！  
+9. 鲁虺之域，猶如太虛幻境，源碼若星斗，數據如雲霞，引術士凌霄，問道蒼穹！  
+10. 鲁虺秘境，宛若鍾鼎古文，鐫源碼之志，刻數據之魂，助君執技術之筆，書千秋偉業！  
+11. 鲁虺若龍門古肆，陳源碼瑰寶，列數據奇珍，待天下豪傑，躍技術之巔！  
+12. 源碼似琴瑟和鳴，數據如山川奔流，鲁虺織錦繡，與君共創技術盛唐！  
+13. 鲁虺之網，仿若天皇玉冊，錄源碼真言，載數據妙法，引術者直抵九霄雲外！  
+14. 鲁虺寶藏，猶如洛陽紙貴之書肆，源碼若經卷，數據似靈符，助君技藝超凡入聖！  
+15. 鲁虺軟件源碼數據網，似瑤台仙跡，匯源碼星輝，聚數據月華，與志士共探無極之道！
+
+匯源碼星輝，聚數據月華，與志士共探無極之道！
+
+激发技术创新，赋能无限可能！
+匯源碼星河，納數據江山，助君技壓群雄！  
+软件开发 Software Development
+
+源码测试 Source Code Testing
+
+网站运维 Website Operations and Maintenance
+
+产业观察 
+
+商业数据 
+   数据库
+   模型
+   
+万物互联 Internet of Everything
+
+教程合集 Tutorial Collection
+
+资源分享 Resource Sharing
+   插件
+   模板
+   工具 Online Tools
+   素材
+硬件智能 Hardware Intelligence
+
+**鲁虺软件源码数据资源网简介**
+
+鲁虺软件源码数据资源网（www.luhui.net）是一家专注于软件源码、数据资源分享与技术交流的专业平台。自2004年成立以来，网站致力于为开发者、程序员及技术爱好者提供高质量的源码资源、行业动态分析以及技术解决方案。我们以敏锐的行业洞察力，深度挖掘新思维，助力用户在软件开发与数据应用领域取得突破。
+
+**核心内容与服务：**
+- **源码资源**：涵盖PHP、Python、Java、C++等多种编程语言的网站源码、应用程序源码及插件模板，适用于个人学习、项目开发及研究参考。
+- **数据资源**：提供多样化的数据集和技术文档，支持用户在数据分析、人工智能、区块链等领域的研究与实践。
+- **技术交流**：搭建开发者社区，分享教程、经验和行业资讯，促进技术创新与协作。
+- **更新与支持**：定期更新最新资源，确保内容实用性与时效性，并提供详细的安装与使用教程。
+
+**使命与愿景**：
+鲁虺软件源码数据资源网以“资源共享，技术赋能”为使命，旨在为全球开发者提供一个开放、免费且安全的资源获取与学习平台，推动技术进步与行业发展。
+
+**免责声明**：
+本站所有资源仅供学习与研究使用，禁止用于商业或非法用途。如有侵权，请联系我们处理。
+
+欢迎访问鲁虺软件源码数据资源网，探索技术世界，激发创新潜能！[](https://www.luhui.net/cn/soft/)
+
+
+
+
+**鲁虺软件源码数据资源网 - 数据资源详细介绍**
+
+鲁虺软件源码数据资源网（www.luhui.net）作为一家专注于软件开发与数据资源分享的平台，其数据资源板块是核心服务之一，旨在为开发者、数据分析师、研究人员及技术爱好者提供丰富、高质量的数据资源，助力他们在学术研究、商业分析、人工智能开发及其他技术领域取得突破。以下是对平台数据资源的详细介绍：
+
+### 1. **数据资源类型**
+鲁虺软件源码数据资源网提供多种类型的数据资源，覆盖广泛的应用场景，满足不同用户的需求。主要包括以下类别：
+
+- **开源数据集**：
+  - **机器学习与人工智能**：包括图像识别、语音处理、自然语言处理（NLP）等领域的数据集，如文本分类数据集、图像标注数据集、语音样本集等。例如，常见的数据集包括情感分析文本集、公开图像数据集（如COCO、ImageNet格式的精简版）等。
+  - **大数据分析**：提供结构化与非结构化数据，如用户行为日志、电商交易数据、社交媒体数据等，适用于市场分析、用户画像构建等场景。
+  - **科学与学术研究**：涵盖金融、医疗、环境、地理信息等领域的数据集，如股票历史数据、医疗影像数据、气候变化统计数据等。
+
+- **API数据接口**：
+  - 提供可直接调用的API接口数据资源，覆盖天气查询、地理位置、公开统计数据等。例如，实时天气API、IP地址解析API等，方便开发者集成到项目中。
+  - **第三方数据爬取模板**：提供基于Python、Node.js等语言的爬虫脚本模板，帮助用户从公开网站获取结构化数据（如电商平台商品数据、论坛帖子数据等）。
+
+- **技术文档与元数据**：
+  - 提供详细的数据字典、字段说明及使用指南，帮助用户快速理解数据集的结构与用途。
+  - 包括数据库设计文档、ER图、SQL示例代码等，适用于数据库开发与管理。
+
+- **行业报告与动态数据**：
+  - 定期整理并分享行业趋势数据，如人工智能发展报告、区块链市场分析、云计算使用统计等。
+  - 提供可视化数据资源，如Excel、CSV格式的统计表格及配套的图表生成工具。
+
+### 2. **数据资源特点**
+鲁虺软件源码数据资源网的数据资源具有以下显著特点：
+
+- **高质量与多样性**：
+  - 数据经过筛选与清洗，确保准确性与完整性，减少用户预处理的工作量。
+  - 覆盖多领域、多格式（CSV、JSON、SQL、Excel等），满足不同开发场景需求。
+
+- **免费与开放**：
+  - 大部分数据资源免费提供下载，仅需简单注册或无需注册即可获取。
+  - 遵循开源协议（如CC BY-SA、MIT等），明确使用范围，保障用户合规使用。
+
+- **定期更新**：
+  - 数据资源与行业动态同步更新，确保用户获取最新、最具时效性的内容。
+  - 针对热门领域（如AI、区块链），每月推出专题数据集，紧跟技术趋势。
+
+- **易用性**：
+  - 每份数据集附带详细的使用说明、字段解析及示例代码（如Python的Pandas处理脚本、R语言分析示例）。
+  - 提供数据可视化工具与模板，降低用户使用门槛。
+
+### 3. **应用场景**
+鲁虺的数据资源广泛应用于以下场景：
+
+- **学术研究**：
+  - 学生与研究人员可利用数据集进行论文实验、模型训练或数据分析，如机器学习课程项目、统计分析等。
+  - 提供标准化的数据集，方便与学术界常用数据集（如UCI数据集）对接。
+
+- **商业开发**：
+  - 企业开发者可利用电商数据、用户行为数据进行市场分析、推荐系统开发或客户关系管理（CRM）。
+  - API接口资源支持快速集成到商业应用中，如物流跟踪、实时价格监控等。
+
+- **技术学习与实践**：
+  - 初学者可通过数据集练习数据处理、算法开发或可视化技能。
+  - 提供配套教程，如如何用Python分析CSV数据集、如何用TensorFlow训练图像识别模型。
+
+- **创新项目**：
+  - 创业者与开发者可基于数据集开发创新应用，如智能聊天机器人、预测分析工具等。
+  - 区块链相关数据集支持开发去中心化应用（DApp）或智能合约。
+
+### 4. **获取与使用方式**
+- **获取途径**：
+  - 用户可通过网站搜索功能按关键词（如“机器学习数据集”“金融数据”）查找资源。
+  - 分类导航支持按编程语言、应用领域或数据格式筛选。
+  - 部分高级数据集需注册会员或完成简单任务（如分享、评论）获取下载权限。
+
+- **使用支持**：
+  - 每份数据集配有详细文档，说明数据来源、格式、字段含义及推荐使用场景。
+  - 提供技术支持论坛，用户可提问或分享使用经验，社区志愿者与管理员会及时解答。
+  - 针对复杂数据集，提供视频教程或在线直播讲解。
+
+### 5. **社区与生态**
+鲁虺软件源码数据资源网不仅提供数据下载，还致力于构建技术交流生态：
+- **开发者社区**：用户可分享数据处理经验、发布自制数据集或参与开源项目协作。
+- **技术博客**：定期发布数据分析案例、算法优化技巧及行业趋势解读。
+- **活动与竞赛**：不定期举办数据分析或编程竞赛，鼓励用户基于平台数据集开发创意项目，优胜者可获得奖励或资源推荐。
+
+### 6. **免责声明与使用规范**
+- **合法性**：所有数据资源均来自合法渠道或公开授权，禁止用于商业牟利或非法用途。
+- **版权说明**：用户需遵守数据集附带的许可协议（如CC BY 4.0、Apache 2.0等）。
+- **侵权处理**：若发现数据涉及侵权，用户可联系网站管理员（邮箱：support@luhui.net），平台将及时核查并处理。
+
+### 7. **未来规划**
+鲁虺软件源码数据资源网计划进一步扩展数据资源板块：
+- 增加更多实时数据流资源，如物联网传感器数据、社交媒体实时动态。
+- 开发数据分析在线工具，支持用户直接在平台上进行数据处理与可视化。
+- 与高校、研究机构合作，推出定制化数据集，满足特定学术需求。
+
+**总结**：
+鲁虺软件源码数据资源网通过提供多样化、高质量的数据资源，结合详尽的技术支持与活跃的社区生态，为全球开发者与技术爱好者搭建了一个学习、实践与创新的平台。无论是初学者还是专业人士，都能在这里找到适合自己的数据资源，助力技术成长与项目开发。
+
+欢迎访问www.luhui.net，探索海量数据资源，开启您的技术之旅！
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
