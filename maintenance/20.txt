@@ -31,7 +31,8 @@
 
 ![打赏作者二维码](http://flash.luhui.net/images/zhifu.png)
 
-备用链接：[打赏作者二维码](http://flash.luhui.net/images/zhifu.png)
+
+[img]http://flash.luhui.net/images/zhifu.png[/img]
 
 
 
