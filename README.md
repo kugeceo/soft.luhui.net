@@ -57,7 +57,7 @@
 
 
 
-[img]https://soft.luhui.net/resource/labs-header-grey-0aa93ea7.gif[/img]
+![鲁虺软件](http://soft.luhui.net/resource/labs-header-grey-0aa93ea7.gif)
 驾驭网络，共创神奇，答疑解惑，富贵勿忘，济民强国，助我发展！
 
 
@@ -66,7 +66,7 @@
 手机如何扫码：
 
 ![打赏作者](http://flash.luhui.net/images/zhifu.png)
-[img]http://flash.luhui.net/images/zhifu.png[/img]
+
 
 ① 保存上面二维码图片　② 打开微信、支付宝、手机qq、“扫一扫”　③ 点击右下脚图标　④ 选择刚才保存的图片
 
